@@ -1,16 +1,20 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy
-    public int numEnemy;
+    public int numEnemyAlive;
     public List<Transform> spawnPoints = new List<Transform>();
 
     private float spawnCooldown = 2f; // Cooldown between spawns
     private float lastSpawnTime; // Time of the last spawn
+    public int NumEnemySpawn = 20;
+    public int counyEnemy = 20;
+    public Transform button;
 
     private void Awake()
     {
@@ -20,8 +24,18 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        numEnemy = 0;
+        button = GameObject.Find("ButtonResum").transform;
+        button.gameObject.SetActive(false);
+        NumEnemySpawn = 20;
+        numEnemyAlive = 0;
+        counyEnemy = 20;
         lastSpawnTime = -spawnCooldown; // Allow spawning immediately at the start
+
+        if (counyEnemy == 0)
+        {
+            PauseGame();
+            return;
+        }
 
         // Check if CheckPointSpawnEnemy.Instance is properly initialized
         if (CheckPointSpawnEnemy.Instance != null)
@@ -37,17 +51,37 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // If there are fewer than 8 enemies and the cooldown has passed, spawn a new enemy
-        if (numEnemy < 8 && Time.time - lastSpawnTime >= spawnCooldown)
+        // Check if the player is dead
+        if (PlayerAttack.instance.isDead)
+        {
+            StartCoroutine(PauseGameAfterDelay(2.5f));
+        }
+
+        // If there are fewer than 6 enemies and the cooldown has passed, spawn a new enemy
+        if (numEnemyAlive < 6 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
         {
             SpawnEnemy();
-            numEnemy += 1;
+            numEnemyAlive += 1;
             lastSpawnTime = Time.time; // Update the last spawn time
         }
     }
 
+    private IEnumerator PauseGameAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        PauseGame();
+    }
+
+    private void PauseGame()
+    {
+        button.gameObject.SetActive(true);
+        Time.timeScale = 0f;
+        Debug.Log("Game Paused");
+    }
+
     public void SpawnEnemy()
     {
+        NumEnemySpawn -= 1;
         if (enemyPrefab == null)
         {
             Debug.LogError("enemyPrefab is not assigned.");
@@ -60,20 +94,20 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Chọn một điểm spawn ngẫu nhiên từ danh sách
+        // Select a random spawn point from the list
         int randomIndex = Random.Range(0, spawnPoints.Count);
         Transform randomSpawnPoint = spawnPoints[randomIndex];
 
-        // Instantiate một enemy prefab tại vị trí và rotation của điểm spawn ngẫu nhiên
+        // Instantiate an enemy prefab at the position and rotation of the random spawn point
         Instantiate(enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
     }
 
     public void DeleteAllEnemies()
     {
-        // Tìm tất cả các đối tượng có tag "Enemy"
+        // Find all objects with the "Enemy" tag
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
-        // Xóa từng đối tượng
+        // Destroy each object
         foreach (GameObject enemy in enemies)
         {
             Destroy(enemy);

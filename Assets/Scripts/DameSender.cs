@@ -1,31 +1,65 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DameSender : MonoBehaviour
 {
-    public bool checkTree=true;
+    public bool checkTree = true;
     public Transform targetTree; // Cây mục tiêu cần kiểm tra
     public float timeReturn;
+    public Transform enemy;
 
     private void OnTriggerEnter(Collider other)
     {
         // Kiểm tra nếu game object không thuộc cây targetTree thì mới xoá
-        if (!IsChildOf(other.transform, targetTree)&& other.tag=="Enemy")
+        if ((!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy"))|| other.CompareTag("Playerr"))
         {
+            if (other.CompareTag("Enemy"))
+            {
+           
+            }
+           
+            scoreincrease();
+            if (other.tag=="Playerr")
+            {
+                other.GetComponent<PlayerAttack>().isDead=true;
+            }
+            var otherEnemy = other.transform.parent.GetComponent<EnemyMoving>();
+            if (otherEnemy != null)
+            {
 
-            Destroy(other.transform.parent.gameObject);
-            GameManager.Instance.numEnemy -= 1;
+                Rigidbody rb = other.transform.GetComponent<Rigidbody>();
+                if (rb != null)
+                {
+                    rb.isKinematic = true;
+                }
+              
+                other.transform.GetComponent<BoxCollider>().enabled = false;
+
+                //StartCoroutine(EnableBoxColider(other.transform.parent.gameObject));
+                other.transform.parent.tag = "DieEnemy";
+                otherEnemy.transform.Find("Armature").tag = "DieEnemy";
+                //otherEnemy.anim.Play("Dead");
+                otherEnemy.isDead = true;
+                GameManager.Instance.numEnemyAlive -= 1;
+                GameManager.Instance.counyEnemy -= 1;
+                GameObject.Find("Num").GetComponent<TextMeshProUGUI>().text = GameManager.Instance.counyEnemy.ToString();
+                enemy = other.transform;
+            }
+
+
+            //StartCoroutine(DelayDie(other.transform.parent.gameObject));
+        
+
             if (targetTree != null)
             {
-                // Tăng scale của targetTree lên 0.1 lần
-                targetTree.localScale += new Vector3(0.1f, 0.1f, 0.1f);
-                targetTree.GetComponent<EnemyMoving>().detectionRadius += targetTree.GetComponent<EnemyMoving>().detectionRadius * 0.5f;
+                targetTree.localScale += new Vector3(0.005f, 0.005f, 0.005f);
+                targetTree.GetComponent<EnemyMoving>().detectionRadius += targetTree.GetComponent<EnemyMoving>().detectionRadius * 0.01f;
+                this.transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
             }
         }
     }
 
-    // Hàm kiểm tra xem transform có phải là con của cây mục tiêu hay không
     private bool IsChildOf(Transform child, Transform parent)
     {
         if (child == null) return false;
@@ -37,30 +71,62 @@ public class DameSender : MonoBehaviour
         }
         return false;
     }
+
     private void Update()
     {
-        if (targetTree!=null)
+        if (targetTree != null)
         {
             timeReturn = targetTree.GetComponent<EnemyMoving>().timeToReturn;
-
         }
-        if (checkTree==false)
-        {
 
+        if (!checkTree)
+        {
             StartCoroutine(CheckTreeStatus());
         }
-     
+    }
+
+    public void scoreincrease()
+    {
+        if (targetTree != null)
+        {
+            var textComponent = targetTree.Find("Canvas/UIPoint/Point")?.GetComponent<TextMeshProUGUI>();
+            if (textComponent != null)
+            {
+                if (float.TryParse(textComponent.text, out float pointValue))
+                {
+                    pointValue += 1f;
+                    textComponent.text = pointValue.ToString();
+                }
+            }
+        }
     }
 
     private IEnumerator CheckTreeStatus()
     {
-        // Chờ 2 giây
         yield return new WaitForSeconds(timeReturn);
 
-        // Kiểm tra nếu checkTree là false và targetTree là null thì xoá chính object này
         if (!checkTree && targetTree == null)
-        {
+        {   
             Destroy(gameObject);
         }
     }
+
+    private IEnumerator DelayDie(GameObject enemy)
+    {
+        yield return new WaitForSeconds(2.4f);
+
+        // Hủy đối tượng enemy sau khi thời gian trễ kết thúc
+        
+        Destroy(enemy);
+        Debug.Log("ok-----------------");
+    }   
+    //private IEnumerator EnableBoxColider(GameObject enemy)
+    //{
+
+    //    yield return new WaitForSeconds(enemy.GetComponent<EnemyMoving>().timeToReturn);
+    //    enemy.transfGetComponent<EnemyMoving>().Weapon.GetComponent<Rigidbody>().isKinematic = true;
+    //    enemy.transform.parent.GetComponent<EnemyMoving>().Weapon.GetComponent<BoxCollider>().enabled = false;
+    //    // Hủy đối tượng enemy sau khi thời gian trễ kết thúc
+    //    Destroy(enemy);
+    //}
 }

@@ -1,51 +1,77 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class EnemyMoving : MonoBehaviour
 {
+    public List<GameObject> combinedList = new List<GameObject>();
     public Animator anim;
+    public bool isDead = false;
     public List<Transform> MovePoint = new List<Transform>();
-    public float EnemySpeed = 2f;
+    public float EnemySpeed = 1f;
     public Transform Weapon;
     public GameObject Enemy;
-    public Transform pointSpawnWeapon; // Biến để lưu đối tượng PointSpawnWeapon
+    public Transform pointSpawnWeapon;
     private Transform targetMovePoint;
-    public float detectionRadius = 1f; // Đặt giá trị mặc định cho bán kính phát hiện
-    public bool collision; // Giả định rằng biến này theo dõi trạng thái va chạm
+    public float detectionRadius = 1f;
+    public bool collision;
     public int NumSpawWeapon;
-    private Transform originalWeaponParent; // Biến để lưu cha gốc của vũ khí
+    private Transform originalWeaponParent;
     public float timeToReturn;
-
-    private bool isWaiting; // Biến để theo dõi trạng thái dừng lại
+    public Vector3 direction;
+    private bool isWaiting;
+    private Transform canvasTransform;
+    private Quaternion initialCanvasRotation;
 
     void Start()
     {
-        NumSpawWeapon = 1;
+        Transform canvas = transform.Find("Canvas");
+        if (canvas != null)
+        {
+            Transform isCheckEnemy = canvas.Find("IsCheckEnemy");
+            if (isCheckEnemy != null)
+            {
+                isCheckEnemy.GetComponent<Image>().enabled = false;
+            }
 
+            canvasTransform = canvas;
+            initialCanvasRotation = canvasTransform.rotation;
+        }
+
+        NumSpawWeapon = 1;
         Weapon = FindDeepChild(this.transform, "Hammer");
         anim = transform.Find("Armature").GetComponent<Animator>();
         MovePoint = CheckPointSpawnEnemy.Instance.Enemys;
         targetMovePoint = GetRandomMovePoint();
-
         pointSpawnWeapon = FindDeepChild(transform, "CheckPointWeapon");
-
-        if (pointSpawnWeapon != null)
-        {
-            //Debug.Log("Tìm thấy PointSpawnWeapon.");
-        }
-        else
-        {
-            //Debug.LogWarning("Không tìm thấy PointSpawnWeapon.");
-        }
-
         originalWeaponParent = Weapon.parent;
     }
 
     void Update()
     {
-        if (CheckEnemy() && NumSpawWeapon == 1)
+        combinedList.Clear();
+
+        if (isDead)
         {
+            Transform canvas = transform.Find("Canvas");
+            if (canvas != null)
+            {
+                Transform isCheckEnemy = canvas.Find("IsCheckEnemy");
+                if (isCheckEnemy != null)
+                {
+                    isCheckEnemy.GetComponent<Image>().enabled = false;
+                }
+            }
+            anim.Play("Dead");
+            StartCoroutine(DelayedDestroy(2.4f));
+            return;
+        }
+
+        if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead)
+        {
+            direction = (CheckEnemy().transform.position - Weapon.position).normalized;
+            direction.y = 0.016f;
             Enemy = CheckEnemy();
             StartCoroutine(PauseMovement(1f));
             Attack();
@@ -57,21 +83,32 @@ public class EnemyMoving : MonoBehaviour
             targetMovePoint = GetRandomMovePoint();
         }
 
-        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting)
+        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead)
         {
-            anim.SetFloat("moving", 1);
+            anim.Play("Run");
 
-            Vector3 direction = (targetMovePoint.position - transform.position).normalized;
-            Quaternion lookRotation = Quaternion.LookRotation(direction);
+            Vector3 moveDirection = (targetMovePoint.position - transform.position).normalized;
+            Quaternion lookRotation = Quaternion.LookRotation(moveDirection);
             transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * EnemySpeed);
 
             transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, EnemySpeed * 0.5f * Time.deltaTime);
 
             if (isPoint())
             {
-                StartCoroutine(PauseAtPoint(1f)); // Dừng lại 0.5 giây khi đến điểm đích
+                StartCoroutine(PauseAtPoint(1f));
             }
         }
+
+        if (canvasTransform != null)
+        {
+            canvasTransform.rotation = initialCanvasRotation;
+        }
+    }
+
+    private IEnumerator DelayedDestroy(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Destroy(gameObject);
     }
 
     public Transform GetRandomMovePoint()
@@ -91,17 +128,34 @@ public class EnemyMoving : MonoBehaviour
 
     public GameObject CheckEnemy()
     {
+        combinedList.Clear();
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
-        enemies = System.Array.FindAll(enemies, enemy => enemy != this.gameObject);
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Playerr");
 
         foreach (GameObject enemy in enemies)
         {
-            if (enemy.transform != this.transform && enemy.transform != this.transform.Find("Armature"))
+            if (enemy.GetComponent<Collider>() != null)
             {
-                float distance = Vector3.Distance(transform.position, enemy.transform.position);
+                combinedList.Add(enemy);
+            }
+        }
+
+        foreach (GameObject player in players)
+        {
+            if (player.GetComponent<Collider>() != null)
+            {
+                combinedList.Add(player);
+            }
+        }
+
+        foreach (GameObject potentialEnemy in combinedList)
+        {
+            if (potentialEnemy.transform != this.transform && potentialEnemy.transform != this.transform.Find("Armature"))
+            {
+                float distance = Vector3.Distance(transform.position, potentialEnemy.transform.position);
                 if (distance <= detectionRadius)
                 {
-                    return enemy;
+                    return potentialEnemy;
                 }
             }
         }
@@ -112,7 +166,7 @@ public class EnemyMoving : MonoBehaviour
     private IEnumerator PauseMovement(float duration)
     {
         EnemySpeed = 0;
-        anim.SetFloat("moving", 0);
+        anim.Play("Idle");
         yield return new WaitForSeconds(duration);
         EnemySpeed = 2;
     }
@@ -121,7 +175,7 @@ public class EnemyMoving : MonoBehaviour
     {
         isWaiting = true;
         EnemySpeed = 0;
-        anim.SetFloat("moving", 0);
+        anim.Play("Idle");
         yield return new WaitForSeconds(delay);
         isWaiting = false;
         EnemySpeed = 2;
@@ -134,7 +188,7 @@ public class EnemyMoving : MonoBehaviour
 
         if (weaponFly != null && Enemy != null)
         {
-            Transform enemyTarget = FindDeepChild(Enemy.transform, "Armature");
+            Transform enemyTarget = Enemy.transform;
             if (enemyTarget != null)
             {
                 weaponFly.SetTarget(enemyTarget);
@@ -145,46 +199,46 @@ public class EnemyMoving : MonoBehaviour
 
     public void Attack()
     {
+        if (isDead) return;
+
         GameObject enemy = CheckEnemy();
         if (enemy != null)
         {
-            StartCoroutine(DelayedAttack(0.5f, enemy));
+            StartCoroutine(DelayedAttack(0.2f, enemy));
         }
     }
 
     private IEnumerator DelayedAttack(float delay, GameObject enemy)
     {
+        if (isDead) yield break;
+
         if (enemy != null)
         {
-            // Tìm vị trí của mục tiêu
-            Transform enemyTarget = FindDeepChild(enemy.transform, "Armature");
+            Transform enemyTarget = enemy.transform;
 
             if (enemyTarget != null)
             {
-                // Tính toán hướng từ đối tượng đến mục tiêu
                 Vector3 direction = (enemyTarget.position - transform.position).normalized;
-
-                // Quay đối tượng để hướng về phía mục tiêu
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
-                float rotationSpeed = 2f; // Tốc độ quay
+                float rotationSpeed = 1f;
                 float rotationProgress = 0f;
 
                 while (rotationProgress < 1f)
                 {
-                    // Quay từ từ về phía mục tiêu
                     transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
                     rotationProgress += Time.deltaTime * rotationSpeed;
-                    yield return null; // Chờ cho đến khi quá trình quay hoàn tất
+                    yield return null;
                 }
 
-                // Đợi thêm 0.5 giây trước khi tấn công
-                yield return new WaitForSeconds(delay);
-
-                // Kiểm tra nếu enemyTarget vẫn còn tồn tại trước khi thực hiện tấn công
-                if (enemyTarget != null)
+                if (!isDead)
                 {
-                    // Thực hiện hành động tấn công
-                    PerformAttack(enemyTarget);
+                    anim.Play("Attack");
+                    yield return new WaitForSeconds(delay);
+
+                    if (enemyTarget != null && !isDead)
+                    {
+                        PerformAttack(enemyTarget);
+                    }
                 }
             }
         }
@@ -192,49 +246,27 @@ public class EnemyMoving : MonoBehaviour
 
     private void PerformAttack(Transform enemyTarget)
     {
-        if (enemyTarget == null)
-        {
-            return; // Kết thúc sớm nếu mục tiêu không tồn tại
-        }
-
-        // Tính toán hướng từ vũ khí đến mục tiêu
-        Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
-
-        // Chỉ giữ lại các thành phần X và Z, đặt Y về 0
-        direction.y = 0.016f;
+        if (enemyTarget == null) return;
 
         Rigidbody weaponRb = Weapon.GetComponent<Rigidbody>();
         if (weaponRb != null)
         {
-            // Tạo một vị trí và rotation mới cho weapon không bị ảnh hưởng bởi cha
             Vector3 localPosition = Weapon.localPosition;
             Quaternion localRotation = Weapon.localRotation;
 
-            // Tách đối tượng ra khỏi cha của nó
             Weapon.parent = null;
             Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
-
-            // Hủy trạng thái kinematic để đối tượng chịu tác dụng của lực
             weaponRb.isKinematic = false;
-
-            // Reset velocity và angular velocity của Rigidbody
             weaponRb.velocity = Vector3.zero;
             weaponRb.angularVelocity = Vector3.zero;
 
-            // Áp dụng lực để di chuyển Weapon theo hướng mục tiêu
-            float forceMagnitude = 1f; // Tăng độ lớn của lực nếu cần thiết
+            float forceMagnitude = 1f;
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
 
-            // Tính toán khoảng cách giữa weapon và Armature
             float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
+            float weaponSpeed = forceMagnitude;
 
-            // Tính toán vận tốc dựa trên lực áp dụng
-            float weaponSpeed = forceMagnitude; // Sử dụng forceMagnitude làm vận tốc tạm thời
-
-            // Tính toán thời gian di chuyển
             timeToReturn = distance / weaponSpeed;
-
-            // Đưa đối tượng lại vị trí ban đầu sau thời gian tính toán
             StartCoroutine(ReturnToParentAfterDelay(timeToReturn, localPosition, localRotation));
         }
     }
@@ -246,13 +278,19 @@ public class EnemyMoving : MonoBehaviour
         Weapon.parent = originalWeaponParent;
         Weapon.localPosition = originalPosition;
         Weapon.localRotation = originalRotation;
+        Weapon.GetComponent<Rigidbody>().isKinematic = true;
+        Weapon.GetComponent<BoxCollider>().enabled = false;
 
-        Rigidbody weaponRb = Weapon.GetComponent<Rigidbody>();
-        if (weaponRb != null)
-        {
-            weaponRb.isKinematic = true;
-        }
+        StartCoroutine(DelayenableWeaponCollider());
         NumSpawWeapon = 1;
+    }
+
+    private IEnumerator DelayenableWeaponCollider()
+    {
+        yield return new WaitForSeconds(2.5f);
+
+        Weapon.GetComponent<Rigidbody>().isKinematic = false;
+        Weapon.GetComponent<BoxCollider>().enabled = true;
     }
 
     Transform FindDeepChild(Transform parent, string name)
