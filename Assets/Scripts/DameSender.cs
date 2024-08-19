@@ -14,16 +14,11 @@ public class DameSender : MonoBehaviour
         // Kiểm tra nếu game object không thuộc cây targetTree thì mới xoá
         if ((!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy"))|| other.CompareTag("Playerr"))
         {
-            if (other.CompareTag("Enemy"))
-            {
-           
-            }
-           
+            this.transform.GetComponent<Rigidbody>().isKinematic = true;
+            this.transform.GetComponent<BoxCollider>().enabled = false;
+
             scoreincrease();
-            if (other.tag=="Playerr")
-            {
-                other.GetComponent<PlayerAttack>().isDead=true;
-            }
+         
             var otherEnemy = other.transform.parent.GetComponent<EnemyMoving>();
             if (otherEnemy != null)
             {
@@ -33,7 +28,7 @@ public class DameSender : MonoBehaviour
                 {
                     rb.isKinematic = true;
                 }
-              
+
                 other.transform.GetComponent<BoxCollider>().enabled = false;
 
                 //StartCoroutine(EnableBoxColider(other.transform.parent.gameObject));
@@ -46,10 +41,14 @@ public class DameSender : MonoBehaviour
                 GameObject.Find("Num").GetComponent<TextMeshProUGUI>().text = GameManager.Instance.counyEnemy.ToString();
                 enemy = other.transform;
             }
+            if (other.tag == "Playerr")
+            {
+                other.GetComponent<PlayerAttack>().isDead = true;
+            }
 
 
             //StartCoroutine(DelayDie(other.transform.parent.gameObject));
-        
+
 
             if (targetTree != null)
             {

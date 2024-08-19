@@ -18,6 +18,8 @@ public class PlayerController : MonoBehaviour
         if (PlayerMovement.instance.isMoving)
         {
             anim.SetFloat("moving", 1);
+            //anim.SetFloat("attackMoving", 1);
+
         }
         else
         {

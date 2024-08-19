@@ -58,7 +58,7 @@ public class GameManager : MonoBehaviour
         }
 
         // If there are fewer than 6 enemies and the cooldown has passed, spawn a new enemy
-        if (numEnemyAlive < 6 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
+        if (numEnemyAlive < 2 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
         {
             SpawnEnemy();
             numEnemyAlive += 1;

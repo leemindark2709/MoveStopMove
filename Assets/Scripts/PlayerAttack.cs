@@ -121,7 +121,7 @@ public class PlayerAttack : MonoBehaviour
             rotationProgress += Time.deltaTime * rotationSpeed;
             yield return null;
         }
-        anim.Play("Attack"); // Chơi animation tấn công
+        anim.SetFloat("attack", 1); // Chơi animation tấn công
         yield return new WaitForSeconds(delay); // Đợi trong khoảng thời gian delay
 
         if (enemyTarget != null)
@@ -133,7 +133,27 @@ public class PlayerAttack : MonoBehaviour
             Debug.LogWarning("Mục tiêu kẻ địch không còn tồn tại");
             numOfAttacks = 1;
         }
+
+        // Thực hiện kiểm tra liên tục trong 2 giây
+        float elapsedTime = 0f;
+        while (elapsedTime < 2f)
+        {
+            if (PlayerMovement.instance.isMoving)
+            {
+                anim.SetFloat("attackMoving", 1);
+            }
+            else
+            {
+                anim.SetFloat("attackMoving", 0);
+            }
+
+            elapsedTime += Time.deltaTime;
+            yield return null; // Đợi mỗi frame
+        }
+
+        anim.SetFloat("attack", 0); // Đặt lại animation khi hết 2 giây
     }
+
 
     private void PerformAttack(Transform enemyTarget)
     {
@@ -143,16 +163,17 @@ public class PlayerAttack : MonoBehaviour
             Debug.Log("Mục tiêu kẻ địch null");
             return;
         }
+        Quaternion localRotation = weapon.localRotation; // Lưu trữ góc quay hiện tại của vũ khí
 
         Vector3 direction = (enemyTarget.position - weapon.position).normalized; // Hướng của vũ khí
         direction.y = 0; // Không thay đổi hướng dọc
-        //weapon.transform.rotation = Quaternion.Euler(0, 0, 90); // Đặt rotation cho vũ khí
+        weapon.transform.rotation = Quaternion.Euler(0, 0, 90); // Đặt rotation cho vũ khí
 
         Rigidbody weaponRb = weapon.GetComponent<Rigidbody>(); // Lấy component Rigidbody của vũ khí
         if (weaponRb != null)
         {
             Vector3 localPosition = weapon.localPosition; // Lưu trữ vị trí hiện tại của vũ khí
-            Quaternion localRotation = weapon.localRotation; // Lưu trữ góc quay hiện tại của vũ khí
+         
 
             weapon.parent = null; // Đặt parent của vũ khí thành null
 
@@ -162,7 +183,7 @@ public class PlayerAttack : MonoBehaviour
 
             float forceMagnitude = 1.25f; // Lực tác động lên vũ khí
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse); // Tác động lực lên vũ khí
-            weaponRb.AddTorque(new Vector3(0, 10000f, 0) );
+            weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0) );
             float distance = detectionRadius; // Khoảng cách tấn công
             float weaponSpeed = forceMagnitude; // Tốc độ vũ khí
             timeToReturn = distance / weaponSpeed; // Tính thời gian trở về
@@ -173,17 +194,15 @@ public class PlayerAttack : MonoBehaviour
             }
 
             returnCoroutine = StartCoroutine(ReturnToParentAfterDelay(timeToReturn, localPosition, localRotation)); // Trở về vị trí ban đầu sau khoảng thời gian delay
+            
         }
         StartCoroutine(WaitForAttackToEnd());
     }
     private IEnumerator WaitForAttackToEnd()
     {
         // Đợi cho đến khi animation "Attack" hoàn thành
-        while (!anim.GetCurrentAnimatorStateInfo(0).IsName("Attack") || anim.GetCurrentAnimatorStateInfo(0).normalizedTime < 1.0f)
-        {
-            yield return null;
-        }
-        anim.Play("Idle"); // Chơi animation "Idle" sau khi animation "Attack" hoàn thành
+        yield return new WaitForSeconds(2f);
+        //anim.Play(""); // Chơi animation "Idle" sau khi animation "Attack" hoàn thành
     }
 
 
