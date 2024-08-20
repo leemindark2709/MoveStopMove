@@ -15,17 +15,31 @@ public class GameManager : MonoBehaviour
     public int NumEnemySpawn = 20;
     public int counyEnemy = 20;
     public Transform button;
-
+    public Transform Dead;
+    public Transform InGame;
+    public Transform TouchToContinue;
+    public Transform SettingTouch;
+    public Transform Home;
     private void Awake()
     {
         Instance = this;
+        Dead = GameObject.Find("Dead").transform;
+        Dead.gameObject.SetActive(false);
+        button = GameObject.Find("ButtonResum").transform;
+        button.gameObject.SetActive(false);
+        InGame = GameObject.Find("InGame").transform;
+        InGame.gameObject.SetActive(false);
+        TouchToContinue = GameObject.Find("TouchToContinue").transform;
+        TouchToContinue.gameObject.SetActive(false);
+        SettingTouch = GameObject.Find("SettingTouch").transform;
+        SettingTouch.gameObject.SetActive(false);
+        Home = GameObject.Find("Home").transform;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        button = GameObject.Find("ButtonResum").transform;
-        button.gameObject.SetActive(false);
+       
         NumEnemySpawn = 20;
         numEnemyAlive = 0;
         counyEnemy = 20;
@@ -51,14 +65,15 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Check if the player is dead
-        if (PlayerAttack.instance.isDead)
-        {
-            StartCoroutine(PauseGameAfterDelay(2.5f));
-        }
+        //// Check if the player is dead
+        //if (PlayerAttack.instance.isDead)
+        //{
+        //    StartCoroutine(DelayEnableDie());
+        
+        //}
 
         // If there are fewer than 6 enemies and the cooldown has passed, spawn a new enemy
-        if (numEnemyAlive < 2 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
+        if (numEnemyAlive < 6 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
         {
             SpawnEnemy();
             numEnemyAlive += 1;
@@ -70,6 +85,12 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(delay);
         PauseGame();
+    }
+    private IEnumerator DelayEnableDie()
+    {
+        yield return new WaitForSeconds(2);
+        Dead.gameObject.SetActive(true);
+
     }
 
     private void PauseGame()

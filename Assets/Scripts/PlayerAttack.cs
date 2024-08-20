@@ -136,7 +136,7 @@ public class PlayerAttack : MonoBehaviour
 
         // Thực hiện kiểm tra liên tục trong 2 giây
         float elapsedTime = 0f;
-        while (elapsedTime < 2f)
+        while (elapsedTime < 0.9f)
         {
             if (PlayerMovement.instance.isMoving)
             {
@@ -144,7 +144,7 @@ public class PlayerAttack : MonoBehaviour
             }
             else
             {
-                anim.SetFloat("attackMoving", 0);
+                //anim.SetFloat("attack", 0.1f);
             }
 
             elapsedTime += Time.deltaTime;
@@ -208,6 +208,13 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator ReturnToParentAfterDelay(float delay, Vector3 originalPosition, Quaternion originalRotation)
     {
+
+        if (isDead)
+        {
+            transform.GetComponent<Rigidbody>().isKinematic = true;
+
+            weapon.GetComponent<Rigidbody>().isKinematic=true;
+        }
         Rigidbody weaponRb = weapon.GetComponent<Rigidbody>();
         float elapsedTime = 0f;
 
@@ -272,7 +279,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 return child;
             }
-
+            
             Transform found = FindDeepChild(child, name); // Tìm đối tượng có tên là name trong con của parent
             if (found != null)
             {
