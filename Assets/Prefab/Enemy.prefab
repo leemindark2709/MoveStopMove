@@ -1559,7 +1559,7 @@ MonoBehaviour:
   anim: {fileID: 0}
   isDead: 0
   MovePoint: []
-  EnemySpeed: 0.8
+  EnemySpeed: 1
   Weapon: {fileID: 400000}
   Enemy: {fileID: 0}
   pointSpawnWeapon: {fileID: 4505667089036607028}

@@ -1,18 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Home : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    // This method will be called when the button is clicked
+    public void OnButtonClick()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Reset the game by reloading the current scene
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

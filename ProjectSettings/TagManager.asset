@@ -9,6 +9,7 @@ TagManager:
   - colliderenemy
   - Playerr
   - DieEnemy
+  - DeadPlayer
   layers:
   - Default
   - TransparentFX

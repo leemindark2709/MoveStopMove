@@ -68,7 +68,7 @@ public class PlayerMovement : MonoBehaviour
         // Move the character based on touch or mouse input
         if (isInteracting)
         {
-            Vector3 move = new Vector3(direction.x, 0, direction.y);
+            Vector3 move = new Vector3(direction.x, 0, direction.y).normalized;
             transform.position += move * moveSpeed * 0.5f * Time.deltaTime;
 
             // Update isMoving based on direction

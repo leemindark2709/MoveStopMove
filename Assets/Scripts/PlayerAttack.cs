@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,13 +8,16 @@ public class PlayerAttack : MonoBehaviour
 {   public static PlayerAttack instance;
     public Animator anim;
     public bool isDead=false;
+    public bool End=false;
+
     public int numOfAttacks = 1; // Số lượng tấn công
     public float detectionRadius = 0.1f; // Bán kính phát hiện
     public Transform weapon; // Đối tượng vũ khí
-   [SerializeField] private GameObject enemy; // Kẻ địch gần nhất
+   [SerializeField] public GameObject enemy; // Kẻ địch gần nhất
     private Transform originalWeaponParent; // Vị trí ban đầu của vũ khí
     public float timeToReturn; // Thời gian để vũ khí trở về
     public Transform enemyTarget; // Mục tiêu của kẻ địch
+    public int NumOfDead;
 
     private Coroutine returnCoroutine; // Tham chiếu đến coroutine trở về
 
@@ -23,6 +27,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void Start()
     {
+        NumOfDead = 1;
         anim = GetComponent<Animator>(); // Lấy component Animator
         weapon = FindDeepChild(transform, "Hammer"); // Tìm đối tượng vũ khí "Hammer"
         if (weapon == null)
@@ -37,8 +42,17 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
-        if (isDead)
+        if (isDead && NumOfDead==1)
         {
+            GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy+1).ToString();
+            GameManager.Instance.EndGame = true;
+            NumOfDead = 0;
+
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().enabled = false;
+            //PlayerAttack.instance.End = false;
+          
             anim.Play("Dead");
             //transform.gameObject.SetActive(false);
 
@@ -47,7 +61,7 @@ public class PlayerAttack : MonoBehaviour
 
         if (enemy != null && numOfAttacks > 0 && !PlayerMovement.instance.isMoving)
         {
-            CheckEnemy().transform.parent.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
+            //CheckEnemy().transform.parent.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
             Attack(enemy); // Tấn công kẻ địch
             Debug.Log("Kẻ địch gần, tấn công");
             numOfAttacks = 0; // Đặt lại số lượng tấn công sau khi tấn công
@@ -209,7 +223,7 @@ public class PlayerAttack : MonoBehaviour
     public IEnumerator ReturnToParentAfterDelay(float delay, Vector3 originalPosition, Quaternion originalRotation)
     {
 
-        if (isDead)
+        if (!isDead)
         {
             transform.GetComponent<Rigidbody>().isKinematic = true;
 

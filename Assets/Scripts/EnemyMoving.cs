@@ -51,7 +51,15 @@ public class EnemyMoving : MonoBehaviour
 
     void Update()
     {
-      
+        if (transform.Find("Armature").gameObject==PlayerAttack.instance.enemy)
+        {
+            transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
+
+        }
+        else
+        {
+            transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = false;
+        }
 
         if (isDead)
         {
@@ -90,9 +98,14 @@ public class EnemyMoving : MonoBehaviour
 
             Vector3 moveDirection = (targetMovePoint.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * EnemySpeed);
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime *3f *EnemySpeed);
+// Tính toán vector hướng từ vị trí hiện tại đến điểm mục tiêu
+            Vector3 direction = (targetMovePoint.position - transform.position).normalized;
 
-            transform.position = Vector3.MoveTowards(transform.position, targetMovePoint.position, EnemySpeed * 0.5f * Time.deltaTime);
+// Di chuyển đối tượng theo hướng đã tính toán
+            transform.position += direction * EnemySpeed * 0.5f * Time.deltaTime;
+
+
 
             if (isPoint())
             {
@@ -288,7 +301,7 @@ public class EnemyMoving : MonoBehaviour
         Weapon.GetComponent<Rigidbody>().isKinematic = true;
         Weapon.GetComponent<BoxCollider>().enabled = false;
 
-        StartCoroutine(DelayenableWeaponCollider());
+        //StartCoroutine(DelayenableWeaponCollider());
         NumSpawWeapon = 1;
         anim.SetFloat("attack", 0);
     }

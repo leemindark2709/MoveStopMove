@@ -14,12 +14,16 @@ public class GameManager : MonoBehaviour
     private float lastSpawnTime; // Time of the last spawn
     public int NumEnemySpawn = 20;
     public int counyEnemy = 20;
+    public bool isStart;
     public Transform button;
     public Transform Dead;
     public Transform InGame;
     public Transform TouchToContinue;
     public Transform SettingTouch;
     public Transform Home;
+    public Transform Shop;
+    public bool EndGame;
+    public Transform PLayer;
     private void Awake()
     {
         Instance = this;
@@ -34,12 +38,28 @@ public class GameManager : MonoBehaviour
         SettingTouch = GameObject.Find("SettingTouch").transform;
         SettingTouch.gameObject.SetActive(false);
         Home = GameObject.Find("Home").transform;
+        Shop = GameObject.Find("Shop").transform;
+        Shop.gameObject.SetActive(false);
+        PLayer = GameObject.Find("Player").transform;
     }
+    public void TurnOfComponentPlayer()
+    {
+        PLayer.Find("Canvas").gameObject.SetActive(false);
+        PLayer.GetComponent<PlayerMovement>().enabled = false;
 
+    } 
+    public void TurnOnComponentPlayer()
+    {
+        PLayer.Find("Canvas").gameObject.SetActive(true);
+        PLayer.GetComponent<PlayerMovement>().enabled = true;
+
+    }
     // Start is called before the first frame update
     void Start()
     {
-       
+        TurnOfComponentPlayer();
+        SetUpCamera();
+        isStart = false;
         NumEnemySpawn = 20;
         numEnemyAlive = 0;
         counyEnemy = 20;
@@ -60,25 +80,33 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("CheckPointSpawnEnemy.Instance is not set.");
         }
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        //// Check if the player is dead
-        //if (PlayerAttack.instance.isDead)
-        //{
-        //    StartCoroutine(DelayEnableDie());
-        
-        //}
+        // Check if the player is dead
+      
+        if (EndGame)
+        {
+            StartCoroutine(DelayEnableDie());
+        }
 
         // If there are fewer than 6 enemies and the cooldown has passed, spawn a new enemy
-        if (numEnemyAlive < 6 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0)
+        if (numEnemyAlive < 6 && Time.time - lastSpawnTime >= spawnCooldown && NumEnemySpawn > 0&&isStart)
         {
             SpawnEnemy();
             numEnemyAlive += 1;
             lastSpawnTime = Time.time; // Update the last spawn time
         }
+    }
+    public void SetUpCamera()
+    {
+        
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -0.6f;
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 0.36f;
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offsetRotation.x = 39;
     }
 
     private IEnumerator PauseGameAfterDelay(float delay)
@@ -89,7 +117,11 @@ public class GameManager : MonoBehaviour
     private IEnumerator DelayEnableDie()
     {
         yield return new WaitForSeconds(2);
-        Dead.gameObject.SetActive(true);
+        if (PlayerAttack.instance.NumOfDead==0)
+        {
+            Dead.gameObject.SetActive(true);
+
+        }
 
     }
 

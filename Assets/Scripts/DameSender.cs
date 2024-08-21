@@ -44,6 +44,8 @@ public class DameSender : MonoBehaviour
             if (other.tag == "Playerr")
             {
                 other.GetComponent<PlayerAttack>().isDead = true;
+                other.GetComponent<PlayerAttack>().End = true;
+
             }
 
 
@@ -78,9 +80,14 @@ public class DameSender : MonoBehaviour
             timeReturn = targetTree.GetComponent<EnemyMoving>().timeToReturn;
         }
 
-        if (!checkTree)
+        if (!checkTree&& !targetTree.GetComponent<EnemyMoving>().isDead)
         {
+            transform.GetComponent<BoxCollider>().enabled = true;
             StartCoroutine(CheckTreeStatus());
+        }
+        if (checkTree)
+        {
+            transform.GetComponent<BoxCollider>().enabled = false;
         }
     }
 
