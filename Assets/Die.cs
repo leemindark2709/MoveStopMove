@@ -12,6 +12,7 @@ public class Die : MonoBehaviour
     public float interval = 1f; // Khoảng thời gian cập nhật đồng hồ
     private float elapsedTime = 0f; // Biến đếm thời gian
     [SerializeField] private bool isCounting = false; // Điều khiển trạng thái đếm ngược
+    public bool isClickButtonRevive=false;
 
     private void Awake()
     {
@@ -58,14 +59,27 @@ public class Die : MonoBehaviour
         intTime = int.Parse(timerText);
 
         intTime -= 1;
-        if (intTime < 0)
+        if (intTime < 1|| isClickButtonRevive)
         {
-            GameManager.Instance.TouchToContinue.gameObject.SetActive(true);
-            intTime = 5;
+            if (isClickButtonRevive)
+            {
+                intTime = 5;
 
-            GameManager.Instance.EndGame = false;
-            GameManager.Instance.Dead.gameObject.SetActive(false);
-            isCounting = false;
+                GameManager.Instance.EndGame = false;
+                GameManager.Instance.Dead.gameObject.SetActive(false);
+                isCounting = false;
+            }
+            else
+            {
+                GameManager.Instance.TouchToContinue.gameObject.SetActive(true);
+                intTime = 5;
+
+                GameManager.Instance.EndGame = false;
+                GameManager.Instance.Dead.gameObject.SetActive(false);
+                isCounting = false;
+
+            }
+          
         }
 
         timeText.text = intTime.ToString();
@@ -105,9 +119,10 @@ public class Die : MonoBehaviour
     {
         isCounting = false; // Ngừng đếm ngược
         elapsedTime = 0f; // Reset thời gian
+        isClickButtonRevive = false;
     }
 
-   public IEnumerator MoveRankAndSetting()
+    public IEnumerator MoveRankAndSetting()
     {
         GameObject rankObject = GameObject.Find("Rank");
         Vector3 startPosition1 = rankObject.transform.position;

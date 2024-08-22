@@ -42,19 +42,29 @@ public class PlayerAttack : MonoBehaviour
 
     void Update()
     {
+        if (isDead)
+        {
+            weapon.GetComponent<Rigidbody>().isKinematic = true;
+            transform.gameObject.GetComponent<PlayerAttack>().enabled=false;
+            //transform.GetComponent<Rigidbody>().gameObject.SetActive(false);
+            //transform.GetComponent<BoxCollider>().gameObject.SetActive(false);
+
+
+        }
         if (isDead && NumOfDead==1)
         {
             GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy+1).ToString();
             GameManager.Instance.EndGame = true;
-            NumOfDead = 0;
-
-            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
-            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
-            GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().enabled = false;
+            NumOfDead =0;
+           
             //PlayerAttack.instance.End = false;
-          
             anim.Play("Dead");
             //transform.gameObject.SetActive(false);
+            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
+
+
 
         }
         enemy = CheckEnemy(); // Kiểm tra kẻ địch gần nhất
@@ -104,7 +114,7 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
 
-        StartCoroutine(DelayedAttack(0.4f, enemy)); // Tạo độ trễ khi tấn công
+        StartCoroutine(DelayedAttack(0.2f, enemy)); // Tạo độ trễ khi tấn công
     }
 
     private IEnumerator DelayedAttack(float delay, GameObject enemy)
@@ -223,7 +233,7 @@ public class PlayerAttack : MonoBehaviour
     public IEnumerator ReturnToParentAfterDelay(float delay, Vector3 originalPosition, Quaternion originalRotation)
     {
 
-        if (!isDead)
+        if (isDead)
         {
             transform.GetComponent<Rigidbody>().isKinematic = true;
 

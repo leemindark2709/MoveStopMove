@@ -23,7 +23,9 @@ public class GameManager : MonoBehaviour
     public Transform Home;
     public Transform Shop;
     public bool EndGame;
+    public bool isPause;
     public Transform PLayer;
+    public int numofSpawnDie=1;
     private void Awake()
     {
         Instance = this;
@@ -41,6 +43,7 @@ public class GameManager : MonoBehaviour
         Shop = GameObject.Find("Shop").transform;
         Shop.gameObject.SetActive(false);
         PLayer = GameObject.Find("Player").transform;
+        
     }
     public void TurnOfComponentPlayer()
     {
@@ -88,7 +91,7 @@ public class GameManager : MonoBehaviour
     {
         // Check if the player is dead
       
-        if (EndGame)
+        if (EndGame&&numofSpawnDie==1)
         {
             StartCoroutine(DelayEnableDie());
         }
@@ -117,13 +120,21 @@ public class GameManager : MonoBehaviour
     private IEnumerator DelayEnableDie()
     {
         yield return new WaitForSeconds(2);
-        if (PlayerAttack.instance.NumOfDead==0)
-        {
-            Dead.gameObject.SetActive(true);
 
+        // Kiểm tra liên tục cho đến khi numofSpawnDie == 1
+        while (numofSpawnDie != 1)
+        {
+            yield return null; // Chờ đến khung hình tiếp theo
         }
 
+        // Khi numofSpawnDie == 1, thực hiện các hành động sau
+        if (PlayerAttack.instance.NumOfDead == 0)
+        {
+            Dead.gameObject.SetActive(true);
+            numofSpawnDie = 0;
+        }
     }
+
 
     private void PauseGame()
     {

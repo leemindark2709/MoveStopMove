@@ -108,7 +108,6 @@ public class PlayerDameSender : MonoBehaviour
         {
             StartCoroutine(CheckTreeStatus());
         }
-
     }
 
     public void scoreincrease()
@@ -133,10 +132,9 @@ public class PlayerDameSender : MonoBehaviour
         yield return new WaitForSeconds(timeReturn);
 
         // Kiểm tra nếu checkTree là false và targetTree là null thì xoá chính object này
-        if (!checkTree && targetTree.GetComponent<PlayerAttack>().isDead)
+        if (!checkTree && targetTree == null)
         {
-
-            transform.GetComponent<BoxCollider>().enabled=false;
+            Destroy(gameObject);
         }
     }
 }

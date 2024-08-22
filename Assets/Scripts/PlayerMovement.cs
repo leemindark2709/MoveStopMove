@@ -106,4 +106,12 @@ public class PlayerMovement : MonoBehaviour
     {
         movevector = input;
     }
+
+    // Method to stop movement directly
+    public void StopMovement()
+    {
+        direction = Vector2.zero;
+        movevector = Vector2.zero;
+        isMoving = false;
+    }
 }

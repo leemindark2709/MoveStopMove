@@ -51,7 +51,7 @@ public class EnemyMoving : MonoBehaviour
 
     void Update()
     {
-        if (transform.Find("Armature").gameObject==PlayerAttack.instance.enemy)
+        if (transform.Find("Armature").gameObject == PlayerAttack.instance.enemy)
         {
             transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
 
@@ -60,6 +60,7 @@ public class EnemyMoving : MonoBehaviour
         {
             transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = false;
         }
+
 
         if (isDead)
         {
@@ -182,7 +183,7 @@ public class EnemyMoving : MonoBehaviour
         EnemySpeed = 0;
         anim.SetFloat("moving", 0);
         yield return new WaitForSeconds(duration);
-        EnemySpeed = 2;
+        EnemySpeed = 1;
     }
 
     private IEnumerator PauseAtPoint(float delay)
@@ -192,7 +193,8 @@ public class EnemyMoving : MonoBehaviour
         anim.SetFloat("moving", 0);
         yield return new WaitForSeconds(delay);
         isWaiting = false;
-        EnemySpeed = 2;
+        EnemySpeed = 1;
+
     }
 
     public void SpawnWeapon()
@@ -301,7 +303,7 @@ public class EnemyMoving : MonoBehaviour
         Weapon.GetComponent<Rigidbody>().isKinematic = true;
         Weapon.GetComponent<BoxCollider>().enabled = false;
 
-        //StartCoroutine(DelayenableWeaponCollider());
+        StartCoroutine(DelayenableWeaponCollider());
         NumSpawWeapon = 1;
         anim.SetFloat("attack", 0);
     }
