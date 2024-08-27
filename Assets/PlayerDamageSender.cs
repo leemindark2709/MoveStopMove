@@ -17,7 +17,7 @@ public class PlayerDameSender : MonoBehaviour
         // Kiểm tra nếu game object không thuộc cây targetTree thì mới xoá
         if (!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy"))
         {
-            GameManager.Instance.NumEnemySpawn -= 1;
+            //GameManager.Instance.NumEnemySpawn -= 1;
 
             scoreincrease();
 
