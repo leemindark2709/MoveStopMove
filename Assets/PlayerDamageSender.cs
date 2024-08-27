@@ -54,7 +54,8 @@ public class PlayerDameSender : MonoBehaviour
             if (targetTree != null)
             {
                 // Tăng scale của targetTree lên 0.1 lần
-                targetTree.localScale += new Vector3(0.005f, 0.005f, 0.005f);
+                targetTree.parent.localScale += new Vector3(0.01f, 0.01f, 0.01f);
+                targetTree.localScale += new Vector3(0.01f, 0.01f, 0.01f);
 
                 // Tìm đối tượng Circle và cập nhật kích thước của nó nếu nó là RectTransform
                 RectTransform circleTransform = targetTree.parent.Find("Canvas").Find("Circle").GetComponent<RectTransform>();
@@ -71,7 +72,7 @@ public class PlayerDameSender : MonoBehaviour
                 }
 
                 // Tăng scale của đối tượng này
-                transform.localScale += new Vector3(0.05f, 0.05f, 0.05f);
+                transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
 
                 // Cập nhật offset của CameraFollow
                 CameraFollow cameraFollow = GameObject.Find("MainCamera").GetComponent<CameraFollow>();

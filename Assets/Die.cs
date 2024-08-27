@@ -151,51 +151,5 @@ public class Die : MonoBehaviour
         SettingObject.transform.position = targetPosition2;
     }
 
-    public void ReturnPositionRankAndSettinglmd()
-    {
-        StartCoroutine(ReturnPositionRankAndSetting());
-    }
 
-    public IEnumerator ReturnPositionRankAndSetting()
-    {
-        GameObject rankObject = GameObject.Find("Rank");
-        if (rankObject == null)
-        {
-            Debug.LogError("Không tìm thấy đối tượng Rank!");
-            yield break;
-        }
-
-        Vector3 startPosition1 = rankObject.transform.position;
-        Vector3 targetPosition1 = GameObject.Find("PointEnemy0").GetComponent<RectTransform>().position;
-
-        GameObject SettingObject = GameObject.Find("Setting");
-        if (SettingObject == null)
-        {
-            Debug.LogError("Không tìm thấy đối tượng Setting!");
-            yield break;
-        }
-
-        Vector3 startPosition2 = SettingObject.transform.position;
-        Vector3 targetPosition2 = GameObject.Find("PointSetting0").GetComponent<RectTransform>().position;
-
-        float duration = 0.3f; // Thời gian cho quá trình di chuyển
-        float time = 0f;
-
-        while (time < duration)
-        {
-            // Nội suy vị trí cho rankObject
-            rankObject.transform.position = Vector3.Lerp(startPosition1, targetPosition1, time / duration);
-
-            // Nội suy vị trí cho SettingObject
-            SettingObject.transform.position = Vector3.Lerp(startPosition2, targetPosition2, time / duration);
-
-            time += Time.deltaTime;
-            yield return null; // Chờ đến khung hình tiếp theo
-        }
-
-        // Đảm bảo vị trí cuối cùng chính xác tại vị trí đích
-        rankObject.transform.position = targetPosition1;
-        SettingObject.transform.position = targetPosition2;
-        GameManager.Instance.SettingTouch.gameObject.SetActive(false);
-    }
 }

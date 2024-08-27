@@ -7,6 +7,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy
+    public GameObject rankObject;
+    public GameObject SettingObject;
     public int numEnemyAlive;
     public List<Transform> spawnPoints = new List<Transform>();
 
@@ -17,6 +19,7 @@ public class GameManager : MonoBehaviour
     public int counyEnemy = 11;
     public bool isStart;
     public Transform button;
+    public Transform WinGame;
     public Transform Dead;
     public Transform InGame;
     public Transform TouchToContinue;
@@ -53,6 +56,10 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        WinGame = GameObject.Find("WinGame").transform;
+        WinGame.gameObject.SetActive(false);
+         SettingObject = GameObject.Find("Setting");
+        rankObject = GameObject.Find("Rank");
         FullSetSelectUnequip = GameObject.Find("FullSetSelectUnequip").transform;
         FullSetSelectUnequip.gameObject.SetActive(false);
         ShieldSelectUnequip = GameObject.Find("ShieldSelectUnequip").transform;
@@ -233,5 +240,98 @@ public class GameManager : MonoBehaviour
         {
             Destroy(enemy);
         }
+    }
+    public void MovePositionRankAndSettinglmd()
+    {
+        StartCoroutine(MovePositionRankAndSetting());
+    }
+
+    public IEnumerator MovePositionRankAndSetting()
+    {
+        
+        if (rankObject == null)
+        {
+            Debug.LogError("Không tìm thấy đối tượng Rank!");
+            yield break;
+        }
+
+        Vector3 startPosition1 = rankObject.transform.position;
+        Vector3 targetPosition1 = GameObject.Find("PointEnemy1").GetComponent<RectTransform>().position;
+
+        
+        if (SettingObject == null)
+        {
+            Debug.LogError("Không tìm thấy đối tượng Setting!");
+            yield break;
+        }
+
+        Vector3 startPosition2 = SettingObject.transform.position;
+        Vector3 targetPosition2 = GameObject.Find("PointSetting1").GetComponent<RectTransform>().position;
+
+        float duration = 0.3f; // Thời gian cho quá trình di chuyển
+        float time = 0f;
+
+        while (time < duration)
+        {
+            // Nội suy vị trí cho rankObject
+            rankObject.transform.position = Vector3.Lerp(startPosition1, targetPosition1, time / duration);
+
+            // Nội suy vị trí cho SettingObject
+            SettingObject.transform.position = Vector3.Lerp(startPosition2, targetPosition2, time / duration);
+
+            time += Time.deltaTime;
+            yield return null; // Chờ đến khung hình tiếp theo
+        }
+
+        // Đảm bảo vị trí cuối cùng chính xác tại vị trí đích
+        rankObject.transform.position = targetPosition1;
+        SettingObject.transform.position = targetPosition2;
+        GameManager.Instance.SettingTouch.gameObject.SetActive(false);
+    }   public void ReturnPositionRankAndSettinglmd()
+    {
+        StartCoroutine(ReturnPositionRankAndSetting());
+    }
+
+    public IEnumerator ReturnPositionRankAndSetting()
+    {
+        
+        if (rankObject == null)
+        {
+            Debug.LogError("Không tìm thấy đối tượng Rank!");
+            yield break;
+        }
+
+        Vector3 startPosition1 = rankObject.transform.position;
+        Vector3 targetPosition1 = GameObject.Find("PointEnemy0").GetComponent<RectTransform>().position;
+
+        
+        if (SettingObject == null)
+        {
+            Debug.LogError("Không tìm thấy đối tượng Setting!");
+            yield break;
+        }
+
+        Vector3 startPosition2 = SettingObject.transform.position;
+        Vector3 targetPosition2 = GameObject.Find("PointSetting0").GetComponent<RectTransform>().position;
+
+        float duration = 0.3f; // Thời gian cho quá trình di chuyển
+        float time = 0f;
+
+        while (time < duration)
+        {
+            // Nội suy vị trí cho rankObject
+            rankObject.transform.position = Vector3.Lerp(startPosition1, targetPosition1, time / duration);
+
+            // Nội suy vị trí cho SettingObject
+            SettingObject.transform.position = Vector3.Lerp(startPosition2, targetPosition2, time / duration);
+
+            time += Time.deltaTime;
+            yield return null; // Chờ đến khung hình tiếp theo
+        }
+
+        // Đảm bảo vị trí cuối cùng chính xác tại vị trí đích
+        rankObject.transform.position = targetPosition1;
+        SettingObject.transform.position = targetPosition2;
+        GameManager.Instance.SettingTouch.gameObject.SetActive(false);
     }
 }

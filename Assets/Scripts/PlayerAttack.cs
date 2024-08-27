@@ -58,11 +58,26 @@ public class PlayerAttack : MonoBehaviour
 
 
         }
-        if (isDead && NumOfDead==1&&GameManager.Instance.NumOfRevice>0)
+        if (GameManager.Instance.counyEnemy==1)
         {
-            GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
+            GameManager.Instance.MovePositionRankAndSettinglmd();
+            GameManager.Instance.WinGame.gameObject.SetActive(true);
+            NumOfDead = 0; GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#" + (GameManager.Instance.counyEnemy).ToString();
+            GameManager.Instance.NumOfRevice -= 1;
+
+            //PlayerAttack.instance.End = false;
+           
+            //transform.gameObject.SetActive(false);
+            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+           
+
+        }
+        if (isDead && NumOfDead==1&&GameManager.Instance.NumOfRevice>1)
+        {
+            
             GameManager.Instance.EndGame = true;
-            NumOfDead =0;
+            NumOfDead =0;GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
             GameManager.Instance.NumOfRevice -=1;
            
             //PlayerAttack.instance.End = false;
@@ -71,8 +86,20 @@ public class PlayerAttack : MonoBehaviour
             GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
             GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
             //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
+        }
+        if (isDead &&NumOfDead==1&& GameManager.Instance.NumOfRevice <=1)
+        {
+            GameManager.Instance.MovePositionRankAndSettinglmd();
+            GameManager.Instance.TouchToContinue.gameObject.SetActive(true) ;
+            NumOfDead = 0; GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#" + (GameManager.Instance.counyEnemy).ToString();
+            GameManager.Instance.NumOfRevice -= 1;
 
-
+            //PlayerAttack.instance.End = false;
+            anim.Play("Dead");
+            //transform.gameObject.SetActive(false);
+            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
 
         }
         enemy = CheckEnemy(); // Kiểm tra kẻ địch gần nhất
@@ -246,7 +273,7 @@ public class PlayerAttack : MonoBehaviour
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse); // Tác động lực lên vũ khí
             weapon.GetComponent<BoxCollider>().enabled = true;
             weapon.localRotation = Quaternion.Euler(270, 0, 20);
-            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
+            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.13f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
 
             if (returnCoroutine != null)
             {
@@ -292,7 +319,7 @@ public class PlayerAttack : MonoBehaviour
                 weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
                 weapon.GetComponent<BoxCollider>().enabled = false;
                 // Tăng scale của vũ khí khi trở về
-                weapon.localScale += new Vector3(2f, 2f, 2f);
+                weapon.localScale += new Vector3(1.1f, 1.1f, 1.1f);
 
 
                 if (weaponRb != null)
@@ -317,7 +344,7 @@ public class PlayerAttack : MonoBehaviour
             weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
 
             // Tăng scale của vũ khí khi trở về
-            weapon.localScale += new Vector3(2f, 2f, 2f);
+            weapon.localScale += new Vector3(1.1f, 1.1f, 1.1f);
 
             // Lấy component Rigidbody của vũ khí
             if (weaponRb != null)

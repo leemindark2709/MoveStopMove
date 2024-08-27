@@ -9,7 +9,7 @@ public class Continue : MonoBehaviour
     public void OnButtonClick()
     {
        
-        StartCoroutine(Die.Instance.ReturnPositionRankAndSetting());
+        StartCoroutine(GameManager.Instance.ReturnPositionRankAndSetting());
         GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = true;
 
 
