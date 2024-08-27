@@ -3,7 +3,8 @@ using TMPro;
 using UnityEngine;
 
 public class Die : MonoBehaviour
-{   public static Die Instance { get; private set; }
+{
+    public static Die Instance { get; private set; }
     public Transform Load;
     public Transform Timer;
     public float countdownDuration = 5f; // Thời gian bắt đầu đếm ngược
@@ -12,12 +13,13 @@ public class Die : MonoBehaviour
     public float interval = 1f; // Khoảng thời gian cập nhật đồng hồ
     private float elapsedTime = 0f; // Biến đếm thời gian
     [SerializeField] private bool isCounting = false; // Điều khiển trạng thái đếm ngược
-    public bool isClickButtonRevive=false;
+    public bool isClickButtonRevive = false; // Biến kiểm tra xem nút hồi sinh có được bấm không
 
     private void Awake()
     {
         Instance = this;
     }
+
     private void Start()
     {
         Load = transform.Find("Canvas").Find("Panel").Find("Load");
@@ -59,7 +61,7 @@ public class Die : MonoBehaviour
         intTime = int.Parse(timerText);
 
         intTime -= 1;
-        if (intTime < 1|| isClickButtonRevive)
+        if (intTime < 0 || isClickButtonRevive)
         {
             if (isClickButtonRevive)
             {
@@ -77,37 +79,33 @@ public class Die : MonoBehaviour
                 GameManager.Instance.EndGame = false;
                 GameManager.Instance.Dead.gameObject.SetActive(false);
                 isCounting = false;
-
             }
-          
         }
 
         timeText.text = intTime.ToString();
         yield return null; // Thực hiện một lần
     }
 
-   private IEnumerator CountdownCoroutine()
-{
-    float elapsedTime = 0f;
-
-    while (elapsedTime < countdownDuration)
+    private IEnumerator CountdownCoroutine()
     {
-        float remainingTime = countdownDuration - elapsedTime;
-        timeText.text = Mathf.Max(Mathf.Ceil(remainingTime), 0).ToString();
-        elapsedTime += Time.deltaTime;
-        yield return null;
+        float elapsedTime = -2f;
+
+        while (elapsedTime < countdownDuration)
+        {
+            float remainingTime = countdownDuration - elapsedTime;
+            timeText.text = Mathf.Max(Mathf.Ceil(remainingTime)-2, 0).ToString();
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        timeText.text = "0";
+
+        // Thêm log để kiểm tra
+        Debug.Log("Countdown finished. Disabling object.");
+
+        // Vô hiệu hóa đối tượng mà script này đang gắn vào
+        gameObject.SetActive(false);
     }
-
-    timeText.text = "0";
-    
-    // Thêm log để kiểm tra
-    Debug.Log("Countdown finished. Disabling object.");
-
-    // Vô hiệu hóa đối tượng mà script này đang gắn vào
-    gameObject.SetActive(false);
-}
-
-
 
     private void OnEnable()
     {
@@ -152,9 +150,14 @@ public class Die : MonoBehaviour
         rankObject.transform.position = targetPosition1;
         SettingObject.transform.position = targetPosition2;
     }
+
+    public void ReturnPositionRankAndSettinglmd()
+    {
+        StartCoroutine(ReturnPositionRankAndSetting());
+    }
+
     public IEnumerator ReturnPositionRankAndSetting()
     {
-       
         GameObject rankObject = GameObject.Find("Rank");
         if (rankObject == null)
         {
@@ -195,5 +198,4 @@ public class Die : MonoBehaviour
         SettingObject.transform.position = targetPosition2;
         GameManager.Instance.SettingTouch.gameObject.SetActive(false);
     }
-
 }

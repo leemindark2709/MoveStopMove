@@ -28,6 +28,7 @@ public class UIController : MonoBehaviour
     {
         TargetIndicator indicator = Instantiate(TargetIndicatorPrefab, canvas.transform).GetComponent<TargetIndicator>();
         indicator.InitialiseTargetIndicator(target, MainCamera, canvas);
+        indicator.gameObject.SetActive(false);
         targetIndicators.Add(indicator);
     }
 

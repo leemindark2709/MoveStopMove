@@ -31,6 +31,7 @@ public class PlayerAttack : MonoBehaviour
     }
     void Start()
     {
+        weapon.GetComponent<BoxCollider>().enabled = false;
         localRotation = weapon.localRotation;
         localPosition = weapon.localPosition;
         NumOfDead = 1;
@@ -57,12 +58,12 @@ public class PlayerAttack : MonoBehaviour
 
 
         }
-        if (isDead && NumOfDead==1&&GameManager.Instance.NumOfRevice==1|| GameManager.Instance.counyEnemy==1)
+        if (isDead && NumOfDead==1&&GameManager.Instance.NumOfRevice>0)
         {
             GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
             GameManager.Instance.EndGame = true;
             NumOfDead =0;
-            GameManager.Instance.NumOfRevice = 0;
+            GameManager.Instance.NumOfRevice -=1;
            
             //PlayerAttack.instance.End = false;
             anim.Play("Dead");
@@ -236,14 +237,15 @@ public class PlayerAttack : MonoBehaviour
             weaponRb.velocity = Vector3.zero; // Đặt vận tốc thành 0
             weaponRb.angularVelocity = Vector3.zero; // Đặt vận tốc góc thành 0
 
-            float forceMagnitude = 1.2f; // Lực tác động lên vũ khí
+            float forceMagnitude = 1f; // Lực tác động lên vũ khí
 
             float distance = detectionRadius; // Khoảng cách tấn công
             float weaponSpeed = forceMagnitude; // Tốc độ vũ khí
             timeToReturn = distance / weaponSpeed; // Tính thời gian trở về
 
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse); // Tác động lực lên vũ khí
-            weapon.localRotation = Quaternion.Euler(270, 0, 90);
+            weapon.GetComponent<BoxCollider>().enabled = true;
+            weapon.localRotation = Quaternion.Euler(270, 0, 20);
             StartCoroutine(RotateWeaponAroundYAxis(timeToReturn)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
 
             if (returnCoroutine != null)
@@ -288,7 +290,7 @@ public class PlayerAttack : MonoBehaviour
                 weapon.parent = originalWeaponParent; // Gán lại parent ban đầu cho vũ khí
                 weapon.localPosition = originalPosition; // Đặt lại vị trí ban đầu của vũ khí
                 weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
-
+                weapon.GetComponent<BoxCollider>().enabled = false;
                 // Tăng scale của vũ khí khi trở về
                 weapon.localScale += new Vector3(2f, 2f, 2f);
 
@@ -337,7 +339,7 @@ public class PlayerAttack : MonoBehaviour
         while (elapsedTime < duration)
         {
             // Quay vũ khí quanh trục Y với tốc độ nhất định
-            weapon.Rotate(new Vector3(0,0,1), torqueAmount * Time.deltaTime); // Xoay quanh trục Y
+            weapon.Rotate(new Vector3(0,0,1), -torqueAmount * Time.deltaTime); // Xoay quanh trục Y
             elapsedTime += Time.deltaTime;
             yield return null; // Đợi cho đến khung hình tiếp theo
         }

@@ -24,9 +24,14 @@ public class EnemyMoving : MonoBehaviour
     private Transform canvasTransform;
     private Quaternion initialCanvasRotation;
     public bool isMoving;
+    public int torqueAmount;
+    public Quaternion localRotation;
 
     void Start()
     {
+        localRotation = Weapon.localRotation;
+        //Weapon.GetComponent<Rigidbody>().isKinematic = true;
+        Weapon.GetComponent<BoxCollider>().enabled = false;
         Transform canvas = transform.Find("Canvas");
         if (canvas != null)
         {
@@ -60,6 +65,14 @@ public class EnemyMoving : MonoBehaviour
         {
             transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = false;
         }
+        if (CheckEnemy() != null)
+        {
+            anim.Play("moving,0");
+        }
+        else
+        {
+            anim.Play("moving,1");
+        }
 
 
         if (isDead)
@@ -77,13 +90,14 @@ public class EnemyMoving : MonoBehaviour
             StartCoroutine(DelayedDestroy(2.4f));
             return;
         }
+     
 
         if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead)
         {
             direction = (CheckEnemy().transform.position - Weapon.position).normalized;
             direction.y = 0.016f;
             Enemy = CheckEnemy();
-            StartCoroutine(PauseMovement(1f));
+            PauseMovement();
             Attack();
             NumSpawWeapon = 0;
         }
@@ -96,6 +110,7 @@ public class EnemyMoving : MonoBehaviour
         if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead)
         {
             anim.SetFloat("moving", 1);
+            EnemySpeed = 1;
 
             Vector3 moveDirection = (targetMovePoint.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(moveDirection);
@@ -178,12 +193,11 @@ public class EnemyMoving : MonoBehaviour
         return null;
     }
 
-    private IEnumerator PauseMovement(float duration)
+    private void PauseMovement()
     {
-        EnemySpeed = 0;
         anim.SetFloat("moving", 0);
-        yield return new WaitForSeconds(duration);
-        EnemySpeed = 1;
+        EnemySpeed = 0;
+ 
     }
 
     private IEnumerator PauseAtPoint(float delay)
@@ -270,7 +284,7 @@ public class EnemyMoving : MonoBehaviour
         {
            
             Vector3 localPosition = Weapon.localPosition;
-            Quaternion localRotation = Weapon.localRotation;
+            localRotation = Weapon.localRotation;
             direction = (enemyTarget.position - Weapon.position).normalized;
             direction.y = 0;  // Ignore the Y axis
 
@@ -283,12 +297,16 @@ public class EnemyMoving : MonoBehaviour
             weaponRb.angularVelocity = Vector3.zero;
 
             float forceMagnitude = 1f;
-            weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
-            weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0));
             float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
             float weaponSpeed = forceMagnitude;
 
             timeToReturn = distance / weaponSpeed;
+            weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+            Weapon.localRotation = Quaternion.Euler(270, 0, 90);
+            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn));
+            Weapon.GetComponent<BoxCollider>().enabled = true;
+            //weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0));
+           
             StartCoroutine(ReturnToParentAfterDelay(timeToReturn, localPosition, localRotation));
         }
     }
@@ -306,6 +324,21 @@ public class EnemyMoving : MonoBehaviour
         StartCoroutine(DelayenableWeaponCollider());
         NumSpawWeapon = 1;
         anim.SetFloat("attack", 0);
+    }
+    private IEnumerator RotateWeaponAroundYAxis(float duration)
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            // Quay vũ khí quanh trục Y với tốc độ nhất định
+            Weapon.Rotate(new Vector3(0, 0, 1), torqueAmount * Time.deltaTime); // Xoay quanh trục Y
+            elapsedTime += Time.deltaTime;
+            yield return null; // Đợi cho đến khung hình tiếp theo
+        }
+        Weapon.localRotation = localRotation; // Đặt lại góc quay ban đầu của vũ khí
+                                              // Đảm bảo vũ khí không còn xoay khi hết thời gian
+
     }
 
     private IEnumerator DelayenableWeaponCollider()

@@ -44,7 +44,7 @@ public class GameManager : MonoBehaviour
     public Mesh Pants;
 
 
-    public int NumOfRevice = 1;
+    public int NumOfRevice = 2;
     public bool EndGame;
     public bool isPause;
     public Transform PLayer;

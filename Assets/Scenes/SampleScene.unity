@@ -15261,7 +15261,7 @@ MonoBehaviour:
   Load: {fileID: 0}
   Timer: {fileID: 0}
   countdownDuration: 5
-  interval: 1
+  interval: -1
   isCounting: 0
   isClickButtonRevive: 0
 --- !u!1 &773412329
@@ -18270,7 +18270,7 @@ MonoBehaviour:
   FullSetSelectUnequip: {fileID: 0}
   Yeallow: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
   Pants: {fileID: 7666266049737368757, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
-  NumOfRevice: 1
+  NumOfRevice: 2
   EndGame: 0
   isPause: 0
   PLayer: {fileID: 0}
@@ -30328,7 +30328,7 @@ MonoBehaviour:
   NumOfDead: 0
   enemys: []
   direction: {x: 0, y: 0, z: 0}
-  torqueAmount: 700
+  torqueAmount: 1100
   localPosition: {x: 0, y: 0, z: 0}
   localRotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!1 &1680466975

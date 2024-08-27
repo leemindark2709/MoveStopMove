@@ -14,6 +14,9 @@ public class ReviveNow : MonoBehaviour
     public void OnButtonClick()
     {
         // Khôi phục trạng thái của PlayerAttack
+        GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().enabled = true;
+        GameManager.Instance.numofSpawnDie = 1;
+        GameManager.Instance.EndGame = false;
         PlayerAttack.instance.NumOfDead = 1;
         PlayerAttack.instance.isDead = false;
         PlayerAttack.instance.End = false;
@@ -37,9 +40,9 @@ public class ReviveNow : MonoBehaviour
         GameManager.Instance.Dead.GetComponent<Die>().isClickButtonRevive = true;
         GameManager.Instance.EndGame = false;
         GameManager.Instance.numofSpawnDie = 1;
+    
 
-        StartCoroutine(Die.Instance.ReturnPositionRankAndSetting()); 
-
+        Die.Instance.ReturnPositionRankAndSettinglmd();
 
     }
 }
