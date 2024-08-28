@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
 public class HairSkinManager : MonoBehaviour
@@ -34,8 +35,16 @@ public class HairSkinManager : MonoBehaviour
         HairItemPosition.Add(FindPositionHariItem("Crown"));
         HairItemPosition.Add(FindPositionHariItem("headphone"));
         HairItemPosition.Add(FindPositionHariItem("Rau"));
+        HairItemPosition.Add(FindPositionHariItem("NoneHair"));
         DisableHair();
         IsHair = FindPositionHariItem("NoneHair");
+        if (transform.name=="HairSkin")
+        {
+            GameManager.Instance.HairSkin.GetComponent<HairSkinManager>().ButtonHairItemClick
+= GameManager.Instance.HairSkin.GetComponent<HairSkinManager>().HairItemButtons[0];
+
+        }
+ 
         //ButtonHairItemClick = HairItemButtons[i];
         instance = this;
     }
@@ -67,7 +76,7 @@ public class HairSkinManager : MonoBehaviour
     {
         foreach (Transform t in HairItemButtons)
         {
-            t.Find("EquippedText").gameObject.SetActive(false);
+            t.Find("Border").gameObject.SetActive(false);
         }
     }
 
@@ -92,6 +101,15 @@ public class HairSkinManager : MonoBehaviour
             }
         }
         return null; // Không tìm thấy
+    }
+    public void disableAllPanel()
+    {
+
+        foreach (Transform t in HairItemButtons)
+        {
+            t.Find("Border").gameObject.SetActive(false);
+        }
+
     }
     public void enableAll()
     {

@@ -20,6 +20,7 @@ public class CancelShopWeapon : MonoBehaviour
     }
     public void OnButtonClick()
     {
+        GameManager.Instance.checkShopWeapon = false;
         ShopWeapon.anchoredPosition = ShopWeaponDestination.anchoredPosition;
         //GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
         StartCoroutine(MoveUI(LeftHome, GameObject.Find("Home").transform.Find("Canvas").Find("Right0").GetComponent<RectTransform>().anchoredPosition, 0.1f));

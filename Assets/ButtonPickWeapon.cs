@@ -85,7 +85,12 @@ public class ButtonPickWeapon : MonoBehaviour
             Debug.Log("MainWeapon replaced and resized.");
 
             // Cập nhật biến meshRenderer
-            transform.parent.Find("ChoseColor").GetComponent<ChoseLefftRight>().meshRenderer = MainWeapon.GetComponent<MeshRenderer>();
+            if (transform.tag == "CanChageColor")
+            {
+                transform.parent.Find("ChoseColor").GetComponent<ChoseLefftRight>().meshRenderer = MainWeapon.GetComponent<MeshRenderer>();
+
+
+            }
         }
         else
         {

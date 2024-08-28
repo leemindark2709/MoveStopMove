@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public bool checkShopWeapon;
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy
     public GameObject rankObject;
@@ -52,10 +53,14 @@ public class GameManager : MonoBehaviour
     public bool isPause;
     public Transform PLayer;
     public int numofSpawnDie = 1;
+    public Transform UiNamePoint;
 
 
     private void Awake()
     {
+        checkShopWeapon = false;
+        UiNamePoint = GameObject.Find("UiNamePoint").transform;
+        UiNamePoint.gameObject.SetActive(false);
         WinGame = GameObject.Find("WinGame").transform;
         WinGame.gameObject.SetActive(false);
          SettingObject = GameObject.Find("Setting");

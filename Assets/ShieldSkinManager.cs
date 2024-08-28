@@ -15,22 +15,8 @@ public class ShieldSkinManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
-    }
-
-    private void Update()
-    {
-        //if (CheckShield == null)
-        //{
-        //    CheckShield = ShieldItemPosition[3];
-        //    CheckShield.gameObject.SetActive(true);
-        //}
-    }
-
-    private void Start()
-    {
         //CheckShield.gameObject.SetActive(true);
-        
+
         Player = GameManager.Instance.PLayer;
         int index = 0;
         foreach (Transform t in transform)
@@ -50,9 +36,37 @@ public class ShieldSkinManager : MonoBehaviour
         DisableShield();
         IsShield = FindPositionShieldItem("NoneShield");
 
+        if (transform.name == "ShieldSkin")
+        {
+            GameManager.Instance.ShieldSkin.GetComponent<ShieldSkinManager>().ButtonShieldItemClick
+= GameManager.Instance.ShieldSkin.GetComponent<ShieldSkinManager>().ShieldItemButtons[0];
+
+        }
         instance = this;
     }
 
+    private void Update()
+    {
+        //if (CheckShield == null)
+        //{
+        //    CheckShield = ShieldItemPosition[3];
+        //    CheckShield.gameObject.SetActive(true);
+        //}
+    }
+
+    private void Start()
+    {
+      
+    }
+    public void disableAllPanel()
+    {
+
+        foreach (Transform t in ShieldItemButtons)
+        {
+            t.Find("Border").gameObject.SetActive(false);
+        }
+
+    }
     public void DisableShield()
     {
         foreach (Transform item in ShieldItemPosition)

@@ -6,8 +6,7 @@ public class SelectSheld : MonoBehaviour
 {
     public void OnButtonClick()
     {
-        if (ShieldSkinManager.instance.CheckShield!=null)
-        {
+       
             ShieldSkinManager.instance.CheckShield.gameObject.SetActive(true);
             ShieldSkinManager.instance.IsShield = ShieldSkinManager.instance.CheckShield;
             CharSkinManagerShield.instance.SelectShieldItem.gameObject.SetActive(false);
@@ -22,9 +21,7 @@ public class SelectSheld : MonoBehaviour
                     Button.Find("EquippedText").gameObject.SetActive(true);
                 }
 
-            }
-
-        }
-       
+            
+        }       
     }
 }

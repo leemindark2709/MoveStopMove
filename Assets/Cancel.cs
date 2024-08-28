@@ -26,7 +26,7 @@ public class Cancel : MonoBehaviour
         //Panel.pivot = PanelDestination.pivot;
 
         //GameManager.Instance.Shop.gameObject.SetActive(false);
-        if (!GameManager.Instance.ShopWeapon.gameObject.activeSelf)
+        if (!GameManager.Instance.checkShopWeapon)
         {
             StartCoroutine(MoveUI(LeftHome, GameObject.Find("Home").transform.Find("Canvas").Find("Right0").GetComponent<RectTransform>().anchoredPosition, 0.1f));
             StartCoroutine(MoveUI(NotPayUI, GameObject.Find("Home").transform.Find("Canvas").Find("Right0").GetComponent<RectTransform>().anchoredPosition, 0.1f));

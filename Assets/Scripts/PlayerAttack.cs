@@ -271,6 +271,8 @@ public class PlayerAttack : MonoBehaviour
             timeToReturn = distance / weaponSpeed; // Tính thời gian trở về
 
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse); // Tác động lực lên vũ khí
+            weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+
             weapon.GetComponent<BoxCollider>().enabled = true;
             weapon.localRotation = Quaternion.Euler(270, 0, 20);
             StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.14f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
@@ -318,6 +320,8 @@ public class PlayerAttack : MonoBehaviour
                 weapon.localPosition = originalPosition; // Đặt lại vị trí ban đầu của vũ khí
                 weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
                 weapon.GetComponent<BoxCollider>().enabled = false;
+                weapon.gameObject.layer = LayerMask.NameToLayer("Playerr");
+
                 // Tăng scale của vũ khí khi trở về
                 weapon.localScale += new Vector3(1.1f, 1.1f, 1.1f);
 

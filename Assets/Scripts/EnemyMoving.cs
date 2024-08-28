@@ -249,10 +249,10 @@ public class EnemyMoving : MonoBehaviour
             {
                 Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
-                float rotationSpeed = 1f;
+                float rotationSpeed = 1.8f;
                 float rotationProgress = 0f;
 
-                while (rotationProgress < 1f)
+                while (rotationProgress < 0.95f)
                 {
                     transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
                     rotationProgress += Time.deltaTime * rotationSpeed;
@@ -302,6 +302,8 @@ public class EnemyMoving : MonoBehaviour
 
             timeToReturn = distance / weaponSpeed;
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+            Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+
             Weapon.localRotation = Quaternion.Euler(270, 0, 90);
             StartCoroutine(RotateWeaponAroundYAxis(timeToReturn));
             Weapon.GetComponent<BoxCollider>().enabled = true;
@@ -320,6 +322,7 @@ public class EnemyMoving : MonoBehaviour
         Weapon.localRotation = originalRotation;
         Weapon.GetComponent<Rigidbody>().isKinematic = true;
         Weapon.GetComponent<BoxCollider>().enabled = false;
+        Weapon.gameObject.layer = LayerMask.NameToLayer("Enemy");
 
         StartCoroutine(DelayenableWeaponCollider());
         NumSpawWeapon = 1;

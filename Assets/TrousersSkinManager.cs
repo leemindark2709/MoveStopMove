@@ -29,8 +29,6 @@ public class TrousersSkinManager : MonoBehaviour
 
     private void Start()
     {
-       
-
         // Sử dụng FindPositionHariItem để lấy đối tượng "Pants" và sau đó lấy Renderer
         Transform pantsTransform = FindPositionHariItem("Pants");
         if (pantsTransform != null)
@@ -55,6 +53,13 @@ public class TrousersSkinManager : MonoBehaviour
                 t.Find("Border").gameObject.SetActive(false);
             }
             index++; // Tăng chỉ số index
+        }
+
+        if (transform.name == "TrousersSkin")
+        {
+            GameManager.Instance.TrousersSkin.GetComponent<TrousersSkinManager>().ButtonTrousersItemClick
+= GameManager.Instance.TrousersSkin.GetComponent<TrousersSkinManager>().TrousersItemButtons[0];
+
         }
 
         IsTrousers = TrousersSkinManager.instance.materials[0];

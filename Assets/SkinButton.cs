@@ -13,12 +13,17 @@ public class SkinButton : MonoBehaviour
     public RectTransform LeftHome;
     public RectTransform Panel0;
     public RectTransform Panel1;
+    public void Awake()
+    {
+  
+
+    }
     private void Start()
     {
         NotPayUI = GameObject.Find("NOTPayADS").GetComponent<RectTransform>();
         NotPayUI2Point = GameObject.Find("NOTPayADS2").GetComponent<RectTransform>();
         LeftHome = GameObject.Find("Home").transform.Find("Canvas").Find("Left0").GetComponent<RectTransform>();
-        
+
     }
 
     public void OnButtonClick()

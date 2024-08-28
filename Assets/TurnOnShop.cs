@@ -3,15 +3,21 @@ using UnityEngine;
 
 public class TurnOnShop : MonoBehaviour
 {
+    public static TurnOnShop instance;
     public RectTransform NotPayUI;
     public RectTransform NotPayUI2Point;
     public RectTransform LeftHome;
     public RectTransform Panel;
+  
 
     public RectTransform StartingPointPanel;
-
+    private void Awake()
+    {
+       instance = this;
+    }
     private void Start()
     {
+       
         NotPayUI = GameObject.Find("NOTPayADS").GetComponent<RectTransform>();
         NotPayUI2Point = GameObject.Find("NOTPayADS2").GetComponent<RectTransform>();
         LeftHome = GameObject.Find("Home").transform.Find("Canvas").Find("Left0").GetComponent<RectTransform>();
@@ -22,8 +28,10 @@ public class TurnOnShop : MonoBehaviour
     public void OnButtonClick()
     {
         // Move Panel to the starting position
+        
         if (GameManager.Instance.ShopWeapon.gameObject.activeSelf)
         {
+           
             GameManager.Instance.Shop.gameObject.SetActive(true);
             GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
 
@@ -36,8 +44,9 @@ public class TurnOnShop : MonoBehaviour
             // Start moving UI elements with animations
             StartCoroutine(MoveUI(NotPayUI, NotPayUI2Point.anchoredPosition, 0.1f));
             StartCoroutine(MoveUI(LeftHome, GameObject.Find("Home").transform.Find("Canvas").Find("Left1").GetComponent<RectTransform>().anchoredPosition, 0.1f));
+
         }
-       
+
     }
 
     private IEnumerator MoveUI(RectTransform uiElement, Vector2 targetPosition, float duration)

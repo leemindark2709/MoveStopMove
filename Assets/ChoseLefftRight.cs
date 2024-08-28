@@ -9,26 +9,34 @@ public class ChoseLefftRight : MonoBehaviour
     public bool isChoseRight;
     public Transform ChoseRight;
     public MeshRenderer meshRenderer;
+    public MeshRenderer meshRendererHAMMER;
 
     public List<Material> materials = new List<Material>(); // Sử dụng List để dễ thao tác hơn
 
     public void returnChoseColorWeapon()
     {
-        // Tìm thành phần MeshRenderer từ đối tượng cha
-       
+        // Xóa tất cả các phần tử trong List
+        materials.Clear();
 
-        // Kiểm tra sự tồn tại của MeshRenderer
+        // Kiểm tra sự tồn tại của MeshRenderer và MeshRendererHAMMER, sau đó thêm vật liệu vào List
         if (meshRenderer != null)
         {
-            // Xóa tất cả các phần tử trong List
-            materials.Clear();
-
-            // Lấy tất cả các vật liệu từ MeshRenderer và thêm vào List
+            // Lấy tất cả các vật liệu từ meshRenderer và thêm vào List
             materials.AddRange(meshRenderer.materials);
         }
         else
         {
             Debug.LogWarning("Không tìm thấy MeshRenderer trên đối tượng MainWeapon.");
+        }
+
+        if (meshRendererHAMMER != null)
+        {
+            // Lấy tất cả các vật liệu từ meshRendererHAMMER và thêm vào List
+            materials.AddRange(meshRendererHAMMER.materials);
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy MeshRenderer trên đối tượng HAMMER.");
         }
     }
 
@@ -36,16 +44,25 @@ public class ChoseLefftRight : MonoBehaviour
     {
         // Lấy thành phần MeshRenderer từ đối tượng cha
         meshRenderer = transform.parent.Find("MainWeapon").GetComponent<MeshRenderer>();
+        meshRendererHAMMER = transform.parent.Find("HAMMER").Find("Hammer").GetComponent<MeshRenderer>();
 
-        // Kiểm tra sự tồn tại của MeshRenderer
+        // Khởi tạo List materials bằng cách lấy tất cả các vật liệu từ meshRenderer và meshRendererHAMMER
         if (meshRenderer != null)
         {
-            // Lấy tất cả các vật liệu từ MeshRenderer và lưu vào List
-            materials = new List<Material>(meshRenderer.materials);
+            materials.AddRange(meshRenderer.materials);
         }
         else
         {
             Debug.LogWarning("Không tìm thấy MeshRenderer trên đối tượng MainWeapon.");
+        }
+
+        if (meshRendererHAMMER != null)
+        {
+            materials.AddRange(meshRendererHAMMER.materials);
+        }
+        else
+        {
+            Debug.LogWarning("Không tìm thấy MeshRenderer trên đối tượng HAMMER.");
         }
 
         // Khởi tạo trạng thái chọn
@@ -78,7 +95,7 @@ public class ChoseLefftRight : MonoBehaviour
     private void Update()
     {
         // Kiểm tra List materials có chứa ít nhất 2 phần tử
-        if (materials != null && materials.Count >= 2)
+        if (materials != null && materials.Count >= 4)
         {
             if (ChoseLeft != null && ChoseRight != null)
             {
@@ -89,6 +106,8 @@ public class ChoseLefftRight : MonoBehaviour
                 // Cập nhật màu của vật liệu
                 materials[0].color = chosenLeft;
                 materials[1].color = chosenRight;
+                materials[2].color = chosenLeft;
+                materials[3].color = chosenRight;
             }
             else
             {
