@@ -17,11 +17,40 @@ public class TrousersButton : MonoBehaviour
         //GameManager.Instance.HairSkin.gameObject.SetActive(false);
         //GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
 
+        if (GameManager.Instance.ShieldSkin.gameObject.activeSelf)
+        {
+            //ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[0];
+            ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
+            ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+            //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+            ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+            ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+
+
+        }
+
+        if (GameManager.Instance.HairSkin.gameObject.activeSelf)
+        {
+            //ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[0];
+            ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
+            ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+            //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            HairSkinManager.instance.IsHair.gameObject.SetActive(false);
+
+
+
+
+        }
+        GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+
+
+
 
 
         Debug.Log("Click duoc nha");
         GameManager.Instance.HairSkin.gameObject.SetActive(false);
-        GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+      
         GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
         GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
         GameManager.Instance.PanelHairButton.gameObject.SetActive(true);

@@ -104,15 +104,6 @@ public class GameManager : MonoBehaviour
         PanelFullSetButton = TopButton.Find("FullSetButton").Find("Panel");
         CharSkin = GameObject.Find("CharSkin").transform;
         //CharSkin.gameObject.SetActive(false);
-
-
-
-        
-
-
-
-
-
     }
     public void TurnOfComponentPlayer()
     {

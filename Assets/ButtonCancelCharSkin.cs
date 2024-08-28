@@ -122,7 +122,7 @@ public class ButtonCancelCharSkin : MonoBehaviour
             GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
             ShieldSkinManager.instance.DisableShield();
             ShieldSkinManager.instance.IsShield.gameObject.SetActive(true);
-            ShieldSkinManager.instance.CheckShield = null;
+            //ShieldSkinManager.instance.CheckShield = null;
             GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
 
 

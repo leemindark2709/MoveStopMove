@@ -15,6 +15,26 @@ public class SelectHairItem : MonoBehaviour
         CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(true);
         HairSkinManager.instance.DisableEquippedText();
 
+
+
+        GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
+        ShieldSkinManager.instance.disableAllPanel();
+        ShieldSkinManager.instance.DisableEquippedText();
+        ShieldSkinManager.instance.IsShield = ShieldSkinManager.instance.ShieldItemPosition[2];
+        ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[1];
+        ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+        ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+        ShieldSkinManager.instance.ButtonShieldItemClick = ShieldSkinManager.instance.ShieldItemButtons[0];
+        ShieldSkinManager.instance.ButtonShieldItemChose = null ;
+        GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").gameObject.SetActive(true);
+        GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").gameObject.SetActive(false);
+        GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+
+
+
+
+
+
         foreach (Transform Button in HairSkinManager.instance.HairItemButtons)
         {
             if (Button == HairSkinManager.instance.ButtonHairItemClick)

@@ -76,7 +76,7 @@ public class HairSkinManager : MonoBehaviour
     {
         foreach (Transform t in HairItemButtons)
         {
-            t.Find("Border").gameObject.SetActive(false);
+            t.Find("EquippedText").gameObject.SetActive(false);
         }
     }
 
