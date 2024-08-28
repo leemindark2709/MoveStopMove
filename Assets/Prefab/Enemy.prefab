@@ -1483,12 +1483,12 @@ MonoBehaviour:
   anim: {fileID: 0}
   isDead: 0
   MovePoint: []
-  EnemySpeed: 1
+  EnemySpeed: 0.8
   Weapon: {fileID: 400000}
   Enemy: {fileID: 0}
   pointSpawnWeapon: {fileID: 4505667089036607028}
   targetMovePoint: {fileID: 0}
-  detectionRadius: 0.45
+  detectionRadius: 0.55
   collision: 1
   NumSpawWeapon: 0
   timeToReturn: 0

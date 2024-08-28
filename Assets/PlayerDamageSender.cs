@@ -54,7 +54,7 @@ public class PlayerDameSender : MonoBehaviour
             if (targetTree != null)
             {
                 // Tăng scale của targetTree lên 0.1 lần
-                targetTree.parent.localScale += new Vector3(0.01f, 0.01f, 0.01f);
+                //targetTree.parent.localScale += new Vector3(0.01f, 0.01f, 0.01f);
                 targetTree.localScale += new Vector3(0.01f, 0.01f, 0.01f);
 
                 // Tìm đối tượng Circle và cập nhật kích thước của nó nếu nó là RectTransform
@@ -114,7 +114,7 @@ public class PlayerDameSender : MonoBehaviour
     public void scoreincrease()
     {
         // Tìm TextMeshProUGUI component và cập nhật giá trị của nó
-        TextMeshProUGUI textComponent = targetTree.parent.Find("Canvas").Find("UIPoint").Find("Point").GetComponent<TextMeshProUGUI>();
+        TextMeshProUGUI textComponent = targetTree.Find("UiNamePoint").Find("UIPoint").Find("Point").GetComponent<TextMeshProUGUI>();
         if (textComponent != null)
         {
             float pointValue;

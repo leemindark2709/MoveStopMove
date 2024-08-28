@@ -273,7 +273,7 @@ public class PlayerAttack : MonoBehaviour
             weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse); // Tác động lực lên vũ khí
             weapon.GetComponent<BoxCollider>().enabled = true;
             weapon.localRotation = Quaternion.Euler(270, 0, 20);
-            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.13f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
+            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.14f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
 
             if (returnCoroutine != null)
             {
