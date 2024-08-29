@@ -14,23 +14,19 @@ public class TrousersSkinManager : MonoBehaviour
     public Transform ButtonTrousersItemClick;
     public Material PantMaterial;
     public Renderer pantsRenderer;
+    public Transform pantsTransform;
     public Transform ButtonTrousersItemChose;
+
+      public Transform FindPositionTrousersItem(string nameItem)
+    {
+        return FindInChildren(Player.transform, nameItem);
+    }
 
     private void Awake()
     {
         instance = this;
         Player = GameManager.Instance.PLayer;
-    }
-
-    private void Update()
-    {
-
-    }
-
-    private void Start()
-    {
-        // Sử dụng FindPositionHariItem để lấy đối tượng "Pants" và sau đó lấy Renderer
-        Transform pantsTransform = FindPositionHariItem("Pants");
+        pantsTransform = FindPositionHariItem("Pants");
         if (pantsTransform != null)
         {
             // Kiểm tra nếu đối tượng "Pants" có Renderer
@@ -42,12 +38,24 @@ public class TrousersSkinManager : MonoBehaviour
                 pantsRenderer.material = PantMaterial;
             }
         }
+    }
+
+    private void Update()
+    {
+
+    }
+
+    private void Start()
+    {
+        // Sử dụng FindPositionHariItem để lấy đối tượng "Pants" và sau đó lấy Renderer
+      
+     
 
         int index = 0;
         foreach (Transform t in transform)
         {
             t.Find("EquippedText").gameObject.SetActive(false);
-            TrousersItemButtons.Add(t);
+         
             if (index != 0)
             {
                 t.Find("Border").gameObject.SetActive(false);
@@ -92,6 +100,15 @@ public class TrousersSkinManager : MonoBehaviour
             }
         }
         return null; // Không tìm thấy
+    }
+    public void disableAllPanel()
+    {
+
+        foreach (Transform t in TrousersItemButtons)
+        {
+            t.Find("Border").gameObject.SetActive(false);
+        }
+
     }
     public void enableAll()
     {

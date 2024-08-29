@@ -27,10 +27,28 @@ public class HairButton : MonoBehaviour
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
             ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
             ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
-         
+
+
+        }
+        if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)
+        {
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+
 
         }
 
+        if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
+        {
+            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").gameObject.GetComponent<Renderer>().material =
+            GameManager.Instance.Yeallow;
+        }
+        if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
+        {
+            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
+        }
 
 
 
@@ -62,6 +80,8 @@ public class HairButton : MonoBehaviour
             Debug.Log("okokokokok");
             ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
 
         }
 

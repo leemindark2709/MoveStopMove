@@ -30,7 +30,11 @@ public class SkinButton : MonoBehaviour
     {
         
         GameManager.Instance.CharSkin.gameObject.SetActive(true);
-        Panel0=GameObject.Find("CharSkinPoint1").GetComponent<RectTransform>();
+
+
+       
+
+        Panel0 =GameObject.Find("CharSkinPoint1").GetComponent<RectTransform>();
 
         GameManager.Instance.CharSkin.gameObject.GetComponent<RectTransform>().anchoredPosition = Panel0.anchoredPosition;
         StartCoroutine(MoveUI(NotPayUI, NotPayUI2Point.anchoredPosition, 0.1f));
@@ -55,8 +59,57 @@ public class SkinButton : MonoBehaviour
         }
 
 
-        enableAllPanel();
 
+
+
+
+
+        //ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[0];
+        ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
+        ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+        //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+        //GameManager.Instance.HairSkin.gameObject.SetActive(true);
+        //    HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+        //    HairSkinManager.instance.IsHair.gameObject.SetActive(false);
+        //GameManager.Instance.HairSkin.gameObject.SetActive(false);
+
+
+        GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+        TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+        GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+
+        GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
+        ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+            ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
+        GameManager.Instance.ShieldSkin.gameObject.SetActive(false);   
+
+
+        enableAllPanel();
+        if (HairSkinManager.instance.IsHair == HairSkinManager.instance.HairItemPosition[4])
+        {
+            Debug.Log("NOOO");
+            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
+            HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
+
+            HairSkinManager.instance.disableAllPanel();
+            HairSkinManager.instance.HairItemButtons[0].Find("Border").gameObject.SetActive(true);
+            HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.HairItemButtons[0];
+            HairSkinManager.instance.ButtonHairItemChose = null;
+        }
+        if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
+        {
+            Debug.Log("okokokokok");
+            ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+
+        }
+        GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+        GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
+        GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+        GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
 
 
     }
@@ -84,8 +137,8 @@ public class SkinButton : MonoBehaviour
         foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
         {
             if (TrousersSkinManager.instance.TrousersItemButtons == null) return;
-            if (item.gameObject.GetComponent<RectTransform>()
-                != TrousersSkinManager.instance.ButtonTrousersItemChose.GetComponent<RectTransform>())
+            if (item.gameObject
+                != TrousersSkinManager.instance.ButtonTrousersItemChose)
             {
                 Debug.Log("click");
                 item.Find("Border").gameObject.SetActive(false);

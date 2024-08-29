@@ -31,7 +31,17 @@ public class SelectHairItem : MonoBehaviour
         GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
 
 
-
+        GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+        TrousersSkinManager.instance.disableAllPanel();
+        TrousersSkinManager.instance.DisableEquippedText();
+        TrousersSkinManager.instance.IsTrousers = TrousersSkinManager.instance.materials[0];
+        TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.materials[0];
+        TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+        TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.TrousersItemButtons[0];
+        TrousersSkinManager.instance.ButtonTrousersItemChose = null;
+        GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(true);
+        GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
+        GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
 
 
 

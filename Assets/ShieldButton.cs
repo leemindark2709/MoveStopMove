@@ -17,15 +17,11 @@ public class ShieldButton : MonoBehaviour
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
             HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             HairSkinManager.instance.IsHair.gameObject.SetActive(false);
-
-
-
-
         }
-
-
-
-
+        if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)
+        {
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+        }
 
 
         GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
@@ -55,7 +51,16 @@ public class ShieldButton : MonoBehaviour
             ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             //HairSkinManager.instance.IsHair.gameObject.SetActive(true);
             ShieldSkinManager.instance.IsShield.gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").gameObject.SetActive(false);
 
+        }
+
+        if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
+        {
+            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
         }
 
 

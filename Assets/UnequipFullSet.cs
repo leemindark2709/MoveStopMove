@@ -23,7 +23,7 @@ public class UnequipFullSet : MonoBehaviour
             = GameManager.Instance.Yeallow;
         FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh 
             =GameManager.Instance.Pants;
-        FullSetSkinManager.instance.IsFullSet = null;
+        FullSetSkinManager.instance.IsFullSet = FullSetSkinManager.instance.FullSetItemPosition[0];
         //HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
         foreach (Transform Button in FullSetSkinManager.instance.FullSetItemButtons)
         {

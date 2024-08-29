@@ -39,10 +39,48 @@ public class TrousersButton : MonoBehaviour
             HairSkinManager.instance.IsHair.gameObject.SetActive(false);
 
 
-
-
         }
+
+        if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
+        {
+            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
+            FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
+        }
+
+
+
         GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+        if (TrousersSkinManager.instance.IsTrousers == TrousersSkinManager.instance.materials[0])
+        {
+            Debug.Log("NOOO");
+
+            //TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.ButtonTrousersItemChose;
+            //if (TrousersSkinManager.instance.ButtonTrousersItemChose != null)
+            //{
+            //    GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousersItem").gameObject.SetActive(false);
+            //    GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousersItem").gameObject.SetActive(true);
+            //}
+
+            TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.materials[0];
+            //TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.TrousersItemPosition[3];
+            //TrousersSkinManager.instance.CheckTrousers.gameObject.SetActive(true);
+
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[2];
+
+           TrousersSkinManager.instance.disableAllPanel();
+            TrousersSkinManager.instance.TrousersItemButtons[0].Find("Border").gameObject.SetActive(true);
+            TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.TrousersItemButtons[0];
+            TrousersSkinManager.instance.ButtonTrousersItemChose = null;
+        }
+        if (TrousersSkinManager.instance.IsTrousers !=  TrousersSkinManager.instance.materials[0])
+        {
+            Debug.Log("okokokokok");
+            ////TrousersSkinManager.instance.CheckTrousers.gameObject.SetActive(false);
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.IsTrousers;
+            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(true);
+            GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+        }
 
 
 

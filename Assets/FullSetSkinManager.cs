@@ -44,15 +44,21 @@ public class FullSetSkinManager : MonoBehaviour
 
             index++; // Increment the index
         }
-        FullSetItemPosition.Add(FindPositionFullSetItem("DeadpoolBlade"));
-        FullSetItemPosition.Add(FindPositionFullSetItem("Thor"));
-        FullSetItemPosition.Add(FindPositionFullSetItem("NoneFullSet"));
-        DisableFullSet();
+     
+        //DisableFullSet();
         IsFullSet = FindPositionFullSetItem("NoneFullSet");
 
        
     }
+    public void disableAllPanel()
+    {
 
+        foreach (Transform t in FullSetItemButtons)
+        {
+            t.Find("Border").gameObject.SetActive(false);
+        }
+
+    }
     public void DisableFullSet()
     {
         foreach (Transform item in FullSetItemPosition)

@@ -1698,8 +1698,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 607170502}
   - {fileID: 851358124}
+  - {fileID: 607170502}
   - {fileID: 658543197}
   - {fileID: 770834300}
   - {fileID: 1119796575}
@@ -5582,7 +5582,6 @@ MeshRenderer:
   m_RendererPriority: 0
   m_Materials:
   - {fileID: 2100000, guid: fd73aab4b004df54b8f65a1baf669406, type: 2}
-  - {fileID: 2100000, guid: fd73aab4b004df54b8f65a1baf669406, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -8343,11 +8342,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9c18dde4773b9b0489375ddfaedf9db4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  FullSetItemButtons: []
-  FullSetItemPosition: []
-  Player: {fileID: 0}
-  CheckFullSet: {fileID: 0}
-  IsFullSet: {fileID: 0}
+  FullSetItemButtons:
+  - {fileID: 1103630253}
+  - {fileID: 1499154474}
+  FullSetItemPosition:
+  - {fileID: 418314058}
+  - {fileID: 1209921491}
+  - {fileID: 480624954}
+  Player: {fileID: 938867410}
+  CheckFullSet: {fileID: 1209921491}
+  IsFullSet: {fileID: 418314058}
   ButtonFullSetItemClick: {fileID: 0}
   ButtonFullSetItemChose: {fileID: 0}
 --- !u!1 &418314057
@@ -22378,7 +22382,7 @@ RectTransform:
   - {fileID: 2056019247}
   - {fileID: 1224873258}
   - {fileID: 210215015}
-  - {fileID: 1581213615}
+  - {fileID: 1440056274}
   m_Father: {fileID: 414900706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -23110,7 +23114,6 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
   - {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
@@ -27026,18 +27029,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e41eb9de0643b24ea094807c9995555, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TrousersItemButtons: []
+  TrousersItemButtons:
+  - {fileID: 1544376772}
+  - {fileID: 82317155}
   TrousersItemPosition: []
   materials:
   - {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
   - {fileID: 2100000, guid: fd73aab4b004df54b8f65a1baf669406, type: 2}
   - {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
-  Player: {fileID: 0}
+  Player: {fileID: 938867410}
   CheckTrousers: {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
-  IsTrousers: {fileID: 2100000, guid: 002fcd133a7bfbb409e14bb30d411730, type: 2}
+  IsTrousers: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
   ButtonTrousersItemClick: {fileID: 0}
-  PantMaterial: {fileID: 0}
+  PantMaterial: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
   pantsRenderer: {fileID: 0}
+  pantsTransform: {fileID: 0}
   ButtonTrousersItemChose: {fileID: 0}
 --- !u!114 &1382398090
 MonoBehaviour:
@@ -27947,12 +27953,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1440056273}
   serializedVersion: 2
-  m_LocalRotation: {x: -0.17936383, y: -0, z: -0, w: 0.9837829}
-  m_LocalPosition: {x: -2.87, y: 9.81, z: 1.52}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalRotation: {x: -0.17936383, y: -0, z: -0, w: 0.9837828}
+  m_LocalPosition: {x: -3.4379187, y: 8.1977005, z: 4.5784006}
+  m_LocalScale: {x: 0.585, y: 0.585, z: 0.585}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1499154474}
+  m_Father: {fileID: 1103630253}
   m_LocalEulerAnglesHint: {x: -20.665, y: 0, z: 0}
 --- !u!212 &1440056275
 SpriteRenderer:
@@ -28521,7 +28527,7 @@ RectTransform:
   - {fileID: 984589189}
   - {fileID: 1431345205}
   - {fileID: 396448277}
-  - {fileID: 1440056274}
+  - {fileID: 1581213615}
   m_Father: {fileID: 414900706}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -30402,11 +30408,11 @@ Transform:
   m_GameObject: {fileID: 1581213614}
   serializedVersion: 2
   m_LocalRotation: {x: -0.14044149, y: -0, z: -0, w: 0.99008906}
-  m_LocalPosition: {x: -2.19, y: 5.78, z: -0.85}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: -1.8034112, y: 7.7435894, z: -3.1196594}
+  m_LocalScale: {x: 0.42735043, y: 0.42735043, z: 0.42735043}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1103630253}
+  m_Father: {fileID: 1499154474}
   m_LocalEulerAnglesHint: {x: -16.147, y: 0, z: 0}
 --- !u!212 &1581213616
 SpriteRenderer:
