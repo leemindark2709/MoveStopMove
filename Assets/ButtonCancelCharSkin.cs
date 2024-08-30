@@ -132,6 +132,7 @@ public class ButtonCancelCharSkin : MonoBehaviour
         {
             FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").gameObject.GetComponent<Renderer>().material =
           FullSetSkinManager.instance.ButtonFullSetItemChose.Find("BackGround").gameObject.GetComponent<ButtonItemFullSetSkin>().material;
+            FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
         }
         else
         {
@@ -139,10 +140,14 @@ public class ButtonCancelCharSkin : MonoBehaviour
      GameManager.Instance.Yeallow;
             FullSetSkinManager.instance.ButtonFullSetItemChose = null;
         }
-      
        GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
         //}
-
+        //GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+        //if (TrousersSkinManager.instance.IsTrousers= TrousersSkinManager.instance.materials[0])
+        //{
+        //    FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
+        //}
+        //GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
 
     }
 

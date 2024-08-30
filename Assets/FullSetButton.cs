@@ -40,6 +40,7 @@ public class FullSetButton : MonoBehaviour
 
 
         GameManager.Instance.FullSetSkin.gameObject.SetActive(true);
+        FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
         if (FullSetSkinManager.instance.IsFullSet == FullSetSkinManager.instance.FullSetItemPosition[0])
         {
             Debug.Log("NOOO");

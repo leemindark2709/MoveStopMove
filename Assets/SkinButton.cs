@@ -42,76 +42,205 @@ public class SkinButton : MonoBehaviour
         // Bắt đầu coroutine để thay đổi offset.z và offsetRotation.x
         StartCoroutine(ChangeCameraOffsetAndRotation());
         GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().anim.Play("Dance");
+
+
+
+
+
         GameManager.Instance.HairSkin.gameObject.SetActive(true);
         GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
         GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
         GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+
         GameManager.Instance.PanelHairButton.gameObject.SetActive(false);
         GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
         GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
         GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
         GameManager.Instance.HairSkin.gameObject.SetActive(true);
-        if (HairSkinManager.instance.CheckHair==null)
-        {
-
-            HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
-        }
 
 
-
-
-
-
-
-        //ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[0];
-        ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
-        ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
-        //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
-        //GameManager.Instance.HairSkin.gameObject.SetActive(true);
-        //    HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
-        //    HairSkinManager.instance.IsHair.gameObject.SetActive(false);
-        //GameManager.Instance.HairSkin.gameObject.SetActive(false);
-
-
+        GameManager.Instance.HairSkin.gameObject.SetActive(true);
         GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
-        TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
-        GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
-
         GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
-        ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+        GameManager.Instance.FullSetSkin.gameObject.SetActive(true);
+
+
+        if (!IsHairDiffirenceNone() && !IsTrousersDiffirenceNone() && !IsShieldDiffirenceNone() && !IsFullSetDiffirenceNone())
+        {
+
+            if (HairSkinManager.instance.CheckHair == null)
+            {
+
+                HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
+                HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
+            }
+
+
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+
+
+
+
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
+            ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
             ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
-        GameManager.Instance.ShieldSkin.gameObject.SetActive(false);   
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
 
+            enableAllPanel();
+            if (HairSkinManager.instance.IsHair == HairSkinManager.instance.HairItemPosition[4])
+            {
+                Debug.Log("NOOO");
+                HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+                HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
+                HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
 
-        enableAllPanel();
-        if (HairSkinManager.instance.IsHair == HairSkinManager.instance.HairItemPosition[4])
-        {
-            Debug.Log("NOOO");
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
-            HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
+                HairSkinManager.instance.disableAllPanel();
+                HairSkinManager.instance.HairItemButtons[0].Find("Border").gameObject.SetActive(true);
+                HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.HairItemButtons[0];
+                HairSkinManager.instance.ButtonHairItemChose = null;
+            }
+            if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
+            {
+                Debug.Log("okokokokok");
+                ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+                HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+                GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+                GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
 
-            HairSkinManager.instance.disableAllPanel();
-            HairSkinManager.instance.HairItemButtons[0].Find("Border").gameObject.SetActive(true);
-            HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.HairItemButtons[0];
-            HairSkinManager.instance.ButtonHairItemChose = null;
+            }
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+
+            GameManager.Instance.HairSkin.gameObject.SetActive(true);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
         }
-        if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
+        if (IsHairDiffirenceNone())
         {
-            Debug.Log("okokokokok");
-            ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
-            HairSkinManager.instance.IsHair.gameObject.SetActive(true);
-            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
-            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSkin.gameObject.SetActive(true);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+            GameManager.Instance.PanelHairButton.gameObject.SetActive(false);
+            GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
+
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
 
         }
-        GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
-        GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
-        GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
-        GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+        if (IsTrousersDiffirenceNone())
+        {
+            GameManager.Instance.HairSkin.gameObject.SetActive(false);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+            GameManager.Instance.PanelHairButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(false);
+
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+
+        }
+        if (IsShieldDiffirenceNone())
+        {
+            GameManager.Instance.HairSkin.gameObject.SetActive(false);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+            GameManager.Instance.PanelHairButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelShieldButton.gameObject.SetActive(false);
+            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
+
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(true);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+
+        }
+        if (IsFullSetDiffirenceNone())
+        {
+            GameManager.Instance.HairSkin.gameObject.SetActive(false);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(true);
+
+            GameManager.Instance.PanelHairButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(false);
+            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
+
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(true);
+
+        }
 
 
+
+
+
+    }
+    public bool IsHairDiffirenceNone() {
+        if (HairSkinManager.instance.IsHair== HairSkinManager.instance.HairItemPosition[4])
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public bool IsTrousersDiffirenceNone() {
+        if (TrousersSkinManager.instance.IsTrousers==GameManager.Instance.Yeallow)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+    public bool IsShieldDiffirenceNone() {
+        
+            if (ShieldSkinManager.instance.IsShield == ShieldSkinManager.instance.ShieldItemPosition[2])
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+         }
+    public bool IsFullSetDiffirenceNone()
+    {
+        if (FullSetSkinManager.instance.IsFullSet == FullSetSkinManager.instance.FullSetItemPosition[0])
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public void enableAllPanel()

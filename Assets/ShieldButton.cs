@@ -20,7 +20,9 @@ public class ShieldButton : MonoBehaviour
         }
         if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)
         {
+
             TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+            FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
         }
 
 

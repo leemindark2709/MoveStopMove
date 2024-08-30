@@ -38,6 +38,9 @@ public class GameManager : MonoBehaviour
     public Transform PanelFullSetButton;
     public Transform CharSkin;
 
+    public SkinnedMeshRenderer   Mesh;
+
+
     public Transform HairSelectUnequip;
     public Transform TrousersSelectUnequip;
     public Transform ShieldSelectUnequip;

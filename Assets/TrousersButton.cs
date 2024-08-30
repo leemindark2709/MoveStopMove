@@ -50,6 +50,7 @@ public class TrousersButton : MonoBehaviour
 
 
 
+        FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = GameManager.Instance.Pants;
         GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
         if (TrousersSkinManager.instance.IsTrousers == TrousersSkinManager.instance.materials[0])
         {

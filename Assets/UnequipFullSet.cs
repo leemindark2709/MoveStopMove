@@ -16,14 +16,14 @@ public class UnequipFullSet : MonoBehaviour
         //FullSetSkinManager.instance.pantsRenderer.material = FullSetSkinManager.instance.materials[0];
 
         FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
-        FullSetSkinManager.instance.IsFullSet= FullSetSkinManager.instance.FullSetItemPosition[2];
-        FullSetSkinManager.instance.CheckFullSet = FullSetSkinManager.instance.FullSetItemPosition[2];
-        FullSetSkinManager.instance.CheckFullSet = FullSetSkinManager.instance.FullSetItemPosition[2];
+        FullSetSkinManager.instance.IsFullSet= FullSetSkinManager.instance.FullSetItemPosition[0];
+        FullSetSkinManager.instance.CheckFullSet = FullSetSkinManager.instance.FullSetItemPosition[1];
         FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material
             = GameManager.Instance.Yeallow;
         FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh 
             =GameManager.Instance.Pants;
         FullSetSkinManager.instance.IsFullSet = FullSetSkinManager.instance.FullSetItemPosition[0];
+        FullSetSkinManager.instance.ButtonFullSetItemChose = null;
         //HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
         foreach (Transform Button in FullSetSkinManager.instance.FullSetItemButtons)
         {

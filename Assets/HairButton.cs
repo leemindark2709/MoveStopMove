@@ -33,6 +33,7 @@ public class HairButton : MonoBehaviour
         if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)
         {
             TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
+            FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
 
 
         }
@@ -66,7 +67,7 @@ public class HairButton : MonoBehaviour
 
             //}
 
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            //HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
             HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
 

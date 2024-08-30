@@ -16956,6 +16956,10 @@ PrefabInstance:
       value: 0.30467588
       objectReference: {fileID: 0}
     - target: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
@@ -19149,6 +19153,7 @@ MonoBehaviour:
   PanelShieldButton: {fileID: 0}
   PanelFullSetButton: {fileID: 0}
   CharSkin: {fileID: 0}
+  Mesh: {fileID: 0}
   HairSelectUnequip: {fileID: 0}
   TrousersSelectUnequip: {fileID: 0}
   ShieldSelectUnequip: {fileID: 0}
@@ -30288,7 +30293,7 @@ MonoBehaviour:
   HairItemButtons: []
   HairItemPosition: []
   Player: {fileID: 0}
-  CheckHair: {fileID: 0}
+  CheckHair: {fileID: 2127485309}
   IsHair: {fileID: 0}
   ButtonHairItemClick: {fileID: 0}
   ButtonHairItemChose: {fileID: 0}
