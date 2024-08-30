@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -12,6 +13,17 @@ public class GameManager : MonoBehaviour
     public GameObject SettingObject;
     public int numEnemyAlive;
     public List<Transform> spawnPoints = new List<Transform>();
+    public List<Material> EnemyMaterial = new List<Material>();
+    public List<string> WeaponEnemys = new List<string>();
+    public List<string> EnemySkinRandom = new List<string>();
+
+
+    public List<string> HairEnemySkins = new List<string>();
+    public List<string> ShieldEnemySkins = new List<string>();
+    public List<Material> TrousersEnemySkins = new List<Material>();
+
+    public List<string> FullSetEnemySkins = new List<string>();
+    public List<Material> FullSetEnemySkinMaterials= new List<Material>();
 
     public Transform ShopWeapon;
     private float spawnCooldown = 2f; // Cooldown between spawns
@@ -66,7 +78,7 @@ public class GameManager : MonoBehaviour
         UiNamePoint.gameObject.SetActive(false);
         WinGame = GameObject.Find("WinGame").transform;
         WinGame.gameObject.SetActive(false);
-         SettingObject = GameObject.Find("Setting");
+        SettingObject = GameObject.Find("Setting");
         rankObject = GameObject.Find("Rank");
         FullSetSelectUnequip = GameObject.Find("FullSetSelectUnequip").transform;
         FullSetSelectUnequip.gameObject.SetActive(false);
@@ -107,6 +119,46 @@ public class GameManager : MonoBehaviour
         PanelFullSetButton = TopButton.Find("FullSetButton").Find("Panel");
         CharSkin = GameObject.Find("CharSkin").transform;
         //CharSkin.gameObject.SetActive(false);
+    }
+    public Material GetRandomMaterial()
+    {
+        if (EnemyMaterial.Count == 0)
+        {
+            Debug.LogWarning("Danh sách EnemyMaterial rỗng. Trả về null.");
+            return null; // Xử lý trường hợp danh sách rỗng
+        }
+
+        int randomIndex = Random.Range(0, EnemyMaterial.Count);
+        return EnemyMaterial[randomIndex];
+    }
+    public string GetRandomWeaponEnemy()
+    {
+        int randomIndex = Random.Range(0, WeaponEnemys.Count);
+        return WeaponEnemys[randomIndex];
+    }
+    public string GetRandomSkin()
+    {
+        int randomIndex = Random.Range(0, EnemySkinRandom.Count);
+        return EnemySkinRandom[randomIndex];
+    }
+    public string GetRandomHair()
+    {
+        int randomIndex = Random.Range(0, HairEnemySkins.Count);
+        return HairEnemySkins[randomIndex];
+    }
+    public string GetRandomShield() {
+        int randomIndex = Random.Range(0, ShieldEnemySkins.Count);
+        return ShieldEnemySkins[randomIndex];
+    }  
+    public Material GetRandomTrousers()
+    {
+        int randomIndex = Random.Range(0, TrousersEnemySkins.Count);
+        return TrousersEnemySkins[randomIndex];
+    }
+    public string GetRandomFullSet()
+    {
+        int randomIndex = Random.Range(0, FullSetEnemySkins.Count);
+        return FullSetEnemySkins[randomIndex];
     }
     public void TurnOfComponentPlayer()
     {
@@ -221,12 +273,152 @@ public class GameManager : MonoBehaviour
             return;
         }
 
-        // Select a random spawn point from the list
+        // Chọn một vị trí spawn ngẫu nhiên từ danh sách
         int randomIndex = Random.Range(0, spawnPoints.Count);
         Transform randomSpawnPoint = spawnPoints[randomIndex];
 
-        // Instantiate an enemy prefab at the position and rotation of the random spawn point
-        Instantiate(enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
+        // Tạo một bản sao của enemyPrefab tại vị trí và góc quay của spawn point ngẫu nhiên
+        GameObject spawnedEnemy = Instantiate(enemyPrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
+
+        ////////////////////////////////////Skin///////////////////////////////
+        Transform shadingGroup = spawnedEnemy.transform.Find("Armature").Find("initialShadingGroup1");
+        SkinnedMeshRenderer renderer = shadingGroup.GetComponent<SkinnedMeshRenderer>();
+                // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
+                Material randomMaterial = GetRandomMaterial();
+                if (randomMaterial != null)
+                {
+                    renderer.material = randomMaterial;
+                    spawnedEnemy.transform.Find("Canvas").Find("UIPoint").GetComponent<Image>().color=randomMaterial.color;
+                }
+        /////////////////////////////////Weapon///////////////////////////////////////
+        RandomWeapon(spawnedEnemy);
+        ///////////////////////////////////Skin/////////////////////////////////////
+        RandomSkin(spawnedEnemy);
+
+        
+
+
+    }
+    public  void RandomSkin(GameObject spawnedEnemy)
+    {
+        FindChildWithName(spawnedEnemy.transform,"Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
+        string typeSkin;
+        string HairEnemySkin;
+        typeSkin = GetRandomSkin();
+        List<Transform> AllHairSkin = new List<Transform>();
+        if (typeSkin=="Hair")
+        {
+            HairEnemySkin = GetRandomHair();
+            foreach (string hair in HairEnemySkins)
+            {
+                if (hair== HairEnemySkin)
+                {
+                    FindChildWithName(spawnedEnemy.transform, hair).gameObject.SetActive(true);
+                }
+                
+            }
+        }
+        string ShieldEnemySkin;
+        if (typeSkin=="Shield")
+        {
+            ShieldEnemySkin =GetRandomShield();
+            foreach (string shield in ShieldEnemySkins)
+            {
+                if(shield== ShieldEnemySkin)
+                {
+                    FindChildWithName(spawnedEnemy.transform, shield).gameObject.SetActive(true);
+                }
+
+            }
+        }
+        if (typeSkin == "Trousers")
+        {
+            FindChildWithName(spawnedEnemy.transform, "Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = GameManager.Instance.Pants;
+            FindChildWithName(spawnedEnemy.transform, "Pants").GetComponent<Renderer>().material = GetRandomTrousers();
+        }
+        string FullSetEnemySkin;
+        int index;
+        if (typeSkin=="FullSet")
+        {
+            FullSetEnemySkin = GetRandomFullSet();
+            foreach (string fullset in  FullSetEnemySkins)
+            {
+                if (fullset ==FullSetEnemySkin)
+                {   
+                    FindChildWithName(spawnedEnemy.transform, fullset).gameObject.SetActive(true);
+                    FindChildWithName(spawnedEnemy.transform, "initialShadingGroup1").GetComponent<SkinnedMeshRenderer>().sharedMesh = GameManager.Instance.Pants;
+                }
+            }
+
+
+        }
+        
+
+    }
+
+    public void RandomWeapon(GameObject spawnedEnemy)
+    {
+        List<Transform> EnemyWeapon = new List<Transform>();
+        string mainweapon = GetRandomWeaponEnemy();
+        Transform mainWeapon = null;
+
+        foreach (string weapon in WeaponEnemys)
+        {
+            Transform foundWeapon = FindChildWithName(spawnedEnemy.transform, weapon);
+
+            if (foundWeapon != null)
+            {
+                if (weapon == mainweapon)
+                {
+                    mainWeapon = foundWeapon;
+
+                    // Kiểm tra tồn tại của thành phần EnemyMoving trước khi gán
+                    EnemyMoving enemyMoving = spawnedEnemy.transform.GetComponent<EnemyMoving>();
+                    if (enemyMoving != null)
+                    {
+                        enemyMoving.Weapon = mainWeapon;
+                    }
+                    else
+                    {
+                        Debug.LogWarning("EnemyMoving component not found on spawned enemy.");
+                    }
+                }
+                else
+                {
+                    Destroy(foundWeapon.gameObject);
+                }
+            }
+        }
+
+        if (mainWeapon != null)
+        {
+            mainWeapon.name = "Hammer";
+        }
+        else
+        {
+            Debug.LogWarning("Main weapon not found. Cannot rename to Hammer.");
+        }
+    }
+    public Transform FindChildWithName(Transform parent, string nameToFind)
+    {
+        // Kiểm tra xem tên của Transform hiện tại có phải là tên cần tìm không
+        if (parent.name == nameToFind)
+        {
+            return parent; // Trả về Transform nếu tên khớp
+        }
+
+        // Duyệt qua tất cả các đối tượng con của Transform hiện tại
+        foreach (Transform child in parent)
+        {
+            // Gọi đệ quy để tìm kiếm trong các đối tượng con
+            Transform result = FindChildWithName(child, nameToFind);
+            if (result != null)
+            {
+                return result; // Trả về Transform nếu tìm thấy
+            }
+        }
+
+        return null; // Trả về null nếu không tìm thấy
     }
 
     public void DeleteAllEnemies()

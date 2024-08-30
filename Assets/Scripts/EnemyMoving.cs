@@ -248,6 +248,7 @@ public class EnemyMoving : MonoBehaviour
             if (enemyTarget != null)
             {
                 Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
+                direction.y = 0;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 float rotationSpeed = 1.8f;
                 float rotationProgress = 0f;

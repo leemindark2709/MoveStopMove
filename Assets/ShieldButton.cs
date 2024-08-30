@@ -15,7 +15,7 @@ public class ShieldButton : MonoBehaviour
             ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
             ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            //HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             HairSkinManager.instance.IsHair.gameObject.SetActive(false);
         }
         if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)

@@ -199,7 +199,7 @@ public class PlayerAttack : MonoBehaviour
             {
                 Debug.Log("Attack canceled due to player movement");
                 anim.SetFloat("attackMoving", 0); // Reset attack animation
-                anim.SetFloat("attack", 0);
+                //anim.SetFloat("attack", 0);
                 numOfAttacks = 1; // Reset the number of attacks
                 yield break; // Exit the coroutine
             }
