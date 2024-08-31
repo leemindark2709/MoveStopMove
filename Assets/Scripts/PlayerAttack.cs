@@ -77,7 +77,8 @@ public class PlayerAttack : MonoBehaviour
         {
             
             GameManager.Instance.EndGame = true;
-            NumOfDead =0;GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
+            NumOfDead =0;
+            GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
             GameManager.Instance.NumOfRevice -=1;
            
             //PlayerAttack.instance.End = false;

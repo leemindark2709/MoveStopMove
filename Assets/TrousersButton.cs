@@ -23,7 +23,11 @@ public class TrousersButton : MonoBehaviour
             ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
             ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
-            ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+            if (ShieldSkinManager.instance.CheckShield != null)
+            {
+                ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
+
+            }
             ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
 
 
@@ -35,7 +39,11 @@ public class TrousersButton : MonoBehaviour
             ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
             ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
-            HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            if (HairSkinManager.instance.CheckHair != null)
+            {
+                HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+
+            }
             HairSkinManager.instance.IsHair.gameObject.SetActive(false);
 
 
@@ -43,7 +51,11 @@ public class TrousersButton : MonoBehaviour
 
         if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
         {
-            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            if (FullSetSkinManager.instance.CheckFullSet != null)
+            {
+                FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+
+            }
             FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
             FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
         }

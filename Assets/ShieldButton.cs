@@ -8,16 +8,23 @@ public class ShieldButton : MonoBehaviour
     {
         Debug.Log("Click duoc nha");
 
-
         if (GameManager.Instance.HairSkin.gameObject.activeSelf)
         {
             //ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[0];
             ////ShieldSkinManager.instance.IsShield= ShieldSkinManager.instance.ShieldItemPosition[2];
             ////ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
             //ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
-            //HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            if (HairSkinManager.instance.CheckHair != null)
+            {
+                HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+
+            }
             HairSkinManager.instance.IsHair.gameObject.SetActive(false);
+
+
         }
+
+
         if (GameManager.Instance.TrousersSkin.gameObject.activeSelf)
         {
 
@@ -58,9 +65,14 @@ public class ShieldButton : MonoBehaviour
 
         }
 
+
         if (GameManager.Instance.FullSetSkin.gameObject.activeSelf)
         {
-            FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+            if (FullSetSkinManager.instance.CheckFullSet != null)
+            {
+                FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
+
+            }
             FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false);
             FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
         }

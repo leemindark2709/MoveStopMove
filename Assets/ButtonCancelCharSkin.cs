@@ -67,52 +67,7 @@ public class ButtonCancelCharSkin : MonoBehaviour
 
         }
         GameManager.Instance.FullSetSkin.gameObject.SetActive(true);
-        //if (FullSetSkinManager.instance.IsFullSet!=null)
-        //{
-        //    if (FullSetSkinManager.instance.CheckFullSet!=null)
-        //    {
-        //        FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false);
-        //        FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(true);
 
-        //    }
-          
-
-
-        //    if (HairSkinManager.instance.IsHair!=null)
-        //    {
-        //        HairSkinManager.instance.IsHair.gameObject.SetActive(false);
-
-        //    }
-           
-        //    HairSkinManager.instance.CheckHair = null;
-        //    HairSkinManager.instance.IsHair = null;
-        //    FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
-        //    FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
-        //    FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material 
-        //        = FullSetSkinManager.instance.ButtonFullSetItemChose.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().material;
-
-
-        //    GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
-        //    TrousersSkinManager.instance.FindPositionHariItem("Pants").GetComponent<Renderer>().material
-        //= GameManager.Instance.Yeallow;
-        //    GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
-
-
-
-        //    GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
-        //    ShieldSkinManager.instance.DisableShield();
-        //    if (ShieldSkinManager.instance.IsShield!=null)
-        //    {
-        //        ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
-        //    }
-           
-        //    ShieldSkinManager.instance.CheckShield = null;
-        //    ShieldSkinManager.instance.IsShield = null;
-        //    GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
-
-        //}
-        //else
-        //{
             HairSkinManager.instance.IsHair.gameObject.SetActive(true);
             HairSkinManager.instance.CheckHair = null;
             GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
@@ -139,8 +94,9 @@ public class ButtonCancelCharSkin : MonoBehaviour
             FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").gameObject.GetComponent<Renderer>().material =
      GameManager.Instance.Yeallow;
             FullSetSkinManager.instance.ButtonFullSetItemChose = null;
+            FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = GameManager.Instance.Pants;
         }
-       GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+        GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
         //}
         //GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
         //if (TrousersSkinManager.instance.IsTrousers= TrousersSkinManager.instance.materials[0])

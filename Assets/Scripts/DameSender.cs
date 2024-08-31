@@ -45,6 +45,8 @@ public class DameSender : MonoBehaviour
             {
                 other.GetComponent<PlayerAttack>().isDead = true;
                 other.GetComponent<PlayerAttack>().End = true;
+                GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("NameKiller").GetComponent<TextMeshProUGUI>().text
+                    = targetTree.GetComponent<EnemyMoving>().name;
 
             }
 

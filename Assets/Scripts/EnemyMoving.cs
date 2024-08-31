@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class EnemyMoving : MonoBehaviour
 {
+    public string name;
     public List<GameObject> combinedList = new List<GameObject>();
     public Animator anim;
     public bool isDead = false;
@@ -26,6 +27,8 @@ public class EnemyMoving : MonoBehaviour
     public bool isMoving;
     public int torqueAmount;
     public Quaternion localRotation;
+    private bool canUpdateMovePoint = true;
+    private bool isAttack=false;
 
     void Start()
     {
@@ -67,14 +70,12 @@ public class EnemyMoving : MonoBehaviour
         }
         if (CheckEnemy() != null)
         {
-            anim.Play("moving,0");
+            anim.SetFloat("moving", 0);
         }
         else
         {
-            anim.Play("moving,1");
+            anim.SetFloat("moving", 1);
         }
-
-
         if (isDead)
         {
             Transform canvas = transform.Find("Canvas");
@@ -90,50 +91,70 @@ public class EnemyMoving : MonoBehaviour
             StartCoroutine(DelayedDestroy(2.4f));
             return;
         }
-     
 
-        if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead)
+
+
+        if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead&& !isAttack)
         {
+            isAttack = true;
             direction = (CheckEnemy().transform.position - Weapon.position).normalized;
             direction.y = 0.016f;
             Enemy = CheckEnemy();
-            PauseMovement();
+            StartCoroutine(PauseMovement());
             Attack();
             NumSpawWeapon = 0;
         }
 
-        if (targetMovePoint == null || isPoint())
-        {
-            targetMovePoint = GetRandomMovePoint();
-        }
+        //if (targetMovePoint == null || isPoint())
+        //{
+        //    targetMovePoint = GetRandomMovePoint();
+        //}
 
-        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead)
+        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead && !isPoint())
         {
             anim.SetFloat("moving", 1);
             EnemySpeed = 1;
 
             Vector3 moveDirection = (targetMovePoint.position - transform.position).normalized;
             Quaternion lookRotation = Quaternion.LookRotation(moveDirection);
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime *3f *EnemySpeed);
-// Tính toán vector hướng từ vị trí hiện tại đến điểm mục tiêu
+            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, Time.deltaTime * 3f * EnemySpeed);
+            // Tính toán vector hướng từ vị trí hiện tại đến điểm mục tiêu
             Vector3 direction = (targetMovePoint.position - transform.position).normalized;
 
-// Di chuyển đối tượng theo hướng đã tính toán
+            // Di chuyển đối tượng theo hướng đã tính toán
             transform.position += direction * EnemySpeed * 0.5f * Time.deltaTime;
 
 
 
-            if (isPoint())
+        }
+        if (isPoint())
+        {
+            anim.SetFloat("moving", 0);
+            if (canUpdateMovePoint)
             {
-                StartCoroutine(PauseAtPoint(1f));
+                canUpdateMovePoint = false; // Prevent immediate re-triggering
+                StartCoroutine(WaitBeforeUpdateMovePoint(3f)); // Wait 3 seconds before updating the move point
             }
         }
+
 
         if (canvasTransform != null)
         {
             canvasTransform.rotation = initialCanvasRotation;
         }
     }
+    //private IEnumerator wait02Seconnd(float delay)
+    //{
+    //    yield return new WaitForSeconds(delay);
+    //    targetMovePoint = GetRandomMovePoint();
+    //}
+    private IEnumerator WaitBeforeUpdateMovePoint(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        targetMovePoint = GetRandomMovePoint();
+        canUpdateMovePoint = true; // Allow the move point to be updated again
+    }
+
 
     private IEnumerator DelayedDestroy(float delay)
     {
@@ -193,11 +214,13 @@ public class EnemyMoving : MonoBehaviour
         return null;
     }
 
-    private void PauseMovement()
+    private IEnumerator PauseMovement()
     {
         anim.SetFloat("moving", 0);
         EnemySpeed = 0;
- 
+        yield return new WaitForSeconds(2);
+        EnemySpeed = 1;
+        isAttack = false;
     }
 
     private IEnumerator PauseAtPoint(float delay)
@@ -206,9 +229,15 @@ public class EnemyMoving : MonoBehaviour
         EnemySpeed = 0;
         anim.SetFloat("moving", 0);
         yield return new WaitForSeconds(delay);
+       
         isWaiting = false;
         EnemySpeed = 1;
 
+    }
+    private IEnumerator wait02Seconnd(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        targetMovePoint = GetRandomMovePoint();
     }
 
     public void SpawnWeapon()
@@ -275,6 +304,7 @@ public class EnemyMoving : MonoBehaviour
             }
         }
     }
+
 
     private void PerformAttack(Transform enemyTarget)
     {

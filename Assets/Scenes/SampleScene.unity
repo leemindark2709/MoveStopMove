@@ -19321,8 +19321,12 @@ MonoBehaviour:
   TrousersEnemySkins:
   - {fileID: 2100000, guid: fd73aab4b004df54b8f65a1baf669406, type: 2}
   - {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
-  FullSetEnemySkins: []
-  FullSetEnemySkinMaterials: []
+  FullSetEnemySkins:
+  - Thor
+  - DeadpoolBlade
+  FullSetEnemySkinMaterials:
+  - {fileID: 2100000, guid: 37566b41750013e4dbd0ef2b600ccfcd, type: 2}
+  - {fileID: 2100000, guid: 7733de516b0bd0744a372b78887e2702, type: 2}
   ShopWeapon: {fileID: 0}
   NumEnemySpawn: 20
   counyEnemy: 20

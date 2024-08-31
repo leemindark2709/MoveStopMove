@@ -294,8 +294,10 @@ public class GameManager : MonoBehaviour
         RandomWeapon(spawnedEnemy);
         ///////////////////////////////////Skin/////////////////////////////////////
         RandomSkin(spawnedEnemy);
+        spawnedEnemy.GetComponent<EnemyMoving>().name = "Enemy" + NumEnemySpawn;
+        spawnedEnemy.transform.Find("Canvas").Find("Name").GetComponent<TextMeshProUGUI>().text = "Enemy" + NumEnemySpawn;
 
-        
+
 
 
     }
@@ -338,21 +340,28 @@ public class GameManager : MonoBehaviour
         }
         string FullSetEnemySkin;
         int index;
-        if (typeSkin=="FullSet")
+        if (typeSkin == "FullSet")
         {
             FullSetEnemySkin = GetRandomFullSet();
-            foreach (string fullset in  FullSetEnemySkins)
+            for (int i = 0; i < FullSetEnemySkins.Count; i++)
             {
-                if (fullset ==FullSetEnemySkin)
-                {   
+                string fullset = FullSetEnemySkins[i];
+                if (fullset == FullSetEnemySkin)
+                {
+                    index = i;
+                    // Here, i is the index of the fullset in the array
                     FindChildWithName(spawnedEnemy.transform, fullset).gameObject.SetActive(true);
-                    FindChildWithName(spawnedEnemy.transform, "initialShadingGroup1").GetComponent<SkinnedMeshRenderer>().sharedMesh = GameManager.Instance.Pants;
+                    // Use the index i as needed
+                    // Example: print or use the index
+                    Debug.Log("Index of the fullset: " + i);
+
+                    // Optional: use the commented-out code if needed
+                    FindChildWithName(spawnedEnemy.transform, "initialShadingGroup1").GetComponent<Renderer>().material = FullSetEnemySkinMaterials[i];
                 }
             }
-
-
         }
-        
+
+
 
     }
 
