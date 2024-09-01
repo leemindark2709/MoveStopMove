@@ -4,8 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class EnemyMoving : MonoBehaviour
-{
-    public string name;
+{   
+    public string name ;
     public List<GameObject> combinedList = new List<GameObject>();
     public Animator anim;
     public bool isDead = false;
@@ -28,10 +28,11 @@ public class EnemyMoving : MonoBehaviour
     public int torqueAmount;
     public Quaternion localRotation;
     private bool canUpdateMovePoint = true;
-    private bool isAttack=false;
+    public bool isAttack=false;
 
     void Start()
     {
+        isAttack = false;
         localRotation = Weapon.localRotation;
         //Weapon.GetComponent<Rigidbody>().isKinematic = true;
         Weapon.GetComponent<BoxCollider>().enabled = false;
@@ -68,14 +69,14 @@ public class EnemyMoving : MonoBehaviour
         {
             transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = false;
         }
-        if (CheckEnemy() != null)
-        {
-            anim.SetFloat("moving", 0);
-        }
-        else
-        {
-            anim.SetFloat("moving", 1);
-        }
+        //if (CheckEnemy() != null)
+        //{
+        //    anim.SetFloat("moving", 0);
+        //}
+        //else
+        //{
+        //    anim.SetFloat("moving", 1);
+        //}
         if (isDead)
         {
             Transform canvas = transform.Find("Canvas");
@@ -94,8 +95,9 @@ public class EnemyMoving : MonoBehaviour
 
 
 
-        if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead&& !isAttack)
+        if (CheckEnemy() != null && NumSpawWeapon == 1 && !isDead && !isAttack)
         {
+            anim.SetFloat("moving", 0);
             isAttack = true;
             direction = (CheckEnemy().transform.position - Weapon.position).normalized;
             direction.y = 0.016f;
@@ -105,12 +107,9 @@ public class EnemyMoving : MonoBehaviour
             NumSpawWeapon = 0;
         }
 
-        //if (targetMovePoint == null || isPoint())
-        //{
-        //    targetMovePoint = GetRandomMovePoint();
-        //}
+   
 
-        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead && !isPoint())
+        if (targetMovePoint != null && CheckEnemy() == null && !isWaiting && !isDead && !isPoint()&& !isAttack)
         {
             anim.SetFloat("moving", 1);
             EnemySpeed = 1;
