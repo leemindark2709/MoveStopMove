@@ -177,6 +177,10 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
             enableAllPanel();
             TrousersSkinManager.instance.ButtonTrousersItemChose.Find("Border").gameObject.SetActive(true);
+            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(true);
+            GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(false);
 
         }
         if (IsShieldDiffirenceNone())
@@ -236,7 +240,7 @@ public class SkinButton : MonoBehaviour
         }
     }
     public bool IsTrousersDiffirenceNone() {
-        if (TrousersSkinManager.instance.IsTrousers==GameManager.Instance.Yeallow)
+        if (TrousersSkinManager.instance.IsTrousers== TrousersSkinManager.instance.materials[0])
         {
             return false;
         }
@@ -272,7 +276,7 @@ public class SkinButton : MonoBehaviour
     {
         foreach (Transform item in HairSkinManager.instance.HairItemButtons)
         {
-            if (HairSkinManager.instance.ButtonHairItemChose == null) return;
+            if (HairSkinManager.instance.ButtonHairItemChose == null) break;
             if (item.gameObject.GetComponent<RectTransform>()
                 != HairSkinManager.instance.ButtonHairItemChose.GetComponent<RectTransform>())
             {
@@ -290,9 +294,46 @@ public class SkinButton : MonoBehaviour
         }
         foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
         {
-            if (TrousersSkinManager.instance.TrousersItemButtons == null) return;
-            if (item.gameObject
-                != TrousersSkinManager.instance.ButtonTrousersItemChose)
+            //TrousersSkinManager.instance.ButtonTrousersItemClick.Find("Border").gameObject.SetActive(false);
+            if (TrousersSkinManager.instance.ButtonTrousersItemChose == null) break;
+            if (item.gameObject.GetComponent<RectTransform>()
+                != TrousersSkinManager.instance.ButtonTrousersItemChose.GetComponent<RectTransform>())
+            {
+                Debug.Log("click");
+                item.Find("Border").gameObject.SetActive(false);
+                //item.Find("Border").gameObject.SetActive(true);
+
+            }
+            else
+            {
+                item.Find("Border").gameObject.SetActive(true);
+
+            }
+
+        }
+        foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
+        {
+            if (ShieldSkinManager.instance.ButtonShieldItemChose == null) break;
+            if (item.gameObject.GetComponent<RectTransform>()
+                != ShieldSkinManager.instance.ButtonShieldItemChose.GetComponent<RectTransform>())
+            {
+                Debug.Log("click");
+                item.Find("Border").gameObject.SetActive(false);
+                //item.Find("Border").gameObject.SetActive(true);
+
+            }
+            else
+            {
+                item.Find("Border").gameObject.SetActive(true);
+
+            }
+
+        }
+        foreach (Transform item in FullSetSkinManager.instance.FullSetItemButtons)
+        {
+            if (FullSetSkinManager.instance.ButtonFullSetItemChose == null) break;
+            if (item.gameObject.GetComponent<RectTransform>()
+                != FullSetSkinManager.instance.ButtonFullSetItemChose.GetComponent<RectTransform>())
             {
                 Debug.Log("click");
                 item.Find("Border").gameObject.SetActive(false);

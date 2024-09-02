@@ -7,6 +7,8 @@ public class CharSkinTrouserManager : MonoBehaviour
     public Transform SelectTrousersItem;
     public Transform UnequipTrousersItem;
     public static CharSkinTrouserManager instance;
+    public Transform ADSTrousersItem;
+    public Transform GoldTrousersItem;
     private void Awake()
     {
         instance = this;

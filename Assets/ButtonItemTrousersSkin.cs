@@ -6,9 +6,13 @@ public class ButtonItemTrousersSkin : MonoBehaviour
 {
     public bool isClickButtonItem;
     public string nameItem;
+    public bool IsUnlock;
+    public Transform Lock;
+    public int Price;
     public Material material;
     public void OnButtonClick()
     {
+
         //TrousersSkinManager.instance.ButtonTrousersItemChose = transform.parent;
         //TrousersSkinManager.instance.ButtonTrousersItemClick = transform.parent;
 
@@ -46,6 +50,13 @@ public class ButtonItemTrousersSkin : MonoBehaviour
         {
             CharSkinTrouserManager.instance.SelectTrousersItem.gameObject.SetActive(true);
             CharSkinTrouserManager.instance.UnequipTrousersItem.gameObject.SetActive(false);
+        }
+        if (!IsUnlock)
+        {
+            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(true);
+            GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(true);
         }
     }
 }

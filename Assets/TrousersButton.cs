@@ -76,15 +76,24 @@ public class TrousersButton : MonoBehaviour
             //}
 
             TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.materials[0];
-            //TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.TrousersItemPosition[3];
-            //TrousersSkinManager.instance.CheckTrousers.gameObject.SetActive(true);
-
             TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[2];
 
            TrousersSkinManager.instance.disableAllPanel();
             TrousersSkinManager.instance.TrousersItemButtons[0].Find("Border").gameObject.SetActive(true);
             TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.TrousersItemButtons[0];
+            if (!TrousersSkinManager.instance.ButtonTrousersItemClick.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+            {
+                GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
+                GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+                GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(true);
+                GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(true);
+
+
+            }
             TrousersSkinManager.instance.ButtonTrousersItemChose = null;
+
+
+
         }
         if (TrousersSkinManager.instance.IsTrousers !=  TrousersSkinManager.instance.materials[0])
         {
@@ -93,13 +102,14 @@ public class TrousersButton : MonoBehaviour
             TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.IsTrousers;
             GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(true);
             GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+
         }
 
 
 
 
 
-        Debug.Log("Click duoc nha");
+        //Debug.Log("Click duoc nha");
         GameManager.Instance.HairSkin.gameObject.SetActive(false);
       
         GameManager.Instance.ShieldSkin.gameObject.SetActive(false);

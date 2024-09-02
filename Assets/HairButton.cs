@@ -78,6 +78,10 @@ public class HairButton : MonoBehaviour
             HairSkinManager.instance.HairItemButtons[0].Find("Border").gameObject.SetActive(true);
             HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.HairItemButtons[0];
             HairSkinManager.instance.ButtonHairItemChose = null;
+            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(true);
         }
         if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
         {

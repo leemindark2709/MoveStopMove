@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SelectTrousers : MonoBehaviour
+public class GoldTrousersItem : MonoBehaviour
 {
-    
     public void OnButtonClick()
     {
-        TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.CheckTrousers;
+        //TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.CheckTrousers;
         //TrousersSkinManager.instance.CheckHair.gameObject.SetActive(true);
         TrousersSkinManager.instance.IsTrousers = TrousersSkinManager.instance.CheckTrousers;
         CharSkinTrouserManager.instance.SelectTrousersItem.gameObject.SetActive(false);
         CharSkinTrouserManager.instance.UnequipTrousersItem.gameObject.SetActive(true);
-        TrousersSkinManager.instance.DisableEquippedText();
+        //TrousersSkinManager.instance.DisableEquippedText();
 
 
         GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
@@ -60,20 +59,56 @@ public class SelectTrousers : MonoBehaviour
 
 
         TrousersSkinManager.instance.IsTrousers = TrousersSkinManager.instance.CheckTrousers;
-       
+
         //TrousersSkinManager.instance.IsTrousers = HairSkinManager.instance.CheckHair;
-       
+
         CharSkinTrouserManager.instance.SelectTrousersItem.gameObject.SetActive(false);
         CharSkinTrouserManager.instance.UnequipTrousersItem.gameObject.SetActive(true);
         TrousersSkinManager.instance.DisableEquippedText();
 
         CharSkinTrouserManager.instance.ADSTrousersItem.gameObject.SetActive(false);
         CharSkinTrouserManager.instance.GoldTrousersItem.gameObject.SetActive(false);
+
+
+
+
+
+
+
         foreach (Transform Button in TrousersSkinManager.instance.TrousersItemButtons)
         {
             if (Button == TrousersSkinManager.instance.ButtonTrousersItemClick)
             {
-                //TrousersSkinManager.instance.FindPositionHariItem(Button.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem).gameObject.SetActive(true);
+
+
+                Transform lockTransform = Button.Find("Lock");
+
+                if (lockTransform != null && GameManager.Instance.Gold >= TrousersSkinManager.instance.ButtonTrousersItemClick.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Price)
+
+                {
+                    GameManager.Instance.Gold -= TrousersSkinManager.instance.ButtonTrousersItemClick.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Price;
+
+                    TrousersSkinManager.instance.ButtonTrousersItemClick.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                    TrousersSkinManager.instance.ButtonTrousersItemChose = Button;
+
+                    Button.Find("EquippedText").gameObject.SetActive(true);
+                    lockTransform.gameObject.SetActive(false);
+
+                    CharSkinTrouserManager.instance.ADSTrousersItem.gameObject.SetActive(false);
+                    CharSkinTrouserManager.instance.GoldTrousersItem.gameObject.SetActive(false);
+
+                }
+                else
+                {
+                    CharSkinTrouserManager.instance.SelectTrousersItem.gameObject.SetActive(false);
+                    CharSkinTrouserManager.instance.UnequipTrousersItem.gameObject.SetActive(false);
+
+                }
+
+                Button.Find("Border").gameObject.SetActive(true);
+                //TrousersSkinManager.instance.FindPositionHariItem(Button.Find("BackGround").GetComponent<TrousersSkinManager>().nameItem).gameObject.SetActive(true);
+
+
                 TrousersSkinManager.instance.ButtonTrousersItemChose = Button;
                 Button.Find("EquippedText").gameObject.SetActive(true);
                 Button.Find("Border").gameObject.SetActive(true);
@@ -86,6 +121,12 @@ public class SelectTrousers : MonoBehaviour
                 Button.Find("EquippedText").gameObject.SetActive(false);
                 Button.Find("Border").gameObject.SetActive(false);
             }
+
+        }
+        TrousersSkinManager.instance.DisableEquippedText();
+        if (TrousersSkinManager.instance.ButtonTrousersItemChose != null)
+        {
+            TrousersSkinManager.instance.ButtonTrousersItemChose.Find("EquippedText").gameObject.SetActive(true);
 
         }
     }
