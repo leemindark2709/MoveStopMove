@@ -6,6 +6,9 @@ public class ButtonItemHairSkin : MonoBehaviour
 {
     public bool isClickButtonItem;
     public string nameItem;
+    public bool IsUnlock;
+    public Transform Lock;
+    public int Price;
     public void OnButtonClick()
     {
         HairSkinManager.instance.ButtonHairItemClick=transform.parent;
@@ -29,7 +32,7 @@ public class ButtonItemHairSkin : MonoBehaviour
             }
 
         }
-        if (HairSkinManager.instance.IsHair== HairSkinManager.instance.FindPositionHariItem(nameItem))
+        if (HairSkinManager.instance.IsHair == HairSkinManager.instance.FindPositionHariItem(nameItem))
         {
             CharSkinManager.instance.SelectHairItem.gameObject.SetActive(false);
             CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(true);
@@ -38,6 +41,19 @@ public class ButtonItemHairSkin : MonoBehaviour
         {
             CharSkinManager.instance.SelectHairItem.gameObject.SetActive(true);
             CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(false);
+        }
+
+        if (!IsUnlock)
+        {
+            CharSkinManager.instance.SelectHairItem.gameObject.SetActive(false);
+            CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(false);
+            CharSkinManager.instance.ADSHairItem.gameObject.SetActive(true);
+            CharSkinManager.instance.GoldHairItem.gameObject.SetActive(true);
+        }
+        else
+        {
+            CharSkinManager.instance.ADSHairItem.gameObject.SetActive(false);
+            CharSkinManager.instance.GoldHairItem.gameObject.SetActive(false);
         }
     }
 }

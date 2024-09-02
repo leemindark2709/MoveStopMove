@@ -7,15 +7,20 @@ public class CharSkinManager : MonoBehaviour
     public Transform SelectHairItem;
     public Transform UnequipHairItem;
     public static CharSkinManager instance;
+    public Transform ADSHairItem;
+    public Transform GoldHairItem;
     private void Awake()
     {
-        instance = this;   
+        instance = this;    
     }
     private void Start()
     {
-        SelectHairItem = GameObject.Find("SelectHairItem").transform;
-        UnequipHairItem = GameObject.Find("UnequipHairItem").transform;
+        //SelectHairItem = GameObject.Find("SelectHairItem").transform;
+        ////UnequipHairItem = GameObject.Find("UnequipHairItem").transform;
+        //ADSHairItem = GameObject.Find("ADSHairItem").transform;
+        //GoldHairItem = GameObject.Find("GoldHairItem").transform;
+        GoldHairItem.gameObject.SetActive(false);
         UnequipHairItem.gameObject.SetActive(false);
-
+        ADSHairItem.gameObject.SetActive(false);
     }
 }

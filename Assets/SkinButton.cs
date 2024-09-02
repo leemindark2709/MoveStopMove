@@ -101,6 +101,10 @@ public class SkinButton : MonoBehaviour
                 HairSkinManager.instance.HairItemButtons[0].Find("Border").gameObject.SetActive(true);
                 HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.HairItemButtons[0];
                 HairSkinManager.instance.ButtonHairItemChose = null;
+                GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(false);
+                GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(true);
+                GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
+                GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
             }
             if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
             {
@@ -109,6 +113,7 @@ public class SkinButton : MonoBehaviour
                 HairSkinManager.instance.IsHair.gameObject.SetActive(true);
                 GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
                 GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+
 
             }
             GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
@@ -120,6 +125,14 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
             GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
             GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+
+            //GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            //GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(true);
+            //GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
+            //GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
+            //CharSkinManager.instance.ADSHairItem.gameObject.SetActive(false);
+            //CharSkinManager.instance.GoldHairItem.gameObject.SetActive(false);
 
         }
         if (IsHairDiffirenceNone())
@@ -138,6 +151,12 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+            enableAllPanel();
+            HairSkinManager.instance.ButtonHairItemChose.Find("Border").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
 
         }
         if (IsTrousersDiffirenceNone())
@@ -156,6 +175,8 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+            enableAllPanel();
+            TrousersSkinManager.instance.ButtonTrousersItemChose.Find("Border").gameObject.SetActive(true);
 
         }
         if (IsShieldDiffirenceNone())
@@ -174,6 +195,8 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(true);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+            enableAllPanel();
+            ShieldSkinManager.instance.ButtonShieldItemChose.Find("Border").gameObject.SetActive(true);
 
         }
         if (IsFullSetDiffirenceNone())
@@ -192,6 +215,8 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(true);
+            enableAllPanel();
+            FullSetSkinManager.instance.ButtonFullSetItemChose.Find("Border").gameObject.SetActive(true);
 
         }
 

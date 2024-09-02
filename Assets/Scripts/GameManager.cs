@@ -6,6 +6,8 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+    public int Gold;
+
     public bool checkShopWeapon;
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy
@@ -70,9 +72,11 @@ public class GameManager : MonoBehaviour
     public int numofSpawnDie = 1;
     public Transform UiNamePoint;
 
+    public RectTransform GoldHome;
 
     private void Awake()
     {
+     
         checkShopWeapon = false;
         UiNamePoint = GameObject.Find("UiNamePoint").transform;
         UiNamePoint.gameObject.SetActive(false);
@@ -175,6 +179,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Gold = 5000;
         TurnOfComponentPlayer();
         SetUpCamera();
         isStart = false;
@@ -204,6 +209,8 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        GoldHome  = Home.GetComponent<Home>().Gold;
+        GoldHome.transform.GetComponent<TextMeshProUGUI>().text = Gold.ToString();
         // Check if the player is dead
       
         if (EndGame&&numofSpawnDie==1)

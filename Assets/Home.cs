@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Home : MonoBehaviour
+  
 {
+    public RectTransform Gold;
     // This method will be called when the button is clicked
     public void OnButtonClick()
     {

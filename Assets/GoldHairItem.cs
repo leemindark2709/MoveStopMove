@@ -1,19 +1,19 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using System.Diagnostics;
 using UnityEngine;
 
-public class SelectHairItem : MonoBehaviour
+public class GoldHairItem : MonoBehaviour
 {
     public void OnButtonClick()
     {
-        
-        
+
+
         HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
-        HairSkinManager.instance.IsHair = HairSkinManager.instance.CheckHair;
+        //HairSkinManager.instance.IsHair = HairSkinManager.instance.CheckHair;
         CharSkinManager.instance.SelectHairItem.gameObject.SetActive(false);
         CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(true);
-        HairSkinManager.instance.DisableEquippedText();
+       
 
 
 
@@ -25,7 +25,7 @@ public class SelectHairItem : MonoBehaviour
         ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
         ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
         ShieldSkinManager.instance.ButtonShieldItemClick = ShieldSkinManager.instance.ShieldItemButtons[0];
-        ShieldSkinManager.instance.ButtonShieldItemChose = null ;
+        ShieldSkinManager.instance.ButtonShieldItemChose = null;
         GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").gameObject.SetActive(true);
         GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").gameObject.SetActive(false);
         GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
@@ -57,37 +57,52 @@ public class SelectHairItem : MonoBehaviour
         GameManager.Instance.FullSetSelectUnequip.Find("UnequipFullSetItem").gameObject.SetActive(false); // Changed HairSelectUnequip to FullSetSelectUnequip and UnequipHairItem to UnequipFullSetItem
         GameManager.Instance.FullSetSkin.gameObject.SetActive(false); // Changed HairSkin to FullSetSkin
 
-        CharSkinManager.instance.ADSHairItem.gameObject.SetActive(false);
-        CharSkinManager.instance.GoldHairItem.gameObject.SetActive(false);
+        //if (GameManager.Instance.Gold)
+        //{
+
+        //}
+
         foreach (Transform Button in HairSkinManager.instance.HairItemButtons)
         {
             if (Button == HairSkinManager.instance.ButtonHairItemClick)
             {
-                HairSkinManager.instance.ButtonHairItemClick.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
-                
+              
+
                 //HairSkinManager.instance.ButtonHairItemClick.Find("Lock").gameObject.SetActive(false);
 
                 HairSkinManager.instance.FindPositionHariItem(Button.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem).gameObject.SetActive(true);
-                HairSkinManager.instance.ButtonHairItemChose = Button;
-                Button.Find("EquippedText").gameObject.SetActive(true);
+               
                 // Tìm đối tượng với tên "Lock"
                 Transform lockTransform = Button.Find("Lock");
 
-                if (lockTransform == null)
+             
+                if (lockTransform != null&&GameManager.Instance.Gold >= HairSkinManager.instance.ButtonHairItemClick.Find("BackGround").GetComponent<ButtonItemHairSkin>().Price)
                 {
-                    Debug.Log("Lỗi: Không tìm thấy đối tượng Lock");
+                    GameManager.Instance.Gold -= HairSkinManager.instance.ButtonHairItemClick.Find("BackGround").GetComponent<ButtonItemHairSkin>().Price;
+
+
+                    HairSkinManager.instance.ButtonHairItemClick.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                    HairSkinManager.instance.ButtonHairItemChose = Button;
+                   
+                    Button.Find("EquippedText").gameObject.SetActive(true);
+                    // Nếu tìm thấy, đặt đối tượng "Lock" không hoạt động
+                    lockTransform.gameObject.SetActive(false);
+                    CharSkinManager.instance.ADSHairItem.gameObject.SetActive(false);
+                    CharSkinManager.instance.GoldHairItem.gameObject.SetActive(false);
+                    HairSkinManager.instance.IsHair = HairSkinManager.instance.CheckHair;
+
                 }
                 else
                 {
-                    // Nếu tìm thấy, đặt đối tượng "Lock" không hoạt động
-                    lockTransform.gameObject.SetActive(false);
+                    CharSkinManager.instance.SelectHairItem.gameObject.SetActive(false);
+                    CharSkinManager.instance.UnequipHairItem.gameObject.SetActive(false);
+
                 }
 
                 Button.Find("Border").gameObject.SetActive(true);
                 HairSkinManager.instance.CheckHair = HairSkinManager.instance.FindPositionHariItem(Button.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem);
 
                 HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
-                HairSkinManager.instance.IsHair = HairSkinManager.instance.CheckHair;
 
             }
             else
@@ -97,5 +112,13 @@ public class SelectHairItem : MonoBehaviour
             }
 
         }
+        HairSkinManager.instance.DisableEquippedText();
+        if (HairSkinManager.instance.ButtonHairItemChose!=null)
+        {
+            HairSkinManager.instance.ButtonHairItemChose.Find("EquippedText").gameObject.SetActive(true);
+
+        }
+
+
     }
 }
