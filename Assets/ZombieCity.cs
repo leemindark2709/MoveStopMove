@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class ZombieCity : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+ public void OnButtonClick()
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        GameManager.Instance.MainMap.gameObject.SetActive(false);
+        GameManager.Instance.ZomBieMap.gameObject.SetActive(true);
     }
 }

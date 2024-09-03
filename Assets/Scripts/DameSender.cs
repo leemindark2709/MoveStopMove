@@ -8,6 +8,7 @@ public class DameSender : MonoBehaviour
     public Transform targetTree; // Cây mục tiêu cần kiểm tra
     public float timeReturn;
     public Transform enemy;
+    public string TypeWeapon;
 
     private void OnTriggerEnter(Collider other)
     {

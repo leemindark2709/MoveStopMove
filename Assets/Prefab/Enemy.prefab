@@ -151,6 +151,7 @@ MonoBehaviour:
   targetTree: {fileID: 3790958089195805736}
   timeReturn: 0
   enemy: {fileID: 0}
+  TypeWeapon: Hammer
 --- !u!1 &371935509114509634
 GameObject:
   m_ObjectHideFlags: 0
@@ -1482,6 +1483,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d89bebeced91ebd4ab0797026d79818f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  name: 
   combinedList: []
   anim: {fileID: 0}
   isDead: 0
@@ -1499,6 +1501,7 @@ MonoBehaviour:
   isMoving: 0
   torqueAmount: 1000
   localRotation: {x: 0, y: 0, z: 0, w: 0}
+  isAttack: 0
 --- !u!114 &5199365398896252459
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3374,6 +3377,7 @@ MonoBehaviour:
   targetTree: {fileID: 3790958089195805736}
   timeReturn: 0
   enemy: {fileID: 0}
+  TypeWeapon: Knife
 --- !u!4 &1316654768555062246 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: ecd6cb62ed8350e498f9e25d15d9caa3, type: 3}

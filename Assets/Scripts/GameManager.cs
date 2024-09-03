@@ -6,6 +6,11 @@ using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
+
+    //Map//
+    public Transform MainMap;
+    public Transform ZomBieMap;
+
     public int Gold;
 
     public bool checkShopWeapon;
@@ -51,9 +56,7 @@ public class GameManager : MonoBehaviour
     public Transform PanelShieldButton;
     public Transform PanelFullSetButton;
     public Transform CharSkin;
-
     public SkinnedMeshRenderer   Mesh;
-
 
     public Transform HairSelectUnequip;
     public Transform TrousersSelectUnequip;

@@ -318,27 +318,56 @@ public class EnemyMoving : MonoBehaviour
             direction = (enemyTarget.position - Weapon.position).normalized;
             direction.y = 0;  // Ignore the Y axis
 
-            Weapon.transform.rotation = Quaternion.Euler(0, 0, 90); // Đặt rotation cho vũ khí
+            if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon=="Hammer")
+            {
+                Weapon.transform.rotation = Quaternion.Euler(0, 0, 90); // Đặt rotation cho vũ khí
+                Weapon.parent = null;
+                Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
+                weaponRb.isKinematic = false;
+                weaponRb.velocity = Vector3.zero;
+                weaponRb.angularVelocity = Vector3.zero;
 
-            Weapon.parent = null;
-            Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
-            weaponRb.isKinematic = false;
-            weaponRb.velocity = Vector3.zero;
-            weaponRb.angularVelocity = Vector3.zero;
+                float forceMagnitude = 1f;
+                float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
+                float weaponSpeed = forceMagnitude;
 
-            float forceMagnitude = 1f;
-            float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
-            float weaponSpeed = forceMagnitude;
+                timeToReturn = distance / weaponSpeed;
+                weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+                Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
 
-            timeToReturn = distance / weaponSpeed;
-            weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
-            Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+                Weapon.localRotation = Quaternion.Euler(270, 0, 90);
+                StartCoroutine(RotateWeaponAroundYAxis(timeToReturn));
+                Weapon.GetComponent<BoxCollider>().enabled = true;
+                //weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0));
+            }
+            else if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon == "Knife")
+            {
+                // Tính toán hướng từ Weapon tới enemyTarget theo trục X và Z
+     
 
-            Weapon.localRotation = Quaternion.Euler(270, 0, 90);
-            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn));
-            Weapon.GetComponent<BoxCollider>().enabled = true;
-            //weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0));
-           
+                // Các phần còn lại của mã không thay đổi
+                Weapon.parent = null;
+                Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
+                weaponRb.isKinematic = false;
+                weaponRb.velocity = Vector3.zero;
+                weaponRb.angularVelocity = Vector3.zero;
+
+                float forceMagnitude = 1f;
+                float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
+                float weaponSpeed = forceMagnitude;
+
+                timeToReturn = distance / weaponSpeed;
+                weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+                Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+                Vector3 directionToTarget = direction;
+
+          
+                Weapon.localRotation = Quaternion.Euler(directionToTarget);
+              
+                Weapon.GetComponent<BoxCollider>().enabled = true;
+
+            }
+
             StartCoroutine(ReturnToParentAfterDelay(timeToReturn, localPosition, localRotation));
         }
     }
