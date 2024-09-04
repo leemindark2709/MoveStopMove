@@ -9,6 +9,7 @@ public class PlayerAttack : MonoBehaviour
     public Animator anim;
     public bool isDead=false;
     public bool End=false;
+    public ParticleSystem deathParticles;
 
     public int numOfAttacks = 1; // Số lượng tấn công
     public float detectionRadius = 0.1f; // Bán kính phát hiện
@@ -76,10 +77,11 @@ public class PlayerAttack : MonoBehaviour
         if (isDead)
         {
             weapon.GetComponent<Rigidbody>().isKinematic = true;
-            transform.gameObject.GetComponent<PlayerAttack>().enabled=false;
+            transform.gameObject.GetComponent<PlayerAttack>().enabled= false;
             //transform.GetComponent<Rigidbody>().gameObject.SetActive(false);
             //transform.GetComponent<BoxCollider>().gameObject.SetActive(false);
-
+            deathParticles.transform.position = transform.position;
+            deathParticles.Play(); // Chạy Particle System
 
         }
         if (GameManager.Instance.counyEnemy==1)

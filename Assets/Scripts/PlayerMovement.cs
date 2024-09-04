@@ -14,9 +14,20 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 direction;
     private bool isInteracting;
 
+    private Vector3 canvasOffset; // Store the initial offset between Canvas and Armature
+
     public void Awake()
     {
         instance = this;
+
+        // Calculate and store the initial offset between the Canvas and Armature
+        Transform armature = transform.Find("Armature");
+        Transform canvas = transform.Find("Canvas");
+
+        if (armature != null && canvas != null)
+        {
+            canvasOffset = canvas.position - armature.position;
+        }
     }
 
     void Update()
@@ -75,19 +86,20 @@ public class PlayerMovement : MonoBehaviour
             if (armature != null)
             {
                 armature.position += move;
-            }
 
-            // Move the Canvas
-            Transform canvas = transform.Find("Canvas");
-            if (canvas != null)
-            {
-                canvas.position += move;
-            }
+                // Move the Canvas to follow the Armature
+                Transform canvas = transform.Find("Canvas");
+                if (canvas != null)
+                {
+                    // Update Canvas position relative to Armature, maintaining the initial offset
+                    canvas.position = armature.position + canvasOffset;
+                }
 
-            // Move the PlayerCamera
-            if (GameManager.Instance.PlayerCamera != null)
-            {
-                GameManager.Instance.PlayerCamera.position += move;
+                // Move the PlayerCamera to follow the Armature
+                if (GameManager.Instance.PlayerCamera != null)
+                {
+                    GameManager.Instance.PlayerCamera.position = armature.position;
+                }
             }
 
             // Update isMoving based on direction
