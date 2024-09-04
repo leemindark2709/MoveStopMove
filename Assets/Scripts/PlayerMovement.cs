@@ -68,8 +68,27 @@ public class PlayerMovement : MonoBehaviour
         // Move the character based on touch or mouse input
         if (isInteracting)
         {
-            Vector3 move = new Vector3(direction.x, 0, direction.y).normalized;
-            transform.position += move * moveSpeed * 0.5f * Time.deltaTime;
+            Vector3 move = new Vector3(direction.x, 0, direction.y).normalized * moveSpeed * 0.5f * Time.deltaTime;
+
+            // Move the Armature
+            Transform armature = transform.Find("Armature");
+            if (armature != null)
+            {
+                armature.position += move;
+            }
+
+            // Move the Canvas
+            Transform canvas = transform.Find("Canvas");
+            if (canvas != null)
+            {
+                canvas.position += move;
+            }
+
+            // Move the PlayerCamera
+            if (GameManager.Instance.PlayerCamera != null)
+            {
+                GameManager.Instance.PlayerCamera.position += move;
+            }
 
             // Update isMoving based on direction
             isMoving = direction.sqrMagnitude > 0;

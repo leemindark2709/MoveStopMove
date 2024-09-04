@@ -30,7 +30,7 @@ public class ReviveNow : MonoBehaviour
         playerAttack.anim.Play("Idle");
 
         // Đặt vị trí của nhân vật về điểm hồi sinh
-        Player.position = GameObject.Find("RevivePoint").transform.position;
+        Player.Find("Armature").position = GameObject.Find("RevivePoint").transform.position;
 
         // Kích hoạt lại PlayerMovement và đảm bảo nhân vật không di chuyển
         var playerMovement = Player.GetComponent<PlayerMovement>();

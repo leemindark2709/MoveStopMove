@@ -12,6 +12,7 @@ TagManager:
   - DeadPlayer
   - Weapon
   - CanChageColor
+  - Wall
   layers:
   - Default
   - TransparentFX
@@ -20,7 +21,7 @@ TagManager:
   - Water
   - UI
   - Playerr
-  - 
+  - Wall
   - 
   - 
   - 

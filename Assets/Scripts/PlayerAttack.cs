@@ -24,13 +24,37 @@ public class PlayerAttack : MonoBehaviour
     public float torqueAmount = 5;
     public Vector3 localPosition;
     public Quaternion localRotation ;
-
+    public bool isCollidingWithWall = false;
     private void Awake()
     {
         instance = this;
     }
+ 
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isCollidingWithWall = true;
+        }
+    }
+
+    public void OnCollisionExit(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Wall"))
+        {
+            isCollidingWithWall = false;
+        }
+    }
+
+    // Optional: Method to get the collision status
+    public bool IsCollidingWithWall()
+    {
+        return isCollidingWithWall;
+    }
     void Start()
     {
+
         weapon.GetComponent<BoxCollider>().enabled = false;
         localRotation = weapon.localRotation;
         localPosition = weapon.localPosition;
@@ -199,7 +223,7 @@ public class PlayerAttack : MonoBehaviour
             if (PlayerMovement.instance.isMoving)
             {
                 Debug.Log("Attack canceled due to player movement");
-                anim.SetFloat("attackMoving", 0); // Reset attack animation
+                anim.SetFloat("attackMoving", 1); // Reset attack animation
                 //anim.SetFloat("attack", 0);
                 numOfAttacks = 1; // Reset the number of attacks
                 yield break; // Exit the coroutine
@@ -223,18 +247,6 @@ public class PlayerAttack : MonoBehaviour
           
         }
 
-        // Check continuously for movement during the next phase
-        //float elapsedTime = 0f;
-        //while (elapsedTime < 0.9f)
-        //{
-        //    if (PlayerMovement.instance.isMoving)
-        //    {
-        //        anim.SetFloat("attackMoving", 1);
-        //    }
-        //    elapsedTime += Time.deltaTime;
-        //    yield return null;
-        //}
-
         anim.SetFloat("attack", 0); // Reset animation after 0.9 seconds
     }
 
@@ -248,6 +260,7 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
          localRotation = weapon.localRotation; // Lưu trữ góc quay hiện tại của vũ khí
+
 
         direction = transform.forward;// Hướng của vũ khí
         direction.y = 0; // Không thay đổi hướng dọc

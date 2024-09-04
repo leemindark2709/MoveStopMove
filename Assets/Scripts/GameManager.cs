@@ -10,9 +10,9 @@ public class GameManager : MonoBehaviour
     //Map//
     public Transform MainMap;
     public Transform ZomBieMap;
-
+    public Transform PlayerCamera;
     public int Gold;
-
+    public Transform namePlayer;
     public bool checkShopWeapon;
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy

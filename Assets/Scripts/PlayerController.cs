@@ -17,10 +17,15 @@ public class PlayerController : MonoBehaviour
     {
         if (PlayerMovement.instance.isMoving)
         {
+
             //anim.SetFloat("attack", 0);
             if (anim.GetFloat("attack") == 1)
             {
-                anim.SetFloat("attackMoving", 1);
+                anim.SetFloat("attack", 0);
+            }
+            if (anim.GetFloat("attackMoving") == 1)
+            {
+                anim.SetFloat("attackMoving", 0.1f);
             }
 
             anim.SetFloat("moving", 1);
