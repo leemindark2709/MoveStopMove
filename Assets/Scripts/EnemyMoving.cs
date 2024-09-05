@@ -281,12 +281,13 @@ public class EnemyMoving : MonoBehaviour
                 float rotationSpeed = 1.8f;
                 float rotationProgress = 0f;
 
-                while (rotationProgress < 0.95f)
-                {
-                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
-                    rotationProgress += Time.deltaTime * rotationSpeed;
-                    yield return null;
-                }
+                transform.rotation = lookRotation;  
+                //while (rotationProgress < 0.95f)
+                //{
+                //    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
+                //    rotationProgress += Time.deltaTime * rotationSpeed;
+                //    yield return null;
+                //}
 
                 if (!isDead)
                 {
@@ -327,7 +328,7 @@ public class EnemyMoving : MonoBehaviour
                 weaponRb.velocity = Vector3.zero;
                 weaponRb.angularVelocity = Vector3.zero;
 
-                float forceMagnitude = 1f;
+                float forceMagnitude = 0.9f;
                 float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
                 float weaponSpeed = forceMagnitude;
 

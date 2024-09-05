@@ -77,6 +77,7 @@ public class GameManager : MonoBehaviour
 
     public RectTransform GoldHome;
 
+    private int currentIndex = 0;
     private void Awake()
     {
      
@@ -127,7 +128,7 @@ public class GameManager : MonoBehaviour
         CharSkin = GameObject.Find("CharSkin").transform;
         //CharSkin.gameObject.SetActive(false);
     }
-    public Material GetRandomMaterial()
+    public Material GetNextMaterial()
     {
         if (EnemyMaterial.Count == 0)
         {
@@ -135,8 +136,13 @@ public class GameManager : MonoBehaviour
             return null; // Xử lý trường hợp danh sách rỗng
         }
 
-        int randomIndex = Random.Range(0, EnemyMaterial.Count);
-        return EnemyMaterial[randomIndex];
+        // Lấy màu theo chỉ số hiện tại
+        Material material = EnemyMaterial[currentIndex];
+
+        // Cập nhật chỉ số hiện tại để lấy màu tiếp theo lần sau
+        currentIndex = (currentIndex + 1) % EnemyMaterial.Count;
+
+        return material;
     }
     public string GetRandomWeaponEnemy()
     {
@@ -294,7 +300,7 @@ public class GameManager : MonoBehaviour
         Transform shadingGroup = spawnedEnemy.transform.Find("Armature").Find("initialShadingGroup1");
         SkinnedMeshRenderer renderer = shadingGroup.GetComponent<SkinnedMeshRenderer>();
                 // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
-                Material randomMaterial = GetRandomMaterial();
+                Material randomMaterial = GetNextMaterial();
                 if (randomMaterial != null)
                 {
                     renderer.material = randomMaterial;

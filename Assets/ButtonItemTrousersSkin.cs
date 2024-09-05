@@ -58,5 +58,12 @@ public class ButtonItemTrousersSkin : MonoBehaviour
             GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(true);
             GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(true);
         }
+        else
+        {
+            //GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
+            //GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(false);
+        }
     }
 }

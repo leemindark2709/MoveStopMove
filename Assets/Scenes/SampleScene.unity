@@ -23187,6 +23187,15 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 5ab53799aa7326a4b8e51eebffcd1594, type: 2}
   - {fileID: 2100000, guid: 4fd8b05c2b3868b4f9033cbe0c1092d3, type: 2}
   - {fileID: 2100000, guid: c9c59161f6565704e863b0c751373436, type: 2}
+  - {fileID: 2100000, guid: 2e93b644e5593db498129d574d404471, type: 2}
+  - {fileID: 2100000, guid: 104382528dfd6e34d8e8e27a8591ec05, type: 2}
+  - {fileID: 2100000, guid: b0b1dc324cdcda44fb5d6a2b83a3d6c9, type: 2}
+  - {fileID: 2100000, guid: 1944b3ff4bb97fc499b3e2ffc4891a1e, type: 2}
+  - {fileID: 2100000, guid: f149132bcc755b74da46890bd4ad1809, type: 2}
+  - {fileID: 2100000, guid: 88161faa45df39648ae77a6686206067, type: 2}
+  - {fileID: 2100000, guid: 2cc5c320e24ec9b488ecc2c0393976b4, type: 2}
+  - {fileID: 2100000, guid: 62670204ed35a0141966ca358617a985, type: 2}
+  - {fileID: 2100000, guid: d4205e72bbe406b47baef5110805b0a3, type: 2}
   WeaponEnemys:
   - Hammer
   - Knife
@@ -46002,6 +46011,7 @@ MonoBehaviour:
   isDead: 0
   End: 0
   deathParticles: {fileID: 1429245591}
+  IsRotate: 0
   numOfAttacks: 1
   detectionRadius: 0.5
   weapon: {fileID: 337820490}
@@ -46015,6 +46025,7 @@ MonoBehaviour:
   localPosition: {x: 0, y: 0, z: 0}
   localRotation: {x: 0, y: 0, z: 0, w: 0}
   isCollidingWithWall: 0
+  CanAttack: 1
 --- !u!1 &1678766824 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 100000, guid: fa3b70e615b916346b1017e0e387ce03, type: 3}
@@ -46329,6 +46340,75 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!1001 &1692802712
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.37
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.537
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
+      propertyPath: m_Name
+      value: Zombie
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 415ccecab156fd74b9f0286485b17ed2, type: 3}
 --- !u!1 &1695079783
 GameObject:
   m_ObjectHideFlags: 0
@@ -56584,3 +56664,4 @@ SceneRoots:
   - {fileID: 366528081}
   - {fileID: 1686571836}
   - {fileID: 130905431}
+  - {fileID: 1692802712}

@@ -10,7 +10,7 @@ public class PlayerAttack : MonoBehaviour
     public bool isDead=false;
     public bool End=false;
     public ParticleSystem deathParticles;
-
+    public bool IsRotate=false;
     public int numOfAttacks = 1; // Số lượng tấn công
     public float detectionRadius = 0.1f; // Bán kính phát hiện
     public Transform weapon; // Đối tượng vũ khí
@@ -26,6 +26,7 @@ public class PlayerAttack : MonoBehaviour
     public Vector3 localPosition;
     public Quaternion localRotation ;
     public bool isCollidingWithWall = false;
+    public bool CanAttack; 
     private void Awake()
     {
         instance = this;
@@ -76,7 +77,7 @@ public class PlayerAttack : MonoBehaviour
     {
         if (isDead)
         {
-            weapon.GetComponent<Rigidbody>().isKinematic = true;
+            //weapon.GetComponent<Rigidbody>().isKinematic = true;
             transform.gameObject.GetComponent<PlayerAttack>().enabled= false;
             //transform.GetComponent<Rigidbody>().gameObject.SetActive(false);
             //transform.GetComponent<BoxCollider>().gameObject.SetActive(false);
@@ -131,7 +132,7 @@ public class PlayerAttack : MonoBehaviour
         }
         enemy = CheckEnemy(); // Kiểm tra kẻ địch gần nhất
 
-        if (enemy != null && numOfAttacks > 0 && !PlayerMovement.instance.isMoving&&enemy.tag!="EnemyDie")
+        if (enemy != null && numOfAttacks > 0 && !PlayerMovement.instance.isMoving&&enemy.tag!="EnemyDie"&&CanAttack)
         {
             //CheckEnemy().transform.parent.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
             numOfAttacks = 0;
@@ -188,13 +189,17 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
         anim.SetFloat("attack", 1); // Play attack animation
-        StartCoroutine(DelayedAttack(0.13f, enemy)); // T    ạo độ trễ khi tấn công
+        StartCoroutine(DelayedAttack(0.2f, enemy)); // T    ạo độ trễ khi tấn công
        
     }
 
+    private IEnumerator WaitAttack()
+    {
+        yield return new WaitForSeconds(1f);
+        CanAttack = true;
+    }
     private IEnumerator DelayedAttack(float delay, GameObject enemy)
     {
-        
         if (enemy == null)
         {
             Debug.LogWarning("Kẻ địch không còn tồn tại");
@@ -202,55 +207,54 @@ public class PlayerAttack : MonoBehaviour
             yield break;
         }
 
-        enemyTarget = enemy.transform;// Find the enemy's "Armature"
-     
+        enemyTarget = enemy.transform; // Lưu mục tiêu của kẻ địch
 
-        Vector3 direction = (enemy.transform.position - transform.position).normalized; // Attack direction
-        Quaternion lookRotation = Quaternion.LookRotation(direction); // Rotation to face the enemy
-        float rotationSpeed = 4f; // Rotation speed
-        float rotationProgress = 0f; // Rotation progress
+        Vector3 direction = (enemy.transform.position - transform.position).normalized; // Hướng tấn công
+        Quaternion lookRotation = Quaternion.LookRotation(direction); // Xoay để hướng về kẻ địch
+        transform.rotation = lookRotation;
 
-        while (rotationProgress < 1f)
-        {
-            transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress); // Gradually rotate
-            rotationProgress += Time.deltaTime * rotationSpeed;
-            yield return null;
-        }
-
-        // Start delay before the attack
+        // Bắt đầu thời gian trì hoãn trước khi tấn công
         float elapsedDelay = 0f;
         while (elapsedDelay < delay)
         {
-            // Check if the player is moving during the delay
+            // Kiểm tra nếu nhân vật đang di chuyển trong thời gian chờ
             if (PlayerMovement.instance.isMoving)
             {
-                Debug.Log("Attack canceled due to player movement");
-                anim.SetFloat("attackMoving", 1); // Reset attack animation
-                //anim.SetFloat("attack", 0);
-                numOfAttacks = 1; // Reset the number of attacks
-                yield break; // Exit the coroutine
+                Debug.Log("Tấn công bị hủy do nhân vật đang di chuyển");
+                anim.SetFloat("attack", 0);
+                anim.SetFloat("attackMoving", 1); // Đặt lại trạng thái hoạt ảnh tấn công
+
+                numOfAttacks = 1; // Đặt lại số lần tấn công
+                yield break; // Thoát khỏi coroutine
             }
 
             elapsedDelay += Time.deltaTime;
             yield return null;
         }
 
-
-        // Perform the attack if the enemy target still exists
-        if (enemy.transform != null&&enemyTarget.tag!="DieEnemy")
+        // Kiểm tra lần cuối trước khi tấn công
+        if (PlayerMovement.instance.isMoving)
         {
-            PerformAttack(enemy.transform); // Perform the attack
+            Debug.Log("Tấn công bị hủy do nhân vật di chuyển ngay trước khi tấn công");
+            anim.SetFloat("attack", 0);
+            anim.SetFloat("attackMoving", 1); // Đặt lại trạng thái hoạt ảnh tấn công
+
+            numOfAttacks = 1; // Đặt lại số lần tấn công
+            yield break; // Thoát khỏi coroutine
+        }
+
+        // Thực hiện tấn công nếu mục tiêu vẫn còn tồn tại và không có tag "DieEnemy"
+        if (enemy.transform != null && enemyTarget.tag != "DieEnemy")
+        {
+            PerformAttack(enemy.transform); // Thực hiện tấn công
         }
         else
         {
             numOfAttacks = 1;
-
             Debug.LogWarning("Mục tiêu kẻ địch không còn tồn tại");
-          
         }
-
-        anim.SetFloat("attack", 0); // Reset animation after 0.9 seconds
     }
+
 
 
     private void PerformAttack(Transform enemyTarget)
@@ -291,7 +295,7 @@ public class PlayerAttack : MonoBehaviour
 
             weapon.GetComponent<BoxCollider>().enabled = true;
             weapon.localRotation = Quaternion.Euler(270, 0, 20);
-            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.14f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
+            StartCoroutine(RotateWeaponAroundYAxis(timeToReturn-0.17f)); // Thực hiện quay quanh trục Y            weapon.transform.rotation = Quaternion.Euler(270, 0, 90); // Đặt rotation cho vũ khí
 
             if (returnCoroutine != null)
             {
@@ -318,14 +322,23 @@ public class PlayerAttack : MonoBehaviour
         if (isDead)
         {
             transform.GetComponent<Rigidbody>().isKinematic = true;
-
             weapon.GetComponent<Rigidbody>().isKinematic = true;
         }
+
         Rigidbody weaponRb = weapon.GetComponent<Rigidbody>();
         float elapsedTime = 0f;
 
-        while (elapsedTime < delay)
+        // Tạo bản sao của vũ khí
+
+        // Xoá vũ khí gốc
+
+
+        //while (elapsedTime < delay)
+        //{
+        //    bool ischeck = weaponClone.GetComponent<PlayerDameSender>().check; // Kiểm tra điều kiện
+        while (elapsedTime < delay )
         {
+            
             bool ischeck = weapon.GetComponent<PlayerDameSender>().check; // Kiểm tra điều kiện
 
             if (ischeck) // Nếu ischeck trở thành true, dừng coroutine
@@ -337,9 +350,10 @@ public class PlayerAttack : MonoBehaviour
                 weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
                 weapon.GetComponent<BoxCollider>().enabled = false;
                 weapon.gameObject.layer = LayerMask.NameToLayer("Playerr");
-
+                IsRotate = false;
                 // Tăng scale của vũ khí khi trở về
-                weapon.localScale += new Vector3(1.1f, 1.1f, 1.1f);
+                weapon.localScale *= 1.1f; // Tăng scale lên 10% theo cả 3 trục
+
 
 
                 if (weaponRb != null)
@@ -357,20 +371,31 @@ public class PlayerAttack : MonoBehaviour
             yield return null;
         }
 
-        if (weapon != null)
+        GameObject weaponClone = Instantiate(weapon.gameObject, originalPosition, originalRotation);
+        weaponClone.transform.parent = originalWeaponParent; // Gán parent ban đầu cho bản sao vũ khí
+
+        Rigidbody weaponCloneRb = weaponClone.GetComponent<Rigidbody>();
+        weaponClone.GetComponent<BoxCollider>().enabled = false;
+        if (weaponCloneRb != null)
         {
-            weapon.parent = originalWeaponParent; // Gán lại parent ban đầu cho vũ khí
-            weapon.localPosition = originalPosition; // Đặt lại vị trí ban đầu của vũ khí
-            weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
+            weaponCloneRb.isKinematic = false; // Đặt isKinematic của Rigidbody thành true
+        }
 
-            // Tăng scale của vũ khí khi trở về
-            weapon.localScale += new Vector3(1.1f, 1.1f, 1.1f);
-
-            // Lấy component Rigidbody của vũ khí
-            if (weaponRb != null)
+        if (weaponClone != null)
+        {
+            weaponClone.transform.localPosition = originalPosition; // Đặt lại vị trí ban đầu của bản sao vũ khí
+            weaponClone.transform.localRotation = originalRotation; // Đặt lại góc quay ban đầu của bản sao vũ khí
+            IsRotate = false;
+            // Tăng scale của bản sao vũ khí khi trở về
+            //weaponClone.transform.localScale += new Vector3(1.1f, 1.1f, 1.1f);
+            //yield return new WaitForSeconds(0.001f);
+            Destroy(weapon.gameObject);
+            weapon = weaponClone.transform;
+            if (weaponCloneRb != null)
             {
-                weaponRb.isKinematic = true; // Đặt isKinematic của Rigidbody thành true
+                weaponCloneRb.isKinematic = true; // Đặt isKinematic của Rigidbody thành true
             }
+            anim.SetFloat("attack", 0);
         }
         else
         {
@@ -378,19 +403,23 @@ public class PlayerAttack : MonoBehaviour
         }
 
         numOfAttacks = 1; // Đặt lại số lần tấn công
+        CanAttack = false;
+        StartCoroutine(WaitAttack());
     }
+
     private IEnumerator RotateWeaponAroundYAxis(float duration)
     {
+        IsRotate = true;
         float elapsedTime = 0f;
 
-        while (elapsedTime < duration)
+        while (elapsedTime < duration && IsRotate)
         {
             // Quay vũ khí quanh trục Y với tốc độ nhất định
             weapon.Rotate(new Vector3(0,0,1), -torqueAmount * Time.deltaTime); // Xoay quanh trục Y
             elapsedTime += Time.deltaTime;
             yield return null; // Đợi cho đến khung hình tiếp theo
         }
-        weapon.localRotation = localRotation; // Đặt lại góc quay ban đầu của vũ khí
+        //weapon.localRotation = localRotation; // Đặt lại góc quay ban đầu của vũ khí
                                               // Đảm bảo vũ khí không còn xoay khi hết thời gian
 
     }

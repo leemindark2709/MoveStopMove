@@ -86,6 +86,7 @@ public class PlayerMovement : MonoBehaviour
             if (armature != null)
             {
                 armature.position += move;
+                PlayerAttack.instance.CanAttack = true;
 
                 // Move the Canvas to follow the Armature
                 Transform canvas = transform.Find("Canvas");
