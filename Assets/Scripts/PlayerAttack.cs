@@ -259,12 +259,12 @@ public class PlayerAttack : MonoBehaviour
 
     private void PerformAttack(Transform enemyTarget)
     {
-        if (enemyTarget == null)
-        {
-            numOfAttacks = 1;
-            Debug.Log("Mục tiêu kẻ địch null");
-            return;
-        }
+        //if (enemyTarget == null)
+        //{
+        //    numOfAttacks = 1;
+        //    Debug.Log("Mục tiêu kẻ địch null");
+        //    return;
+        //}
          localRotation = weapon.localRotation; // Lưu trữ góc quay hiện tại của vũ khí
 
 

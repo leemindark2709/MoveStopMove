@@ -20,6 +20,7 @@ public class CancelShopWeapon : MonoBehaviour
     }
     public void OnButtonClick()
     {
+        GameManager.Instance.PLayer.gameObject.SetActive(true);
         GameManager.Instance.checkShopWeapon = false;
         ShopWeapon.anchoredPosition = ShopWeaponDestination.anchoredPosition;
         //GameManager.Instance.ShopWeapon.gameObject.SetActive(false);

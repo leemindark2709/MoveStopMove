@@ -25,6 +25,8 @@ public class UnequipFullSet : MonoBehaviour
         FullSetSkinManager.instance.IsFullSet = FullSetSkinManager.instance.FullSetItemPosition[0];
         FullSetSkinManager.instance.ButtonFullSetItemChose = null;
         //HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
+        PlayerPrefs.SetString("IsFullSet", "NoneFullSet");
+        PlayerPrefs.Save();
         foreach (Transform Button in FullSetSkinManager.instance.FullSetItemButtons)
         {
             if (Button == FullSetSkinManager.instance.ButtonFullSetItemClick)

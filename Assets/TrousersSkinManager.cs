@@ -24,38 +24,32 @@ public class TrousersSkinManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+       
         Player = GameManager.Instance.PLayer;
-        pantsTransform = FindPositionHariItem("Pants");
-        if (pantsTransform != null)
-        {
-            // Kiểm tra nếu đối tượng "Pants" có Renderer
-            pantsRenderer = pantsTransform.GetComponent<Renderer>();
-            if (pantsRenderer != null)
-            {
-                // Gán material đầu tiên từ danh sách materials cho Pants
-                PantMaterial = materials[2];
-                pantsRenderer.material = PantMaterial;
-            }
-        }
-    }
-
-    private void Update()
-    {
-
-    }
-
-    private void Start()
-    {
-        // Sử dụng FindPositionHariItem để lấy đối tượng "Pants" và sau đó lấy Renderer
-      
-     
+        //pantsTransform = FindPositionHariItem("Pants");
+        //if (pantsTransform != null)
+        //{
+        //    // Kiểm tra nếu đối tượng "Pants" có Renderer
+        //    pantsRenderer = pantsTransform.GetComponent<Renderer>();
+        //    if (pantsRenderer != null)
+        //    {
+        //        // Gán material đầu tiên từ danh sách materials cho Pants
+        //        PantMaterial = materials[2];
+        //        pantsRenderer.material = PantMaterial;
+        //    }
+        //}
 
         int index = 0;
         foreach (Transform t in transform)
         {
+            Debug.Log(PlayerPrefs.GetString("Trousers", "Yealow"));
             t.Find("EquippedText").gameObject.SetActive(false);
-         
+            if (t.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("Trousers", "Yealow"))
+            {
+                ButtonTrousersItemChose = t;
+                t.Find("EquippedText").gameObject.SetActive(true);
+            }
+
             if (index != 0)
             {
                 t.Find("Border").gameObject.SetActive(false);
@@ -70,7 +64,36 @@ public class TrousersSkinManager : MonoBehaviour
 
         }
 
-        IsTrousers = TrousersSkinManager.instance.materials[0];
+        IsTrousers = FindMaterialByName( PlayerPrefs.GetString("IsTrousers", "Yealow"));
+        instance = this;
+    }
+
+    private void Update()
+    {
+
+    }
+    public Material FindMaterialByName(string materialName)
+    {
+        // Duyệt qua tất cả các material trong mảng
+        foreach (Material mat in materials)
+        {
+            // Kiểm tra nếu tên của material trùng khớp với tên cần tìm
+            if (mat.name == materialName)
+            {
+                return mat; // Trả về material tìm được
+            }
+        }
+
+        // Nếu không tìm thấy material nào, trả về null
+        return null;
+    }
+
+    private void Start()
+    {
+        // Sử dụng FindPositionHariItem để lấy đối tượng "Pants" và sau đó lấy Renderer
+      
+     
+
     }
     public void DisableEquippedText()
     {
@@ -110,6 +133,7 @@ public class TrousersSkinManager : MonoBehaviour
         }
 
     }
+
     public void enableAll()
     {
         CharSkinTrouserManager.instance.SelectTrousersItem.gameObject.SetActive(true);

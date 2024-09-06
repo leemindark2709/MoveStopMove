@@ -417,7 +417,7 @@ MonoBehaviour:
   isClickButtonItem: 0
   nameItem: Rau
   IsUnlock: 1
-  Lock: {fileID: 0}
+  Lock: {fileID: 1596765574}
   Price: 0
 --- !u!1 &13453390
 GameObject:
@@ -10652,7 +10652,7 @@ MonoBehaviour:
   isClickButtonItem: 0
   nameItem: headphone
   IsUnlock: 0
-  Lock: {fileID: 0}
+  Lock: {fileID: 870424278}
   Price: 500
 --- !u!1 &414900705
 GameObject:
@@ -16288,7 +16288,7 @@ MonoBehaviour:
   isClickButtonItem: 0
   nameItem: Arrow
   IsUnlock: 0
-  Lock: {fileID: 0}
+  Lock: {fileID: 75952978}
   Price: 500
 --- !u!1 &669686989 stripped
 GameObject:
@@ -22116,7 +22116,7 @@ MonoBehaviour:
   isClickButtonItem: 0
   nameItem: Crown
   IsUnlock: 0
-  Lock: {fileID: 0}
+  Lock: {fileID: 1527313227}
   Price: 500
 --- !u!1 &797099890
 GameObject:
@@ -23174,7 +23174,7 @@ MonoBehaviour:
   MainMap: {fileID: 1324182732}
   ZomBieMap: {fileID: 1238721306}
   PlayerCamera: {fileID: 1200386163}
-  Gold: 0
+  Gold: 5000
   namePlayer: {fileID: 589887627}
   checkShopWeapon: 0
   enemyPrefab: {fileID: 3671973704773692173, guid: 4917dde50baaff345923bc5d46bedfda, type: 3}
@@ -23231,10 +23231,10 @@ MonoBehaviour:
   SettingTouch: {fileID: 0}
   Home: {fileID: 0}
   Shop: {fileID: 0}
-  HairSkin: {fileID: 0}
-  TrousersSkin: {fileID: 0}
-  ShieldSkin: {fileID: 0}
-  FullSetSkin: {fileID: 0}
+  HairSkin: {fileID: 1570146331}
+  TrousersSkin: {fileID: 1382398088}
+  ShieldSkin: {fileID: 1120952931}
+  FullSetSkin: {fileID: 414900706}
   TopButton: {fileID: 0}
   PanelHairButton: {fileID: 0}
   PanelTrousersButton: {fileID: 0}
@@ -29669,8 +29669,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ffa2eb8adf4e8741b17fac98f223fda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  SelectShieldItem: {fileID: 0}
-  UnequipShieldItem: {fileID: 0}
+  SelectShieldItem: {fileID: 1705668642}
+  UnequipShieldItem: {fileID: 1375273320}
 --- !u!114 &1120952933
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29684,7 +29684,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ShieldItemButtons: []
-  ShieldItemPosition: []
+  ShieldItemPosition:
+  - {fileID: 531307104}
+  - {fileID: 248565633}
+  - {fileID: 492584185}
   Player: {fileID: 0}
   CheckShield: {fileID: 248565633}
   IsShield: {fileID: 492584185}
@@ -35157,8 +35160,8 @@ MonoBehaviour:
   IsTrousers: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
   ButtonTrousersItemClick: {fileID: 0}
   PantMaterial: {fileID: 2100000, guid: 63b4396841ae85447b8f6efb24a925f6, type: 2}
-  pantsRenderer: {fileID: 0}
-  pantsTransform: {fileID: 0}
+  pantsRenderer: {fileID: 1564613753}
+  pantsTransform: {fileID: 1564613754}
   ButtonTrousersItemChose: {fileID: 0}
 --- !u!114 &1382398090
 MonoBehaviour:
@@ -43581,9 +43584,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isClickButtonItem: 0
-  nameItem: 
+  nameItem: PolkaDots
   IsUnlock: 0
-  Lock: {fileID: 0}
+  Lock: {fileID: 13453391}
   Price: 500
   material: {fileID: 2100000, guid: 690c0272b8f805e4c9586ca3d26fe614, type: 2}
 --- !u!1001 &1559961562
@@ -43814,6 +43817,16 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564367352}
   m_CullTransparentMesh: 1
+--- !u!137 &1564613753 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -529177695146175607, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 791231344}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1564613754 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 992432175730860860, guid: 38f9296dc39c27647a0119314baf12a2, type: 3}
+  m_PrefabInstance: {fileID: 791231344}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1567066249
 GameObject:
   m_ObjectHideFlags: 0
@@ -50150,9 +50163,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   isClickButtonItem: 0
-  nameItem: 
+  nameItem: Batman
   IsUnlock: 0
-  Lock: {fileID: 0}
+  Lock: {fileID: 1780364258}
   Price: 500
   material: {fileID: 2100000, guid: fd73aab4b004df54b8f65a1baf669406, type: 2}
 --- !u!1 &1840687307 stripped

@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -19,6 +19,8 @@ public class SelectTrousers : MonoBehaviour
         ShieldSkinManager.instance.disableAllPanel();
         ShieldSkinManager.instance.DisableEquippedText();
         ShieldSkinManager.instance.IsShield = ShieldSkinManager.instance.ShieldItemPosition[2];
+        PlayerPrefs.SetString("IsShield", "NoneShield");
+        PlayerPrefs.Save();
         ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[1];
         ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
         ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
@@ -32,6 +34,8 @@ public class SelectTrousers : MonoBehaviour
         HairSkinManager.instance.disableAllPanel();
         HairSkinManager.instance.DisableEquippedText();
         HairSkinManager.instance.IsHair = HairSkinManager.instance.HairItemPosition[4];
+        PlayerPrefs.SetString("IsHair", "NoneHair");
+        PlayerPrefs.Save();
         HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
         HairSkinManager.instance.IsHair.gameObject.SetActive(false);
         HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
@@ -46,6 +50,8 @@ public class SelectTrousers : MonoBehaviour
         FullSetSkinManager.instance.DisableEquippedText(); // Changed HairSkinManager to FullSetSkinManager
         FullSetSkinManager.instance.IsFullSet = FullSetSkinManager.instance.FullSetItemPosition[0];
         FullSetSkinManager.instance.CheckFullSet = FullSetSkinManager.instance.FullSetItemPosition[1];
+        PlayerPrefs.SetString("IsFullSet", "NoneFullSet");
+        PlayerPrefs.Save();
         FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = GameManager.Instance.Yeallow;
         FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(false); // Changed IsHair to IsFullSet
         FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(false); // Changed CheckHair to CheckFullSet
@@ -73,9 +79,27 @@ public class SelectTrousers : MonoBehaviour
         {
             if (Button == TrousersSkinManager.instance.ButtonTrousersItemClick)
             {
+
+                TrousersSkinManager.instance.ButtonTrousersItemClick.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                PlayerPrefs.SetString("IsTrousers", Button.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem);
+                PlayerPrefs.Save();
+                Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yealow"));
                 //TrousersSkinManager.instance.FindPositionHariItem(Button.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem).gameObject.SetActive(true);
                 TrousersSkinManager.instance.ButtonTrousersItemChose = Button;
                 Button.Find("EquippedText").gameObject.SetActive(true);
+                Transform lockTransform = Button.Find("Lock");
+
+                if (lockTransform == null)
+                {
+                    Debug.Log("Lỗi: Không tìm thấy đối tượng Lock");
+                }
+                else
+                {
+                    // Nếu tìm thấy, đặt đối tượng "Lock" không hoạt động
+                    lockTransform.gameObject.SetActive(false);
+                }
+
+
                 Button.Find("Border").gameObject.SetActive(true);
                 TrousersSkinManager.instance.CheckTrousers = Button.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().material;
                 TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.CheckTrousers;

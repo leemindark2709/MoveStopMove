@@ -23,6 +23,12 @@ public class HairSkinManager : MonoBehaviour
         {
             t.Find("EquippedText").gameObject.SetActive(false);
             HairItemButtons.Add(t);
+            if (t.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem== PlayerPrefs.GetString("IsHair", "NoneHair"))
+            {
+                ButtonHairItemChose = t;
+                t.Find("EquippedText").gameObject.SetActive(true);
+
+            }
             if (index != 0)
             {
                 t.Find("Border").gameObject.SetActive(false);
@@ -37,7 +43,7 @@ public class HairSkinManager : MonoBehaviour
         HairItemPosition.Add(FindPositionHariItem("Rau"));
         HairItemPosition.Add(FindPositionHariItem("NoneHair"));
         DisableHair();
-        IsHair = FindPositionHariItem("NoneHair");
+        IsHair = FindPositionHariItem(PlayerPrefs.GetString("IsHair", "NoneHair"));
         if (transform.name=="HairSkin")
         {
             GameManager.Instance.HairSkin.GetComponent<HairSkinManager>().ButtonHairItemClick

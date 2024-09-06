@@ -34,7 +34,7 @@ public class TargetIndicator : MonoBehaviour
             Transform imageTransform = OffScreenTargetIndicator.transform.Find("Image");
             Image offScreenImage = imageTransform.GetComponent<Image>();
 
-            Transform targetImageTransform = target.transform.Find("Canvas").Find("UIPoint");
+            Transform targetImageTransform = target.transform.Find("Armature").Find("Canvas").Find("UIPoint");
             if (targetImageTransform != null)
             {
                 Image targetImage = targetImageTransform.GetComponent<Image>();

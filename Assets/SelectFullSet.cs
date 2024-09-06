@@ -22,6 +22,8 @@ public class SelectFullSet : MonoBehaviour
         HairSkinManager.instance.disableAllPanel();
         HairSkinManager.instance.DisableEquippedText();
         HairSkinManager.instance.IsHair = HairSkinManager.instance.HairItemPosition[4];
+        PlayerPrefs.SetString("IsHair", "NoneHair");
+        PlayerPrefs.Save();
         HairSkinManager.instance.CheckHair = HairSkinManager.instance.HairItemPosition[3];
         HairSkinManager.instance.IsHair.gameObject.SetActive(false);
         HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
@@ -39,6 +41,10 @@ public class SelectFullSet : MonoBehaviour
         TrousersSkinManager.instance.DisableEquippedText();
         TrousersSkinManager.instance.IsTrousers = TrousersSkinManager.instance.materials[0];
         TrousersSkinManager.instance.CheckTrousers = TrousersSkinManager.instance.materials[0];
+
+        PlayerPrefs.SetString("IsTrousers", "Yealow");
+        PlayerPrefs.Save();
+
         TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.materials[0];
         TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.TrousersItemButtons[0];
         TrousersSkinManager.instance.ButtonTrousersItemChose = null;
@@ -51,6 +57,8 @@ public class SelectFullSet : MonoBehaviour
         ShieldSkinManager.instance.disableAllPanel();
         ShieldSkinManager.instance.DisableEquippedText();
         ShieldSkinManager.instance.IsShield = ShieldSkinManager.instance.ShieldItemPosition[2];
+        PlayerPrefs.SetString("IsShield", "NoneShield");
+        PlayerPrefs.Save();
         ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[1];
         ShieldSkinManager.instance.IsShield.gameObject.SetActive(false);
         ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
@@ -70,8 +78,21 @@ public class SelectFullSet : MonoBehaviour
         {
             if (Button == FullSetSkinManager.instance.ButtonFullSetItemClick)
             {
+                FullSetSkinManager.instance.FindPositionFullSetItem(Button.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().nameItem).gameObject.SetActive(true);
+                PlayerPrefs.SetString("IsFullSet", Button.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().nameItem);
+                PlayerPrefs.Save();
                 FullSetSkinManager.instance.ButtonFullSetItemChose = Button;
                 Button.Find("EquippedText").gameObject.SetActive(true);
+                Button.Find("Border").gameObject.SetActive(true);
+                FullSetSkinManager.instance.CheckFullSet = FullSetSkinManager.instance.FindPositionFullSetItem(Button.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().nameItem);
+
+                FullSetSkinManager.instance.CheckFullSet.gameObject.SetActive(true);
+                FullSetSkinManager.instance.IsFullSet = FullSetSkinManager.instance.CheckFullSet;
+            }
+            else
+            {
+                Button.Find("EquippedText").gameObject.SetActive(false);
+                Button.Find("Border").gameObject.SetActive(false);
             }
 
         }

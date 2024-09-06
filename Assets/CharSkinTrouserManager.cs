@@ -17,7 +17,25 @@ public class CharSkinTrouserManager : MonoBehaviour
     {
         SelectTrousersItem = GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").transform;
         UnequipTrousersItem = GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").transform;
-        UnequipTrousersItem.gameObject.SetActive(false);
+        ADSTrousersItem = GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").transform;
+        GoldTrousersItem = GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").transform;
+    
 
+
+        if (TrousersSkinManager.instance.IsTrousers != TrousersSkinManager.instance.materials[0])
+        {
+
+            UnequipTrousersItem.gameObject.SetActive(true);
+            SelectTrousersItem.gameObject.SetActive(false);
+            ADSTrousersItem.gameObject.SetActive(false);
+            GoldTrousersItem.gameObject.SetActive(false);
+        }
+        else
+        {
+            UnequipTrousersItem.gameObject.SetActive(false);
+            SelectTrousersItem.gameObject.SetActive(true);
+            ADSTrousersItem.gameObject.SetActive(false);
+            GoldTrousersItem.gameObject.SetActive(false);
+        }
     }
 }

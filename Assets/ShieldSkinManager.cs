@@ -22,6 +22,7 @@ public class ShieldSkinManager : MonoBehaviour
         foreach (Transform t in transform)
         {
             t.Find("EquippedText").gameObject.SetActive(false);
+            ButtonShieldItemChose = t;
             ShieldItemButtons.Add(t);
             if (index != 0)
             {
@@ -34,7 +35,7 @@ public class ShieldSkinManager : MonoBehaviour
         ShieldItemPosition.Add(FindPositionShieldItem("ShieldCaptain"));
         ShieldItemPosition.Add(FindPositionShieldItem("NoneShield"));
         DisableShield();
-        IsShield = FindPositionShieldItem("NoneShield");
+        IsShield = FindPositionShieldItem((PlayerPrefs.GetString("IsShield", "NoneHair")));
 
         if (transform.name == "ShieldSkin")
         {

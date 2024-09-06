@@ -188,7 +188,40 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Gold = 5000;
+        Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+        GoldHome = Home.GetComponent<Home>().Gold;
+        HairSkin.GetComponent<HairSkinManager>().IsHair = FindChildWithName(PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+        FindChildWithName(PLayer, PlayerPrefs.GetString("IsHair", "NoneHair")).gameObject.SetActive(true);
+
+
+
+        FindChildWithName(PLayer, "Pants").gameObject.GetComponent<SkinnedMeshRenderer>().sharedMesh = Pants;
+        TrousersSkin.GetComponent<TrousersSkinManager>().IsTrousers = TrousersSkin.GetComponent<TrousersSkinManager>().FindMaterialByName(PlayerPrefs.GetString("IsTrousers", "Yealow"));
+        FindChildWithName(PLayer,"Pants").gameObject.GetComponent<SkinnedMeshRenderer>().material= TrousersSkin.GetComponent<TrousersSkinManager>().IsTrousers;
+        Gold = PlayerPrefs.GetInt("CountGold", 5000); // Đọc cấp độ nhân vật
+
+        FindChildWithName(PLayer, PlayerPrefs.GetString("IsShield", "NoneHair")).gameObject.SetActive(true);
+
+        if (PlayerPrefs.GetString("IsFullSet", "NoneFullSet")!= "NoneFullSet")
+        {
+            FullSetSkin.GetComponent<FullSetSkinManager>().IsFullSet = FindChildWithName(PLayer, PlayerPrefs.GetString("IsFullSet", "NoneFullSet"));
+            FindChildWithName(PLayer, PlayerPrefs.GetString("IsFullSet", "NoneFullSet")).gameObject.SetActive(true);
+            foreach (Transform item in FullSetSkin.GetComponent<FullSetSkinManager>().FullSetItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().nameItem == PlayerPrefs.GetString("IsFullSet", "NoneFullSet"))
+                {
+                    FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = item.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().material;
+                    FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
+                }
+            }
+
+        }
+
+
+
+
+
+
         TurnOfComponentPlayer();
         SetUpCamera();
         isStart = false;
@@ -218,7 +251,7 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        GoldHome  = Home.GetComponent<Home>().Gold;
+       
         GoldHome.transform.GetComponent<TextMeshProUGUI>().text = Gold.ToString();
         // Check if the player is dead
       
@@ -298,20 +331,21 @@ public class GameManager : MonoBehaviour
 
         ////////////////////////////////////Skin///////////////////////////////
         Transform shadingGroup = spawnedEnemy.transform.Find("Armature").Find("initialShadingGroup1");
+        spawnedEnemy.transform.Find("Armature").localScale = PLayer.transform.Find("Armature").localScale;
         SkinnedMeshRenderer renderer = shadingGroup.GetComponent<SkinnedMeshRenderer>();
                 // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
                 Material randomMaterial = GetNextMaterial();
                 if (randomMaterial != null)
                 {
                     renderer.material = randomMaterial;
-                    spawnedEnemy.transform.Find("Canvas").Find("UIPoint").GetComponent<Image>().color=randomMaterial.color;
+                    spawnedEnemy.transform.Find("Armature").Find("Canvas").Find("UIPoint").GetComponent<Image>().color=randomMaterial.color;
                 }
         /////////////////////////////////Weapon///////////////////////////////////////
         RandomWeapon(spawnedEnemy);
         ///////////////////////////////////Skin/////////////////////////////////////
         RandomSkin(spawnedEnemy);
         spawnedEnemy.GetComponent<EnemyMoving>().name = "Enemy" + NumEnemySpawn;
-        spawnedEnemy.transform.Find("Canvas").Find("Name").GetComponent<TextMeshProUGUI>().text = "Enemy" + NumEnemySpawn;
+        spawnedEnemy.transform.Find("Armature").Find("Canvas").Find("Name").GetComponent<TextMeshProUGUI>().text = "Enemy" + NumEnemySpawn;
 
 
 

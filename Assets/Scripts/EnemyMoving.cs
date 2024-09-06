@@ -28,7 +28,8 @@ public class EnemyMoving : MonoBehaviour
     public int torqueAmount;
     public Quaternion localRotation;
     private bool canUpdateMovePoint = true;
-    public bool isAttack=false;
+    public bool isAttack = false;
+    public Transform IsCheckEnemy;
 
     void Start()
     {
@@ -62,12 +63,12 @@ public class EnemyMoving : MonoBehaviour
     {
         if (transform.Find("Armature").gameObject == PlayerAttack.instance.enemy)
         {
-            transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = true;
+            IsCheckEnemy .gameObject.SetActive(true);
 
         }
         else
         {
-            transform.Find("Canvas").Find("IsCheckEnemy").GetComponent<Image>().enabled = false;
+            IsCheckEnemy.gameObject.SetActive(false);
         }
         //if (CheckEnemy() != null)
         //{
@@ -275,19 +276,19 @@ public class EnemyMoving : MonoBehaviour
 
             if (enemyTarget != null)
             {
-                Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
+                 direction = (enemyTarget.position - Weapon.position).normalized;
                 direction.y = 0;
                 Quaternion lookRotation = Quaternion.LookRotation(direction);
                 float rotationSpeed = 1.8f;
                 float rotationProgress = 0f;
 
-                transform.rotation = lookRotation;  
-                //while (rotationProgress < 0.95f)
-                //{
-                //    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
-                //    rotationProgress += Time.deltaTime * rotationSpeed;
-                //    yield return null;
-                //}
+                //transform.rotation = lookRotation;  
+                while (rotationProgress < 0.5f)
+                {
+                    transform.rotation = Quaternion.Slerp(transform.rotation, lookRotation, rotationProgress);
+                    rotationProgress += Time.deltaTime * rotationSpeed;
+                    yield return null;
+                }
 
                 if (!isDead)
                 {
@@ -316,11 +317,11 @@ public class EnemyMoving : MonoBehaviour
            
             Vector3 localPosition = Weapon.localPosition;
             localRotation = Weapon.localRotation;
-            direction = (enemyTarget.position - Weapon.position).normalized;
-            direction.y = 0;  // Ignore the Y axis
+            //direction = (enemyTarget.position - Weapon.position).normalized;
+            //direction.y = 0;  // Ignore the Y axis
 
-            //if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon=="Hammer")
-            //{
+            if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon == "Hammer")
+            {
                 Weapon.transform.rotation = Quaternion.Euler(0, 0, 90); // Đặt rotation cho vũ khí
                 Weapon.parent = null;
                 Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
@@ -328,7 +329,7 @@ public class EnemyMoving : MonoBehaviour
                 weaponRb.velocity = Vector3.zero;
                 weaponRb.angularVelocity = Vector3.zero;
 
-                float forceMagnitude = 0.9f;
+                float forceMagnitude = 1f;
                 float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
                 float weaponSpeed = forceMagnitude;
 
@@ -340,56 +341,59 @@ public class EnemyMoving : MonoBehaviour
                 StartCoroutine(RotateWeaponAroundYAxis(timeToReturn));
                 Weapon.GetComponent<BoxCollider>().enabled = true;
                 //weaponRb.AddTorque(new Vector3(0, 1000000000000f, 0));
-            //}
-            //else if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon == "Knife")
-            //{
-            //    // Tính toán hướng từ Weapon tới enemyTarget
-            //    Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
+            }
+            else if (Weapon.gameObject.GetComponent<DameSender>().TypeWeapon == "Knife")
+            {
+                // Tính toán hướng từ Weapon tới enemyTarget
+                Vector3 direction = (enemyTarget.position - Weapon.position).normalized;
+                direction.y = 0.016f;
+                // Loại bỏ parent của Weapon
+                Weapon.parent = null;
 
-            //    // Loại bỏ parent của Weapon
-            //    Weapon.parent = null;
+                // Tắt kiểm tra cây
+                Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
 
-            //    // Tắt kiểm tra cây
-            //    Weapon.gameObject.GetComponent<DameSender>().checkTree = false;
+                // Khai báo và lấy Rigidbody từ Weapon
+                weaponRb = Weapon.GetComponent<Rigidbody>();
+                if (weaponRb != null) // Kiểm tra nếu Rigidbody tồn tại
+                {
+                    weaponRb.isKinematic = false;
+                    weaponRb.velocity = Vector3.zero;
+                    weaponRb.angularVelocity = Vector3.zero;
 
-            //    // Khai báo và lấy Rigidbody từ Weapon
-            //     weaponRb = Weapon.GetComponent<Rigidbody>();
-            //    if (weaponRb != null) // Kiểm tra nếu Rigidbody tồn tại
-            //    {
-            //        weaponRb.isKinematic = false;
-            //        weaponRb.velocity = Vector3.zero;
-            //        weaponRb.angularVelocity = Vector3.zero;
+                    // Định nghĩa độ lớn lực
+                    float forceMagnitude = 1f;
 
-            //        // Định nghĩa độ lớn lực
-            //        float forceMagnitude = 1f;
+                    // Tính khoảng cách và tốc độ
+                    float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
+                    float weaponSpeed = forceMagnitude;
 
-            //        // Tính khoảng cách và tốc độ
-            //        float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
-            //        float weaponSpeed = forceMagnitude;
+                    // Tính thời gian quay lại (không được sử dụng ở đây nhưng bao gồm để đầy đủ)
+                    timeToReturn = distance / weaponSpeed;
 
-            //        // Tính thời gian quay lại (không được sử dụng ở đây nhưng bao gồm để đầy đủ)
-            //        timeToReturn = distance / weaponSpeed;
+                    // Áp dụng lực vào Weapon
+                    weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
 
-            //        // Áp dụng lực vào Weapon
-            //        weaponRb.AddForce(direction * forceMagnitude, ForceMode.Impulse);
+                    // Đặt layer của Weapon thành Default
+                    Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
 
-            //        // Đặt layer của Weapon thành Default
-            //        Weapon.gameObject.layer = LayerMask.NameToLayer("Default");
+                    // Tạo một rotation sao cho trục âm Y của Weapon hướng về phía mục tiêu
+                    Quaternion targetRotation = Quaternion.LookRotation(-direction, Vector3.up);
 
-            //        // Tạo một rotation sao cho trục âm Y của Weapon hướng về phía mục tiêu
-            //        Quaternion targetRotation = Quaternion.LookRotation(-direction, Vector3.up);
+                    // Cập nhật rotation của Weapon
+                    Weapon.rotation = targetRotation;
 
-            //        // Cập nhật rotation của Weapon
-            //        Weapon.localRotation = targetRotation;
+                    // Quay thêm 90 độ theo trục X
+                    Weapon.Rotate(90, 0, 0);
 
-            //        // Bật collider
-            //        Weapon.GetComponent<BoxCollider>().enabled = true;
-            //    }
-            //    else
-            //    {
-            //        Debug.LogError("Rigidbody component not found on Weapon.");
-            //    }
-            //}
+                    // Bật collider
+                    Weapon.GetComponent<BoxCollider>().enabled = true;
+                }
+                else
+                {
+                    Debug.LogError("Rigidbody component not found on Weapon.");
+                }
+            }
 
 
             StartCoroutine(ReturnToParentAfterDelay(timeToReturn, localPosition, localRotation));

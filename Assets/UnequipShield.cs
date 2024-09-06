@@ -10,6 +10,9 @@ public class UnequipShield : MonoBehaviour
         CharSkinManagerShield.instance.UnequipShieldItem.gameObject.SetActive(false);
         ShieldSkinManager.instance.DisableShield();
         ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.FindPositionShieldItem("NoneShield");
+
+        PlayerPrefs.SetString("IsShield", "NoneShield");
+        PlayerPrefs.Save();
         ShieldSkinManager.instance.IsShield = ShieldSkinManager.instance.FindPositionShieldItem("NoneShield");
         //HairSkinManager.instance.CheckHair.gameObject.SetActive(true);
         foreach (Transform Button in ShieldSkinManager.instance.ShieldItemButtons)

@@ -69,6 +69,62 @@ public class SkinButton : MonoBehaviour
         if (!IsHairDiffirenceNone() && !IsTrousersDiffirenceNone() && !IsShieldDiffirenceNone() && !IsFullSetDiffirenceNone())
         {
 
+
+            foreach (Transform item in HairSkinManager.instance.HairItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem == PlayerPrefs.GetString("IsHair", "NoneHair"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+            foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem == PlayerPrefs.GetString("IsShield", "NoneShield"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsShield", "NoneShield"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem, 0) == 1)
+                //{
+
+                //    item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().IsUnlock = true;
+                //}
+                //if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                //{
+                //    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                //}
+            }
+            foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("IsTrousers", "Yellow"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yellow"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+
             if (HairSkinManager.instance.CheckHair == null)
             {
 
@@ -105,17 +161,18 @@ public class SkinButton : MonoBehaviour
                 GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(true);
                 GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
                 GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
+                Debug.Log("loi r");
             }
-            if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
-            {
-                Debug.Log("okokokokok");
-                ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
-                HairSkinManager.instance.IsHair.gameObject.SetActive(true);
-                GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
-                GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+            //if (HairSkinManager.instance.IsHair != HairSkinManager.instance.HairItemPosition[4])
+            //{
+            //    Debug.Log("okokokokok");
+            //    ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
+            //    HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+            //    GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            //    GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
 
 
-            }
+            //}
             GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
@@ -135,32 +192,66 @@ public class SkinButton : MonoBehaviour
             //CharSkinManager.instance.GoldHairItem.gameObject.SetActive(false);
 
         }
-        if (IsHairDiffirenceNone())
-        {
-            GameManager.Instance.HairSkin.gameObject.SetActive(true);
-            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
-            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
-            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
-
-            GameManager.Instance.PanelHairButton.gameObject.SetActive(false);
-            GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
-            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
-            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
-
-            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
-            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
-            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
-            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
-            enableAllPanel();
-            HairSkinManager.instance.ButtonHairItemChose.Find("Border").gameObject.SetActive(true);
-            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
-            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
-            GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
-            GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
-
-        }
         if (IsTrousersDiffirenceNone())
         {
+
+            foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("IsTrousers", "Yellow"))
+                {
+                    TrousersSkinManager.instance.ButtonTrousersItemChose = item;
+                    item.Find("EquippedText").gameObject.SetActive(true);
+                    Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yellow"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+            foreach (Transform item in HairSkinManager.instance.HairItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem == PlayerPrefs.GetString("IsHair", "NoneHair"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                }
+            } 
+            foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem == PlayerPrefs.GetString("IsShield", "NoneShield"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsShield", "NoneShield"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem, 0) == 1)
+                //{
+
+                //    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                //}
+                //if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                //{
+                //    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                //}
+            }
             GameManager.Instance.HairSkin.gameObject.SetActive(false);
             GameManager.Instance.TrousersSkin.gameObject.SetActive(true);
             GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
@@ -176,15 +267,143 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
             enableAllPanel();
+            TrousersSkinManager.instance.ButtonTrousersItemClick = TrousersSkinManager.instance.ButtonTrousersItemChose;
+            TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.IsTrousers;
+
             TrousersSkinManager.instance.ButtonTrousersItemChose.Find("Border").gameObject.SetActive(true);
-            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(true);
+            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
             GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
             GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(false);
             GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(false);
 
         }
+        if (IsHairDiffirenceNone())
+        {
+            foreach (Transform item in HairSkinManager.instance.HairItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem == PlayerPrefs.GetString("IsHair", "NoneHair"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+            foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("IsTrousers", "Yealow"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yealow"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+
+            GameManager.Instance.HairSkin.gameObject.SetActive(true);
+            GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
+            GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSkin.gameObject.SetActive(false);
+
+            GameManager.Instance.PanelHairButton.gameObject.SetActive(false);
+            GameManager.Instance.PanelShieldButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelFullSetButton.gameObject.SetActive(true);
+            GameManager.Instance.PanelTrousersButton.gameObject.SetActive(true);
+
+            GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
+            GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
+            enableAllPanel();
+            HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.ButtonHairItemChose;
+           HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+           
+            HairSkinManager.instance.ButtonHairItemChose.Find("Border").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
+            GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("GoldHairItem").gameObject.SetActive(false);
+            GameManager.Instance.HairSelectUnequip.Find("ADSHairItem").gameObject.SetActive(false);
+
+            Debug.Log("duoc ma ta");
+
+        }
+      
         if (IsShieldDiffirenceNone())
         {
+            foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem == PlayerPrefs.GetString("IsShield", "NoneShield"))
+                {
+                    ShieldSkinManager.instance.ButtonShieldItemChose = item;
+                    item.Find("EquippedText").gameObject.SetActive(true);
+                    Debug.Log(PlayerPrefs.GetString("IsShield", "NoneShield"));
+                    ShieldSkinManager.instance.IsShield.gameObject.SetActive(true);
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+
+                }
+
+                //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                //{
+
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                //}
+                //if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                //{
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                //}
+            }
+            foreach (Transform item in HairSkinManager.instance.HairItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem == PlayerPrefs.GetString("IsHair", "NoneHair"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+            foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("IsTrousers", "Yealow"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yealow"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
             GameManager.Instance.HairSkin.gameObject.SetActive(false);
             GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
             GameManager.Instance.ShieldSkin.gameObject.SetActive(true);
@@ -201,10 +420,98 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
             enableAllPanel();
             ShieldSkinManager.instance.ButtonShieldItemChose.Find("Border").gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").gameObject.SetActive(true);
+            GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").gameObject.SetActive(false);
+
 
         }
         if (IsFullSetDiffirenceNone())
         {
+            foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemShieldSkin>().nameItem == PlayerPrefs.GetString("IsShield", "NoneShield"))
+                {
+                    //ShieldSkinManager.instance.ButtonShieldItemChose = item;
+                    //item.Find("EquippedText").gameObject.SetActive(true);
+                    //Debug.Log(PlayerPrefs.GetString("IsShield", "NoneShield"));
+                    //ShieldSkinManager.instance.IsShield.gameObject.SetActive(true);
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+
+                }
+
+                //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                //{
+
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                //}
+                //if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                //{
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                //}
+            }
+            foreach (Transform item in FullSetSkinManager.instance.FullSetItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().nameItem == PlayerPrefs.GetString("IsFullSet", "NoneFullSet"))
+                {
+                    FullSetSkinManager.instance.ButtonFullSetItemChose = item;
+                    item.Find("EquippedText").gameObject.SetActive(true);
+                    Debug.Log(PlayerPrefs.GetString("IsShield", "NoneShield"));
+                    FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(true);
+                 
+                        FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").GetComponent<Renderer>().material = item.Find("BackGround").GetComponent<ButtonItemFullSetSkin>().material;
+                        FullSetSkinManager.instance.FindPositionFullSetItem("Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
+                 
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+
+                }
+
+                //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                //{
+
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                //}
+                //if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                //{
+                //    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                //}
+            }
+            foreach (Transform item in HairSkinManager.instance.HairItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem == PlayerPrefs.GetString("IsHair", "NoneHair"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+            foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
+            {
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem == PlayerPrefs.GetString("IsTrousers", "Yealow"))
+                {
+                    Debug.Log(PlayerPrefs.GetString("IsTrousers", "Yealow"));
+                    //HairSkinManager.instance.IsHair = GameManager.Instance.FindChildWithName(GameManager.Instance.PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
+                }
+
+                if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().nameItem, 0) == 1)
+                {
+
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock = true;
+                }
+                if (item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().IsUnlock)
+                {
+                    item.Find("BackGround").GetComponent<ButtonItemTrousersSkin>().Lock.gameObject.SetActive(false);
+                }
+            }
+
             GameManager.Instance.HairSkin.gameObject.SetActive(false);
             GameManager.Instance.TrousersSkin.gameObject.SetActive(false);
             GameManager.Instance.ShieldSkin.gameObject.SetActive(false);
@@ -220,7 +527,9 @@ public class SkinButton : MonoBehaviour
             GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(false);
             GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(true);
             enableAllPanel();
-            FullSetSkinManager.instance.ButtonFullSetItemChose.Find("Border").gameObject.SetActive(true);
+            //FullSetSkinManager.instance.ButtonFullSetItemChose.Find("Border").gameObject.SetActive(true);
+            GameManager.Instance.FullSetSelectUnequip.Find("UnequipFullSetItem").gameObject.SetActive(true);
+            GameManager.Instance.FullSetSelectUnequip.Find("SelectFullSetItem").gameObject.SetActive(false);
 
         }
 
@@ -276,6 +585,11 @@ public class SkinButton : MonoBehaviour
     {
         foreach (Transform item in HairSkinManager.instance.HairItemButtons)
         {
+
+            //if (PlayerPrefs.GetInt(item.Find("BackGround").GetComponent<ButtonItemHairSkin>().nameItem, 0) == 1)
+            //{
+            //    item.Find("BackGround").GetComponent<ButtonItemHairSkin>().IsUnlock = true;
+            //}
             if (HairSkinManager.instance.ButtonHairItemChose == null) break;
             if (item.gameObject.GetComponent<RectTransform>()
                 != HairSkinManager.instance.ButtonHairItemChose.GetComponent<RectTransform>())
@@ -294,6 +608,7 @@ public class SkinButton : MonoBehaviour
         }
         foreach (Transform item in TrousersSkinManager.instance.TrousersItemButtons)
         {
+          
             //TrousersSkinManager.instance.ButtonTrousersItemClick.Find("Border").gameObject.SetActive(false);
             if (TrousersSkinManager.instance.ButtonTrousersItemChose == null) break;
             if (item.gameObject.GetComponent<RectTransform>()

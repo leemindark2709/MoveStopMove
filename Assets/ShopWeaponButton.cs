@@ -40,6 +40,7 @@ public class ShopWeaponButton : MonoBehaviour
     }
     public void OnButtonClick()
     {
+        GameManager.Instance.PLayer.gameObject.SetActive(false);
         GameManager.Instance.checkShopWeapon = true;
         GameManager.Instance.ShopWeapon.gameObject.SetActive(true);
         if (GameManager.Instance.ShopWeapon.gameObject.activeSelf)

@@ -12,6 +12,8 @@ public class Home : MonoBehaviour
     // This method will be called when the button is clicked
     public void OnButtonClick()
     {
+        PlayerPrefs.SetInt("CountGold", GameManager.Instance.Gold);
+        PlayerPrefs.Save();
         // Reset the game by reloading the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }

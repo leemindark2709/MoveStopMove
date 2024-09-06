@@ -16,6 +16,25 @@ public class FullSetSkinManager : MonoBehaviour
     private void Awake()
     {
         instance = this;
+        //CheckShield.gameObject.SetActive(true);
+
+        //Player = GameManager.Instance.PLayer;
+        int index = 0;
+        foreach (Transform t in transform)
+        {
+            t.Find("EquippedText").gameObject.SetActive(false);
+            ButtonFullSetItemChose = t;
+            FullSetItemButtons.Add(t);
+            if (index != 0)
+            {
+                t.Find("Border").gameObject.SetActive(false);
+            }
+
+            index++; // Increment the index
+        }
+
+        //DisableFullSet();
+        IsFullSet = FindPositionFullSetItem(PlayerPrefs.GetString("IsFullSet", "NoneFullSet"));
     }
 
     private void Update()
@@ -29,24 +48,7 @@ public class FullSetSkinManager : MonoBehaviour
 
     private void Start()
     {
-        //CheckShield.gameObject.SetActive(true);
-
-        Player = GameManager.Instance.PLayer;
-        int index = 0;
-        foreach (Transform t in transform)
-        {
-            t.Find("EquippedText").gameObject.SetActive(false);
-            FullSetItemButtons.Add(t);
-            if (index != 0)
-            {
-                t.Find("Border").gameObject.SetActive(false);
-            }
-
-            index++; // Increment the index
-        }
-     
-        //DisableFullSet();
-        IsFullSet = FindPositionFullSetItem("NoneFullSet");
+    
 
        
     }

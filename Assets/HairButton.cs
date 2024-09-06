@@ -88,6 +88,7 @@ public class HairButton : MonoBehaviour
             Debug.Log("okokokokok");
             ////HairSkinManager.instance.CheckHair.gameObject.SetActive(false);
             HairSkinManager.instance.IsHair.gameObject.SetActive(true);
+            HairSkinManager.instance.ButtonHairItemClick = HairSkinManager.instance.ButtonHairItemChose;
             GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
             GameManager.Instance.HairSelectUnequip.Find("SelectHairItem").gameObject.SetActive(false);
 
