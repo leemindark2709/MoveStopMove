@@ -13,6 +13,8 @@ public class EquipperButton : MonoBehaviour
     public RectTransform LeftHome;
     public RectTransform ShopWeapon;
     public RectTransform ShopWeaponDestination;
+    public string TypeWeapon;
+    public string Weapon;
     private void Start()
     {
         NotPayUI = GameObject.Find("NOTPayADS").GetComponent<RectTransform>();
@@ -23,6 +25,11 @@ public class EquipperButton : MonoBehaviour
     }
     public void OnButtonClick()
     {
+        GameManager.Instance.PLayer.gameObject.SetActive(true);
+        PlayerPrefs.SetFloat("ShopWeaponx", GameManager.Instance.ShopWeapon.GetComponent<RectTransform>().anchoredPosition.x);
+        PlayerPrefs.SetFloat("ShopWeapony", GameManager.Instance.ShopWeapon.GetComponent<RectTransform>().anchoredPosition.y);
+        PlayerPrefs.SetFloat("ShopWeaponz", GameManager.Instance.ShopWeapon.GetComponent<RectTransform>().anchoredPosition.x);
+        PlayerPrefs.Save();
         GameManager.Instance.PLayer.gameObject.SetActive(true);
         ShopWeapon.anchoredPosition = ShopWeaponDestination.anchoredPosition;
         //GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
@@ -41,6 +48,7 @@ public class EquipperButton : MonoBehaviour
 
         // Tạo bản sao mới của vũ khí và gán nó vào vị trí của "MainWeapon"
         Transform newWeapon = Instantiate(WeaponPrefab);
+        //Transform NewWeaponPrefab = Instantiate(WeaponPrefab);
         if (newWeapon.GetComponent<MainWeapon>().TypeWeapon == "Knife")
         {
             newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("KnifePoint");
@@ -58,6 +66,10 @@ public class EquipperButton : MonoBehaviour
         newWeapon.GetComponent<PlayerDameSender>().targetTree = GameManager.Instance.PLayer.Find("Armature").transform;
 
 
+        PlayerPrefs.SetString("TypeWeapon", TypeWeapon);
+        PlayerPrefs.SetString("Weapon", newWeapon.GetComponent<PlayerDameSender>().NameWeapon);
+        Debug.Log(PlayerPrefs.GetString("Weapon", newWeapon.GetComponent<PlayerDameSender>().NameWeapon));
+        PlayerPrefs.Save();
 
         Destroy(oldWeapon.gameObject);
         GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon = newWeapon;

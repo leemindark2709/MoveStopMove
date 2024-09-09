@@ -15,9 +15,10 @@ public class PlayButton : MonoBehaviour
 
     public void OnButtonClick()
     {
+        GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
         GameManager.Instance.UiNamePoint.gameObject.SetActive(true);
-        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -1.31f;
-        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 0.91f;
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -1.45f;
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 1.19f;
 
         GameManager.Instance.TurnOnComponentPlayer();
         GameManager.Instance.isStart = true;

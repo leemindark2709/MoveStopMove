@@ -45,6 +45,8 @@ public class ShieldButton : MonoBehaviour
             //    GameManager.Instance.HairSelectUnequip.Find("UnequipHairItem").gameObject.SetActive(true);
 
             //}
+            GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").gameObject.SetActive(false);
+            GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").gameObject.SetActive(true);
             ShieldSkinManager.instance.CheckShield.gameObject.SetActive(false);
             ShieldSkinManager.instance.CheckShield = ShieldSkinManager.instance.ShieldItemPosition[1];
             ShieldSkinManager.instance.CheckShield.gameObject.SetActive(true);
@@ -91,7 +93,7 @@ public class ShieldButton : MonoBehaviour
         GameManager.Instance.TrousersSelectUnequip.gameObject.SetActive(false);
         GameManager.Instance.HairSelectUnequip.gameObject.SetActive(false);
         GameManager.Instance.ShieldSelectUnequip.gameObject.SetActive(true);
-        GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(true);
+        GameManager.Instance.FullSetSelectUnequip.gameObject.SetActive(false);
 
         foreach (Transform item in ShieldSkinManager.instance.ShieldItemButtons)
         {

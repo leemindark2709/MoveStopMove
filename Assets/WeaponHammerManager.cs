@@ -17,7 +17,13 @@ public class WeaponHammerManager : MonoBehaviour
         EquipperTop = transform.Find("EquipperTop").transform;
         Equipper = transform.Find("Equipper").transform;
         ChoseCorlor = transform.Find("ChoseColor").transform;
-        EquipperTop.gameObject.SetActive(false);
+        //EquipperTop.gameObject.SetActive(false);
+        Debug.Log(PlayerPrefs.GetString("TypeWeapon", "Hammer"));
+        if (PlayerPrefs.GetString("Weapon", "Hammer") == "Hammer"|| PlayerPrefs.GetString("TypeWeapon", "Hammer")=="Knife")
+        {
+         
+            EquipperTop.gameObject.SetActive(false);
+        }
 
     }
 }

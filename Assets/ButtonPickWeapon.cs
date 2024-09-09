@@ -43,13 +43,19 @@ public class ButtonPickWeapon : MonoBehaviour
         //else if(transform.tag== "CanChageColor") transform.parent.GetComponent<WeaponHammerManager>().ChoseCorlor.gameObject.SetActive(true);
         //Debug.Log("Button clicked. Tag of this object: " + transform.tag);
 
+        GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().EnableAllPanel();
+        transform.Find("BorderWeapon").gameObject.SetActive(true);
         if (transform.tag == "CanChageColor")
         {
-            WeaponHammerManager.instance.EquipperTop.gameObject.SetActive(false);
-            WeaponHammerManager.instance.ChoseCorlor.gameObject.SetActive(true);
-            WeaponHammerManager.instance.Equipper.gameObject.SetActive(true);
-            transform.parent.GetComponent<WeaponHammerManager>().ChoseCorlor.gameObject.SetActive(true);
-            Debug.Log("Switched to color change mode.");
+          
+                WeaponHammerManager.instance.EquipperTop.gameObject.SetActive(false);
+                WeaponHammerManager.instance.ChoseCorlor.gameObject.SetActive(true);
+                WeaponHammerManager.instance.Equipper.gameObject.SetActive(true);
+                transform.parent.GetComponent<WeaponHammerManager>().ChoseCorlor.gameObject.SetActive(true);
+                Debug.Log("Switched to color change mode.");
+           
+          
+            
         }
         else if (transform.tag != "CanChageCorlor")
         {
@@ -63,18 +69,18 @@ public class ButtonPickWeapon : MonoBehaviour
         {
             Debug.Log("MainWeapon and Weapon found. Replacing MainWeapon.");
             // Xoá MainWeapon hiện tại
-            Destroy(MainWeapon.gameObject);
+            
 
             // Tạo bản sao của Weapon
             Transform weaponCopy = Instantiate(Weapon);
-
+           
             // Đặt vị trí và góc quay của bản sao tại vị trí của MainWeapon
             weaponCopy.position = MainWeapon.position;
             weaponCopy.rotation = MainWeapon.rotation;
 
             // Đặt bản sao làm con của cùng một parent với MainWeapon
             weaponCopy.SetParent(MainWeapon.parent, true);
-
+            Destroy(MainWeapon.gameObject);
             // Gán tên mới cho bản sao nếu cần
             weaponCopy.name = "MainWeapon";
 

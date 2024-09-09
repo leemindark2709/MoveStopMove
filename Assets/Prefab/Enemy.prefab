@@ -1608,7 +1608,7 @@ MonoBehaviour:
   Enemy: {fileID: 0}
   pointSpawnWeapon: {fileID: 4505667089036607028}
   targetMovePoint: {fileID: 0}
-  detectionRadius: 0.46
+  detectionRadius: 0.53
   collision: 1
   NumSpawWeapon: 0
   timeToReturn: 0

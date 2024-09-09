@@ -83,7 +83,7 @@ public class ButtonCancelCharSkin : MonoBehaviour
         GameManager.Instance.FullSetSkin.gameObject.SetActive(true);
         FullSetSkinManager.instance.DisableFullSet();
         FullSetSkinManager.instance.IsFullSet.gameObject.SetActive(true);
-        if (FullSetSkinManager.instance.ButtonFullSetItemChose!=null)
+        if (FullSetSkinManager.instance.IsFullSet != FullSetSkinManager.instance.FullSetItemPosition[0])
         {
             FullSetSkinManager.instance.FindPositionFullSetItem("initialShadingGroup1").gameObject.GetComponent<Renderer>().material =
           FullSetSkinManager.instance.ButtonFullSetItemChose.Find("BackGround").gameObject.GetComponent<ButtonItemFullSetSkin>().material;

@@ -21,11 +21,15 @@ public class CancelShopWeapon : MonoBehaviour
     public void OnButtonClick()
     {
         GameManager.Instance.PLayer.gameObject.SetActive(true);
+        GameManager.Instance.PLayer.gameObject.SetActive(true);
         GameManager.Instance.checkShopWeapon = false;
         ShopWeapon.anchoredPosition = ShopWeaponDestination.anchoredPosition;
         //GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
         StartCoroutine(MoveUI(LeftHome, GameObject.Find("Home").transform.Find("Canvas").Find("Right0").GetComponent<RectTransform>().anchoredPosition, 0.1f));
         StartCoroutine(MoveUI(NotPayUI, GameObject.Find("Home").transform.Find("Canvas").Find("Right0").GetComponent<RectTransform>().anchoredPosition, 0.1f)); 
+    
+    
+    
     }
     private IEnumerator MoveUI(RectTransform uiElement, Vector2 targetPosition, float duration)
     {

@@ -15,7 +15,16 @@ public class CharSkinManagerShield : MonoBehaviour
     {
         SelectShieldItem =  GameManager.Instance.ShieldSelectUnequip.Find("SelectShieldItem").transform;
         UnequipShieldItem =  GameManager.Instance.ShieldSelectUnequip.Find("UnequipShieldItem").transform;
-        UnequipShieldItem.gameObject.SetActive(false);
-
+        //UnequipShieldItem.gameObject.SetActive(false);
+        //if (PlayerPrefs.GetString("IsShield", "") == "NoneShield")
+        //{
+        //    SelectShieldItem.gameObject.SetActive(true);
+        //    SelectShieldItem.gameObject.SetActive(false);
+        //}
+        //else
+        //{
+        //    SelectShieldItem.gameObject.SetActive(false);
+        //    SelectShieldItem.gameObject.SetActive(true);
+        //}
     }
 }

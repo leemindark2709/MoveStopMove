@@ -8,7 +8,10 @@ public class Home : MonoBehaviour
     public RectTransform Gold;
     public List<RectTransform> ZombieCity = new List<RectTransform>();
     public Transform PanelStartZombileMode;
-
+    public Transform ZombieModePanel;
+    public Transform PauseZombie;
+    public Transform Coin;
+    public Transform ZombieMode;
     // This method will be called when the button is clicked
     public void OnButtonClick()
     {

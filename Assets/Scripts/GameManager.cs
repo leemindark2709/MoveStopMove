@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Drawing;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
-
+    public
+    Transform newWeapon;
     //Map//
     public Transform MainMap;
     public Transform ZomBieMap;
@@ -16,10 +19,14 @@ public class GameManager : MonoBehaviour
     public bool checkShopWeapon;
     public static GameManager Instance;
     public GameObject enemyPrefab; // Prefab of the enemy
+    public GameObject ZombiePrefab; // Prefab of the enemy
+
     public GameObject rankObject;
     public GameObject SettingObject;
     public int numEnemyAlive;
+    public int numZombieAlive;
     public List<Transform> spawnPoints = new List<Transform>();
+    public List<Transform> spawnZombiePoints = new List<Transform>();
     public List<Material> EnemyMaterial = new List<Material>();
     public List<string> WeaponEnemys = new List<string>();
     public List<string> EnemySkinRandom = new List<string>();
@@ -34,9 +41,15 @@ public class GameManager : MonoBehaviour
 
     public Transform ShopWeapon;
     private float spawnCooldown = 2f; // Cooldown between spawns
+    private float spawnZombieCooldown = 1.2f; // Cooldown between spawns
     private float lastSpawnTime; // Time of the last spawn
     public int NumEnemySpawn = 10;
     public int counyEnemy = 11;
+
+
+    public int NumZombieSpawn =100;
+    public int counyZombie = 103;
+
     public bool isStart;
     public Transform button;
     public Transform WinGame;
@@ -66,7 +79,10 @@ public class GameManager : MonoBehaviour
     public Material Yeallow;
 
     public Mesh Pants;
+    public Transform MainWeaponKnife;
+    public Transform MainWeaponHammer;
 
+    public Transform Armature;
 
     public int NumOfRevice = 2;
     public bool EndGame;
@@ -76,10 +92,17 @@ public class GameManager : MonoBehaviour
     public Transform UiNamePoint;
 
     public RectTransform GoldHome;
+    public Transform newPosition;
 
     private int currentIndex = 0;
+    public List<Transform> CorlorHammer = new List<Transform>();
+    public bool IsWaitZombie ;
+    public bool IsStartZomBie;
+    public string Mode;
+    public List<Transform> Zombies = new List<Transform>();
     private void Awake()
     {
+
      
         checkShopWeapon = false;
         UiNamePoint = GameObject.Find("UiNamePoint").transform;
@@ -126,6 +149,7 @@ public class GameManager : MonoBehaviour
         PanelShieldButton = TopButton.Find("ShieldButton").Find("Panel");
         PanelFullSetButton = TopButton.Find("FullSetButton").Find("Panel");
         CharSkin = GameObject.Find("CharSkin").transform;
+        //HammerChageCorlor();
         //CharSkin.gameObject.SetActive(false);
     }
     public Material GetNextMaterial()
@@ -202,7 +226,7 @@ public class GameManager : MonoBehaviour
 
         FindChildWithName(PLayer, PlayerPrefs.GetString("IsShield", "NoneHair")).gameObject.SetActive(true);
 
-        if (PlayerPrefs.GetString("IsFullSet", "NoneFullSet")!= "NoneFullSet")
+        if (PlayerPrefs.GetString("IsFullSet", "NoneFullSet") != "NoneFullSet")
         {
             FullSetSkin.GetComponent<FullSetSkinManager>().IsFullSet = FindChildWithName(PLayer, PlayerPrefs.GetString("IsFullSet", "NoneFullSet"));
             FindChildWithName(PLayer, PlayerPrefs.GetString("IsFullSet", "NoneFullSet")).gameObject.SetActive(true);
@@ -216,6 +240,8 @@ public class GameManager : MonoBehaviour
             }
 
         }
+        SetMainWeapon();
+
 
 
 
@@ -248,7 +274,291 @@ public class GameManager : MonoBehaviour
 
     }
 
+    public void HammerChageCorlor()
+    {
+        foreach (Transform Corlor in CorlorHammer)
+        {
+            if (PlayerPrefs.GetString("HammerLeftColor", "Red") == Corlor.GetComponent<ChoseCorlorWeapon>().NameColor)
+            {
+                Armature.GetComponent<PlayerAttack>().weapon.GetComponent<MeshRenderer>().materials[0].color = Corlor.GetComponent<ChoseCorlorWeapon>().color;
+            }
+            if (PlayerPrefs.GetString("HammerRightColor", "Red") == Corlor.GetComponent<ChoseCorlorWeapon>().NameColor)
+            {
+                Armature.GetComponent<PlayerAttack>().weapon.GetComponent<MeshRenderer>().materials[1].color = Corlor.GetComponent<ChoseCorlorWeapon>().color;
+            }
+        }
+    }
     // Update is called once per frame
+    public void SetMainWeapon()
+    {
+        MainWeaponHammer = GameManager.Instance.ShopWeapon.GetChild(1).Find("MainWeapon");
+        MainWeaponKnife = GameManager.Instance.ShopWeapon.GetChild(0).Find("MainWeapon");
+
+        // Lấy MeshRenderer của đối tượng trong ListWeapons[5].GetChild(0)
+        MeshRenderer sourceRenderer = GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons[5].GetChild(0).GetComponent<MeshRenderer>();
+
+        // Lấy MeshRenderer của MainWeaponHammer
+        MeshRenderer hammerRenderer = MainWeaponHammer.GetComponent<MeshRenderer>();
+
+        if (sourceRenderer != null && hammerRenderer != null)
+        {
+            // Gán toàn bộ các materials từ sourceRenderer sang hammerRenderer
+            hammerRenderer.materials = sourceRenderer.materials;
+        }
+        else
+        {
+            Debug.LogError("MeshRenderer không tìm thấy trên MainWeaponHammer hoặc ShopWeapon.");
+        }
+
+        // Lấy MeshRenderer của vũ khí trong PlayerAttack
+     
+      
+        MeshRenderer weaponRenderer = Armature.GetComponent<PlayerAttack>().weapon.GetComponent<MeshRenderer>();
+
+        // Lấy MeshRenderer của MainWeaponHammer
+        MeshRenderer hammerRenderer2 = MainWeaponHammer.GetComponent<MeshRenderer>();
+
+        if (weaponRenderer != null && hammerRenderer2 != null)
+        {
+            // Gán toàn bộ các materials từ hammerRenderer sang weaponRenderer
+            weaponRenderer.materials = hammerRenderer.materials;
+        }
+        else
+        {
+            Debug.LogError("MeshRenderer không tìm thấy trên weapon hoặc MainWeaponHammer.");
+        }
+
+        foreach (Transform weapon in GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons)
+        {
+            if (weapon.GetChild(0).GetComponent<PlayerDameSender>().NameWeapon == PlayerPrefs.GetString("Weapon", "Knife1"))
+            {
+                Debug.Log(PlayerPrefs.GetString("Weapon", "Knife1"));
+                if (PlayerPrefs.GetString("TypeWeapon", "Hammer") == "Hammer")
+                {
+                    MainWeaponHammer = weapon.GetComponent<ButtonPickWeapon>().MainWeapon;
+
+                    // Tạo bản sao của Weapon
+                    Transform weaponCopy = Instantiate(weapon.GetChild(0));
+
+                    // Đặt vị trí và góc quay của bản sao tại vị trí của MainWeapon
+                    weaponCopy.position = MainWeaponHammer.position;
+                    weaponCopy.rotation = MainWeaponHammer.rotation;
+
+                    // Đặt bản sao làm con của cùng một parent với MainWeapon
+                    weaponCopy.SetParent(MainWeaponHammer.parent, true);
+                    Destroy(MainWeaponHammer.gameObject);
+                    // Gán tên mới cho bản sao nếu cần
+                    weaponCopy.name = "MainWeapon";
+
+                    // Gán lại biến MainWeapon để tham chiếu đến bản sao mới
+                    MainWeaponHammer = weaponCopy;
+                    MainWeaponHammer.localScale = new Vector3(1200, 1200, 1200);
+
+
+                    Transform oldWeapon;
+                    oldWeapon = Armature.GetComponent<PlayerAttack>().weapon;
+                    //oldWeaponParent = oldWeapon.parent;
+
+
+                    // Tạo bản sao mới của vũ khí và gán nó vào vị trí của "MainWeapon"
+                    newWeapon = Instantiate(weapon.GetChild(0));
+                    if (newWeapon.GetComponent<MainWeapon>().TypeWeapon == "Knife")
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("KnifePoint");
+
+                    }
+                    else
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("HammerPoint");
+                    }
+                    newWeapon.name = "Hammer"; // Đặt tên cho vũ khí mới để dễ quản lý
+
+                    if (PlayerPrefs.GetString("Weapon", "Hammer")=="Hammer")
+                    {
+                        Debug.Log("Is here");
+                        Debug.Log(PlayerPrefs.GetString("HammerLeftColor", "Red"));
+                        Debug.Log(PlayerPrefs.GetString("HammerRightColor", "Red"));
+                        foreach (Transform Corlor in CorlorHammer)
+                        {
+                            if (PlayerPrefs.GetString("HammerLeftColor", "Red") == Corlor.GetComponent<ChoseCorlorWeapon>().NameColor)
+                            {
+                                newWeapon.GetComponent<MeshRenderer>().sharedMaterials[0].color = Corlor.GetComponent<ChoseCorlorWeapon>().color;
+                            }
+                            if (PlayerPrefs.GetString("HammerRightColor", "Red") == Corlor.GetComponent<ChoseCorlorWeapon>().NameColor)
+                            {
+                                newWeapon.GetComponent<MeshRenderer>().sharedMaterials[1].color = Corlor.GetComponent<ChoseCorlorWeapon>().color;
+                            }
+                        }
+
+                    }
+                 
+                    newWeapon.parent = oldWeapon.parent;
+                    newWeapon.localScale = oldWeapon.localScale;
+                    newWeapon.localPosition = newPosition.localPosition;
+                    newWeapon.localRotation = oldWeapon.localRotation;
+                    newWeapon.GetComponent<PlayerDameSender>().targetTree = GameManager.Instance.PLayer.Find("Armature").transform;
+                    Armature.GetComponent<PlayerAttack>().weapon = newWeapon;
+                    //HammerChageCorlor();
+
+                    Destroy(oldWeapon.gameObject);
+
+                    /////////////////////////////////////////////////////////////////
+
+
+
+                    Transform weaponCopy2 = Instantiate(GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons[0].GetChild(0));
+
+                    MainWeaponKnife = GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons[0].GetComponent<ButtonPickWeapon>().MainWeapon;
+                    // Đặt vị trí và góc quay của bản sao tại vị trí của MainWeapon
+                    weaponCopy2.position = MainWeaponKnife.position;
+                    weaponCopy2.rotation = MainWeaponKnife.rotation;
+
+                    // Đặt bản sao làm con của cùng một parent với MainWeapon
+                    weaponCopy2.SetParent(MainWeaponKnife.parent, true);
+                    Destroy(MainWeaponKnife.gameObject);
+                    // Gán tên mới cho bản sao nếu cần
+                    weaponCopy2.name = "MainWeapon";
+
+                    // Gán lại biến MainWeapon để tham chiếu đến bản sao mới
+                    MainWeaponKnife = weaponCopy2;
+                    MainWeaponKnife.localScale = new Vector3(1200, 1200, 1200);
+
+
+                    Transform oldWeapon2;
+                    oldWeapon2 = Armature.GetComponent<PlayerAttack>().weapon;
+                    //oldWeaponParent = oldWeapon.parent;
+
+
+                    // Tạo bản sao mới của vũ khí và gán nó vào vị trí của "MainWeapon"
+                    newWeapon = Instantiate(weapon.GetChild(0));
+                    if (newWeapon.GetComponent<MainWeapon>().TypeWeapon == "Knife")
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("KnifePoint");
+
+                    }
+                    else
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("HammerPoint");
+                    }
+                    newWeapon.name = "Hammer"; // Đặt tên cho vũ khí mới để dễ quản lý
+                    newWeapon.parent = oldWeapon2.parent;
+                    newWeapon.localScale = oldWeapon2.localScale;
+                    newWeapon.localPosition = newPosition.localPosition;
+                    newWeapon.localRotation = oldWeapon2.localRotation;
+                    newWeapon.GetComponent<PlayerDameSender>().targetTree = GameManager.Instance.PLayer.Find("Armature").transform;
+                    Armature.GetComponent<PlayerAttack>().weapon = newWeapon;
+
+                    Destroy(oldWeapon2.gameObject);
+                }
+
+
+
+
+                if (PlayerPrefs.GetString("TypeWeapon", "Hammer") == "Knife")
+                {
+                   /////////////////////////////////////////////////////////////////////////
+                    MainWeaponHammer = GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons[5].GetComponent<ButtonPickWeapon>().MainWeapon;
+
+                    // Tạo bản sao của Weapon
+                    Transform weaponCopy1 = Instantiate(GameManager.Instance.ShopWeapon.GetComponent<ListWeapon>().ListWeapons[5].GetChild(0));
+
+                    // Đặt vị trí và góc quay của bản sao tại vị trí của MainWeapon
+                    weaponCopy1.position = MainWeaponHammer.position;
+                    weaponCopy1.rotation = MainWeaponHammer.rotation;
+
+                    // Đặt bản sao làm con của cùng một parent với MainWeapon
+                    weaponCopy1.SetParent(MainWeaponHammer.parent, true);
+                    Destroy(MainWeaponHammer.gameObject);
+                    // Gán tên mới cho bản sao nếu cần
+                    weaponCopy1.name = "MainWeapon";
+
+                    // Gán lại biến MainWeapon để tham chiếu đến bản sao mới
+                    MainWeaponHammer = weaponCopy1;
+                    MainWeaponHammer.localScale = new Vector3(1200, 1200, 1200);
+
+
+                    Transform oldWeapon1;
+                    oldWeapon1 = Armature.GetComponent<PlayerAttack>().weapon;
+                    //oldWeaponParent = oldWeapon.parent;
+
+
+                    // Tạo bản sao mới của vũ khí và gán nó vào vị trí của "MainWeapon"
+                    newWeapon = Instantiate(weapon.GetChild(0));
+                    if (newWeapon.GetComponent<MainWeapon>().TypeWeapon == "Knife")
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("KnifePoint");
+
+                    }
+                    else
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("HammerPoint");
+                    }
+                    newWeapon.name = "Hammer"; // Đặt tên cho vũ khí mới để dễ quản lý
+                    newWeapon.parent = oldWeapon1.parent;
+                    newWeapon.localScale = oldWeapon1.localScale;
+                    newWeapon.localPosition = newPosition.localPosition;
+                    newWeapon.localRotation = oldWeapon1.localRotation;
+                    newWeapon.GetComponent<PlayerDameSender>().targetTree = GameManager.Instance.PLayer.Find("Armature").transform;
+                    Armature.GetComponent<PlayerAttack>().weapon = newWeapon;
+
+                    Destroy(oldWeapon1.gameObject);
+                    ///////////////////////////////////////////////////////////////////
+                    // Tạo bản sao của Weapon
+
+
+
+
+
+                    Transform weaponCopy = Instantiate(weapon.GetChild(0));
+
+                    MainWeaponHammer = weapon.GetComponent<ButtonPickWeapon>().MainWeapon;
+                    // Đặt vị trí và góc quay của bản sao tại vị trí của MainWeapon
+                    weaponCopy.position = MainWeaponKnife.position;
+                    weaponCopy.rotation = MainWeaponKnife.rotation;
+
+                    // Đặt bản sao làm con của cùng một parent với MainWeapon
+                    weaponCopy.SetParent(MainWeaponKnife.parent, true);
+                    Destroy(MainWeaponKnife.gameObject);
+                    // Gán tên mới cho bản sao nếu cần
+                    weaponCopy.name = "MainWeapon";
+
+                    // Gán lại biến MainWeapon để tham chiếu đến bản sao mới
+                    MainWeaponKnife = weaponCopy;
+                    MainWeaponKnife.localScale = new Vector3(1200, 1200, 1200);
+
+
+                    Transform oldWeapon;
+                    oldWeapon = Armature.GetComponent<PlayerAttack>().weapon;
+                    //oldWeaponParent = oldWeapon.parent;
+
+
+                    // Tạo bản sao mới của vũ khí và gán nó vào vị trí của "MainWeapon"
+                    newWeapon = Instantiate(weapon.GetChild(0));
+                    if (newWeapon.GetComponent<MainWeapon>().TypeWeapon == "Knife")
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("KnifePoint");
+
+                    }
+                    else
+                    {
+                        newPosition = GameManager.Instance.PLayer.Find("Armature").GetComponent<PlayerAttack>().weapon.parent.Find("HammerPoint");
+                    }
+                    newWeapon.name = "Hammer"; // Đặt tên cho vũ khí mới để dễ quản lý
+                    newWeapon.parent = oldWeapon.parent;
+                    newWeapon.localScale = oldWeapon.localScale;
+                    newWeapon.localPosition = newPosition.localPosition;
+                    newWeapon.localRotation = oldWeapon.localRotation;
+                    newWeapon.GetComponent<PlayerDameSender>().targetTree = GameManager.Instance.PLayer.Find("Armature").transform;
+                    Armature.GetComponent<PlayerAttack>().weapon = newWeapon;
+
+                    Destroy(oldWeapon.gameObject);
+
+                }
+
+
+            }
+        }
+    }
     void Update()
     {
        
@@ -267,6 +577,13 @@ public class GameManager : MonoBehaviour
             numEnemyAlive += 1;
             lastSpawnTime = Time.time; // Update the last spawn time
         }
+        if ( Time.time - lastSpawnTime >= spawnZombieCooldown && NumZombieSpawn > 0&&IsStartZomBie)
+        {
+            SpawnZombie();
+            numZombieAlive += 1;
+            lastSpawnTime = Time.time; // Update the last spawn time
+        }
+
     }
     public void SetUpCamera()
     {
@@ -333,13 +650,13 @@ public class GameManager : MonoBehaviour
         Transform shadingGroup = spawnedEnemy.transform.Find("Armature").Find("initialShadingGroup1");
         spawnedEnemy.transform.Find("Armature").localScale = PLayer.transform.Find("Armature").localScale;
         SkinnedMeshRenderer renderer = shadingGroup.GetComponent<SkinnedMeshRenderer>();
-                // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
-                Material randomMaterial = GetNextMaterial();
-                if (randomMaterial != null)
-                {
-                    renderer.material = randomMaterial;
-                    spawnedEnemy.transform.Find("Armature").Find("Canvas").Find("UIPoint").GetComponent<Image>().color=randomMaterial.color;
-                }
+        // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
+        Material randomMaterial = GetNextMaterial();
+        if (randomMaterial != null)
+        {
+            renderer.material = randomMaterial;
+            spawnedEnemy.transform.Find("Armature").Find("Canvas").Find("UIPoint").GetComponent<Image>().color = randomMaterial.color;
+        }
         /////////////////////////////////Weapon///////////////////////////////////////
         RandomWeapon(spawnedEnemy);
         ///////////////////////////////////Skin/////////////////////////////////////
@@ -351,7 +668,52 @@ public class GameManager : MonoBehaviour
 
 
     }
-    public  void RandomSkin(GameObject spawnedEnemy)
+    public void SpawnZombie()
+    {
+        NumZombieSpawn -= 1;
+        if (ZombiePrefab == null)
+        {
+            Debug.LogError("enemyPrefab is not assigned.");
+            return;
+        }
+
+        if (spawnZombiePoints == null || spawnZombiePoints.Count == 0)
+        {
+            Debug.LogError("No spawn points available.");
+            return;
+        }
+
+        // Chọn một vị trí spawn ngẫu nhiên từ danh sách
+        int randomIndex = Random.Range(0, spawnZombiePoints.Count);
+        Transform randomSpawnPoint = spawnZombiePoints[randomIndex];
+
+        // Tạo một bản sao của enemyPrefab tại vị trí và góc quay của spawn point ngẫu nhiên
+        GameObject spawnedZombieEnemy = Instantiate(ZombiePrefab, randomSpawnPoint.position, randomSpawnPoint.rotation);
+
+        // Đảm bảo rằng bạn đang chỉnh sửa vị trí của Transform
+        Vector3 newPosition = spawnedZombieEnemy.transform.position;
+        newPosition.y = 0.58f; // Đặt giá trị y theo mong muốn
+        spawnedZombieEnemy.transform.position = newPosition; // Cập nhật lại vị trí
+
+        Zombies.Add(spawnedZombieEnemy.transform);
+        spawnedZombieEnemy.GetComponent<ZombieMoving>().zombieSpeed = 2.5f;
+        spawnedZombieEnemy.GetComponent<ZombirManager>().Run();
+
+
+
+        Transform shadingGroup = spawnedZombieEnemy.transform.Find("lp_guy_mesh");
+    
+        SkinnedMeshRenderer renderer = shadingGroup.GetComponent<SkinnedMeshRenderer>();
+        // Chọn một material ngẫu nhiên từ danh sách EnemyMaterial
+        Material randomMaterial = GetNextMaterial();
+        if (randomMaterial != null)
+        {
+            renderer.material = randomMaterial;
+          
+        }
+     
+    }
+    public void RandomSkin(GameObject spawnedEnemy)
     {
         FindChildWithName(spawnedEnemy.transform,"Pants").GetComponent<SkinnedMeshRenderer>().sharedMesh = null;
         string typeSkin;

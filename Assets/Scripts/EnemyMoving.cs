@@ -329,7 +329,7 @@ public class EnemyMoving : MonoBehaviour
                 weaponRb.velocity = Vector3.zero;
                 weaponRb.angularVelocity = Vector3.zero;
 
-                float forceMagnitude = 1f;
+                float forceMagnitude = 0.7f;
                 float distance = Vector3.Distance(Weapon.position, enemyTarget.position);
                 float weaponSpeed = forceMagnitude;
 
@@ -362,7 +362,7 @@ public class EnemyMoving : MonoBehaviour
                     weaponRb.angularVelocity = Vector3.zero;
 
                     // Định nghĩa độ lớn lực
-                    float forceMagnitude = 1f;
+                    float forceMagnitude = 0.7f;
 
                     // Tính khoảng cách và tốc độ
                     float distance = Vector3.Distance(Weapon.position, enemyTarget.position);

@@ -24,12 +24,19 @@ public class ZombieCity : MonoBehaviour
     public RectTransform StartingPointPanel;
     public void OnButtonClick()
     {
-        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -1.31f;
-        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 0.91f;
+        
+        GameManager.Instance.Home.GetComponent<Home>().PauseZombie.gameObject.SetActive(false);
+
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -1.45f;
+        GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 1.19f;
         GameManager.Instance.TurnOnComponentPlayer();
         GameManager.Instance.Home.GetComponent<Home>().GetRandomZombieCity().gameObject.SetActive(true);
-      
+
         StartCoroutine(delayZombileMode());
+        Vector3 newPosition = GameManager.Instance.PLayer.transform.position;
+        newPosition.y =0.58f;  // Tăng tọa độ y
+        GameManager.Instance.PLayer.transform.position = newPosition;  // Gán lại vị trí mới
+
         GameManager.Instance.MainMap.gameObject.SetActive(false);
         GameManager.Instance.ZomBieMap.gameObject.SetActive(true);
         StartCoroutine(MoveUI(NotPayUI, NotPayUI2Point.anchoredPosition, 0.1f));

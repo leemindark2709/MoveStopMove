@@ -13,6 +13,7 @@ TagManager:
   - Weapon
   - CanChageColor
   - Wall
+  - Zombie
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - UI
   - Playerr
   - Wall
-  - 
+  - Zombie
   - 
   - 
   - 

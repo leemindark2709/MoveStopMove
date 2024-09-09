@@ -9,13 +9,15 @@ public class PlayerDameSender : MonoBehaviour
     public float timeReturn;
     public bool check = false;
     public Transform enemy;
+    public string NameWeapon;
+    public string TypeWeapon;
 
     private void OnTriggerEnter(Collider other)
     {
-       
+
 
         // Kiểm tra nếu game object không thuộc cây targetTree thì mới xoá
-        if (!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy"))
+        if (!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy") && other.gameObject.layer == LayerMask.NameToLayer("Enemy"))
         {
             //GameManager.Instance.NumEnemySpawn -= 1;
 
@@ -40,16 +42,16 @@ public class PlayerDameSender : MonoBehaviour
                 otherEnemy.isDead = true;
                 GameManager.Instance.numEnemyAlive -= 1;
                 GameManager.Instance.counyEnemy -= 1;
-                GameObject.Find("Num").GetComponent<TextMeshProUGUI>().text = GameManager.Instance.counyEnemy.ToString();
 
+                GameObject.Find("Num").GetComponent<TextMeshProUGUI>().text = GameManager.Instance.counyEnemy.ToString();
 
                 enemy = other.transform;
             }
             //Destroy(other.transform.parent.gameObject);
 
             check = true;
-          
 
+            
 
             if (targetTree != null)
             {
@@ -83,7 +85,18 @@ public class PlayerDameSender : MonoBehaviour
                 }
             }
         }
+        else if (!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy") && other.gameObject.layer == LayerMask.NameToLayer("Zombie"))
+        {
+            check = true;
+            Destroy(other.gameObject);
+            GameManager.Instance.numZombieAlive -= 1;
+            GameManager.Instance.counyZombie -= 1;
+
+            GameManager.Instance.Home.GetComponent<Home>().ZombieMode.GetComponent<ZombieMode>().CountZombieAlive.GetComponent<TextMeshProUGUI>().text =
+                GameManager.Instance.counyZombie.ToString();
+        }
     }
+
 
     // Hàm kiểm tra xem transform có phải là con của cây mục tiêu hay không
     private bool IsChildOf(Transform child, Transform parent)

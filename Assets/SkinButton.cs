@@ -271,7 +271,7 @@ public class SkinButton : MonoBehaviour
             TrousersSkinManager.instance.pantsRenderer.material = TrousersSkinManager.instance.IsTrousers;
 
             TrousersSkinManager.instance.ButtonTrousersItemChose.Find("Border").gameObject.SetActive(true);
-            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(false);
+            GameManager.Instance.TrousersSelectUnequip.Find("UnequipTrousers").gameObject.SetActive(true);
             GameManager.Instance.TrousersSelectUnequip.Find("SelectTrousers").gameObject.SetActive(false);
             GameManager.Instance.TrousersSelectUnequip.Find("ADSTrousersItem").gameObject.SetActive(false);
             GameManager.Instance.TrousersSelectUnequip.Find("GoldTrousersItem").gameObject.SetActive(false);

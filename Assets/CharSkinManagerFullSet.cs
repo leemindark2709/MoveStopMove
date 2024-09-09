@@ -15,7 +15,18 @@ public class CharSkinManagerFullSet : MonoBehaviour
     {
         SelectFullSetItem = GameManager.Instance.FullSetSelectUnequip.Find("SelectFullSetItem").transform;
         UnequipFullSetItem = GameManager.Instance.FullSetSelectUnequip.Find("UnequipFullSetItem").transform;
-        UnequipFullSetItem.gameObject.SetActive(false);
+        if (PlayerPrefs.GetString("IsFullSet","")=="NoneFullSet")
+        {
+            SelectFullSetItem.gameObject.SetActive(true);
+            UnequipFullSetItem.gameObject.SetActive(false);
+        }
+        else
+        {
+            SelectFullSetItem.gameObject.SetActive(false);
+            UnequipFullSetItem.gameObject.SetActive(true);
+        }
+
+        //UnequipFullSetItem.gameObject.SetActive(false);
 
     }
 }
