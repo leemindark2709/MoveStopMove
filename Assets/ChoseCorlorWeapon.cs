@@ -19,8 +19,8 @@ public class ChoseCorlorWeapon : MonoBehaviour
         {
             transform.parent.GetComponent<ChoseLefftRight>().ChoseRight.GetComponent<Image>().color = color;
         }
-        Debug.Log(PlayerPrefs.GetString("HammerLeftColor", "Red"));
-        Debug.Log(PlayerPrefs.GetString("HammerRightColor", "Red"));
+        //Debug.Log(PlayerPrefs.GetString("HammerLeftColor", "Red"));
+        //Debug.Log(PlayerPrefs.GetString("HammerRightColor", "Red"));
 
         
     }

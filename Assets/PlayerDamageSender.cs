@@ -87,6 +87,7 @@ public class PlayerDameSender : MonoBehaviour
         }
         else if (!IsChildOf(other.transform, targetTree) && other.CompareTag("Enemy") && other.gameObject.layer == LayerMask.NameToLayer("Zombie"))
         {
+            scoreincrease();
             check = true;
             Destroy(other.gameObject);
             GameManager.Instance.numZombieAlive -= 1;

@@ -26,7 +26,10 @@ public class PlayerAttack : MonoBehaviour
     public Vector3 localPosition;
     public Quaternion localRotation ;
     public bool isCollidingWithWall = false;
-    public bool CanAttack; 
+    public bool CanAttack;
+    public GameObject weaponClone;
+    public Transform UIName;
+
     private void Awake()
     {
         instance = this;
@@ -81,10 +84,18 @@ public class PlayerAttack : MonoBehaviour
     {
         if (isDead)
         {
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().isInteracting = false;
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().isMoving = false;
+            GameManager.Instance.Home.GetComponent<Home>().PanelEndGameZombie.GetComponent<PanelEndGameZombie>().GoldX3.text =
+         ((GameManager.Instance.NumZomBieStart - GameManager.Instance.counyZombie)*3).ToString();   
+            GameManager.Instance.Home.GetComponent<Home>().PanelEndGameZombie.GetComponent<PanelEndGameZombie>().Gold.text =
+         (GameManager.Instance.NumZomBieStart - GameManager.Instance.counyZombie).ToString();  
+            GameManager.Instance.Home.GetComponent<Home>().PanelWinGameZombie.GetComponent<PanelEndGameZombie>().GoldX3.text =
+         ((GameManager.Instance.NumZomBieStart - GameManager.Instance.counyZombie)*3).ToString();   
+            GameManager.Instance.Home.GetComponent<Home>().PanelWinGameZombie.GetComponent<PanelEndGameZombie>().Gold.text =
+         (GameManager.Instance.NumZomBieStart - GameManager.Instance.counyZombie).ToString();
             //weapon.GetComponent<Rigidbody>().isKinematic = true;
             transform.gameObject.GetComponent<PlayerAttack>().enabled= false;
-            //transform.GetComponent<Rigidbody>().gameObject.SetActive(false);
-            //transform.GetComponent<BoxCollider>().gameObject.SetActive(false);
             deathParticles.transform.position = transform.position;
             deathParticles.Play(); // Chạy Particle System
 
@@ -105,26 +116,35 @@ public class PlayerAttack : MonoBehaviour
 
 
         }
-        if (isDead && NumOfDead==1&&GameManager.Instance.NumOfRevice>1)
+        if (GameManager.Instance.counyZombie==0&&GameManager.Instance.Mode=="ZombieCity")
         {
-            
-            GameManager.Instance.EndGame = true;
-            NumOfDead =0;
-            GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#"+(GameManager.Instance.counyEnemy).ToString();
-            GameManager.Instance.NumOfRevice -=1;
-           
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().isInteracting = false;
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().isMoving = false;
+            PlayerPrefs.SetString("Complete", "Yes");
+            PlayerPrefs.Save();
+            GameManager.Instance.Home.GetComponent<Home>().updateDay();
+            GameManager.Instance.MovePositionUIZombieModelmd();
+            GameManager.Instance.Home.GetComponent<Home>().PanelWinGameZombie.gameObject.SetActive(true);
+            NumOfDead = 0;
+            GameManager.Instance.Home.GetComponent<Home>().WinZombieMode.text = "YOU SURVIVED DAY " + (PlayerPrefs.GetInt("IsDay", 1)+1).ToString() + "!";  
+            GameManager.Instance.NumOfRevice -= 1;
+
             //PlayerAttack.instance.End = false;
-            anim.Play("Dead");
+           
             //transform.gameObject.SetActive(false);
             GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
             GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
-            //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
+            GameManager.Instance.Armature.GetComponent<PlayerAttack>().anim.Play("Idel");
+
+
         }
-        if (isDead &&NumOfDead==1&& GameManager.Instance.NumOfRevice <=1)
+        if (isDead && NumOfDead == 1 && GameManager.Instance.NumOfRevice > 1 && GameManager.Instance.Mode != "ZombieCity")
         {
-            GameManager.Instance.MovePositionRankAndSettinglmd();
-            GameManager.Instance.TouchToContinue.gameObject.SetActive(true) ;
-            NumOfDead = 0; GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#" + (GameManager.Instance.counyEnemy).ToString();
+           
+            GameManager.Instance.EndGame = true;
+            Debug.Log("HereHere");
+            NumOfDead = 0;
+            GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#" + (GameManager.Instance.counyEnemy).ToString();
             GameManager.Instance.NumOfRevice -= 1;
 
             //PlayerAttack.instance.End = false;
@@ -132,6 +152,55 @@ public class PlayerAttack : MonoBehaviour
             //transform.gameObject.SetActive(false);
             GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
             GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
+        }
+        if (isDead && NumOfDead == 1 && GameManager.Instance.NumOfRevice > 1&&GameManager.Instance.Mode== "ZombieCity")
+        {
+            Debug.Log("HereHere");
+            
+            GameManager.Instance.EndGame = true;
+        
+            NumOfDead = 0;
+
+            GameManager.Instance.NumOfRevice -= 1;
+
+            //PlayerAttack.instance.End = false;
+            //anim.Play("Dead");
+            //transform.gameObject.SetActive(false);
+            GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false
+            GameManager.Instance.Home.GetComponent<Home>().updateDay();
+
+        }
+        if (isDead &&NumOfDead==1&& GameManager.Instance.NumOfRevice <=1)
+        {
+            if ( GameManager.Instance.Mode != "ZombieCity")
+            {
+          
+                GameManager.Instance.MovePositionRankAndSettinglmd();
+                GameManager.Instance.TouchToContinue.gameObject.SetActive(true);
+                NumOfDead = 0; 
+                GameManager.Instance.TouchToContinue.Find("Canvas").Find("PanelRank").Find("Top").GetComponent<TextMeshProUGUI>().text = "#" + (GameManager.Instance.counyEnemy).ToString();
+                GameManager.Instance.NumOfRevice -= 1;
+
+                //PlayerAttack.instance.End = false;
+                anim.Play("Dead");
+                //transform.gameObject.SetActive(false);
+                GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+                GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
+            }
+            else
+            {
+             
+                PlayerPrefs.SetString("Complete","Yes");
+                GameManager.Instance.Home.GetComponent<Home>().PanelEndGameZombie.gameObject.SetActive(true);
+                NumOfDead = 0; 
+                //GameManager.Instance.MovePositionUIZombieModelmd();
+                GameManager.Instance.NumOfRevice -= 1;
+                GameManager.Instance.PLayer.Find("Armature").tag = "DeadPlayer";
+            }
+
             //GameManager.Instance.PLayer.GetComponent<PlayerAttack>().enabled = false;
 
         }
@@ -194,8 +263,8 @@ public class PlayerAttack : MonoBehaviour
             return;
         }
         anim.SetFloat("attack", 1); // Play attack animation
-        StartCoroutine(DelayedAttack(0.15f, enemy)); // T    ạo độ trễ khi tấn công
-       
+        StartCoroutine(DelayedAttack(0.35f, enemy)); // T    ạo độ trễ khi tấn công
+
     }
 
     private IEnumerator WaitAttack()
@@ -203,6 +272,12 @@ public class PlayerAttack : MonoBehaviour
         yield return new WaitForSeconds(1f);
         CanAttack = true;
     }
+    private IEnumerator WaitAttackZomie()
+    {
+        yield return new WaitForSeconds(0.3f);
+        CanAttack = true;
+    }
+
     private IEnumerator DelayedAttack(float delay, GameObject enemy)
     {
         if (enemy == null)
@@ -272,8 +347,8 @@ public class PlayerAttack : MonoBehaviour
         if (weaponRb != null)
         {
             // Lưu lại vị trí và rotation ban đầu của vũ khí
-            Vector3 localPosition = weapon.localPosition;
-            Quaternion localRotation = weapon.localRotation;
+            //Vector3 localPosition = weapon.localPosition;
+            //Quaternion localRotation = weapon.localRotation;
 
             // Kiểm tra loại vũ khí
             string weaponType = weapon.gameObject.GetComponent<PlayerDameSender>().TypeWeapon;
@@ -376,7 +451,6 @@ public class PlayerAttack : MonoBehaviour
 
     public IEnumerator ReturnToParentAfterDelay(float delay, Vector3 originalPosition, Quaternion originalRotation)
     {
-
         if (isDead)
         {
             transform.GetComponent<Rigidbody>().isKinematic = true;
@@ -386,87 +460,75 @@ public class PlayerAttack : MonoBehaviour
         Rigidbody weaponRb = weapon.GetComponent<Rigidbody>();
         float elapsedTime = 0f;
 
-        // Tạo bản sao của vũ khí
-
-        // Xoá vũ khí gốc
-
-
-        //while (elapsedTime < delay)
-        //{
-        //    bool ischeck = weaponClone.GetComponent<PlayerDameSender>().check; // Kiểm tra điều kiện
-        while (elapsedTime < delay )
+        // Vòng lặp chờ
+        while (elapsedTime < delay)
         {
-            
-            bool ischeck = weapon.GetComponent<PlayerDameSender>().check; // Kiểm tra điều kiện
+            // Tạo bản sao vũ khí khi thời gian gần kết thúc, chỉ tạo 1 lần
+            if (elapsedTime >= delay - 0.25f && weaponClone == null)
+            {
+                weaponClone = Instantiate(weapon.gameObject, originalPosition, originalRotation);
+                weaponClone.transform.parent = originalWeaponParent;
 
-            if (ischeck) // Nếu ischeck trở thành true, dừng coroutine
+                Rigidbody weaponCloneRb = weaponClone.GetComponent<Rigidbody>();
+                weaponClone.GetComponent<BoxCollider>().enabled = false;
+                if (weaponCloneRb != null)
+                {
+                    weaponCloneRb.isKinematic = false;
+                }
+
+                weaponClone.transform.localPosition = originalPosition;
+                weaponClone.transform.localRotation = originalRotation;
+                IsRotate = false;
+            }
+
+            // Kiểm tra điều kiện để dừng và reset vũ khí
+            bool ischeck = weapon.GetComponent<PlayerDameSender>().check;
+            if (ischeck)
             {
                 anim.SetFloat("attack", 0);
-                //weaponRb.AddTorque(new Vector3(0, 0f, 0));
-                weapon.parent = originalWeaponParent; // Gán lại parent ban đầu cho vũ khí
-                weapon.localPosition = originalPosition; // Đặt lại vị trí ban đầu của vũ khí
-                weapon.localRotation = originalRotation; // Đặt lại góc quay ban đầu của vũ khí
+                weapon.parent = originalWeaponParent;
+                weapon.localPosition = originalPosition;
+                weapon.localRotation = originalRotation;
                 weapon.GetComponent<BoxCollider>().enabled = false;
                 weapon.gameObject.layer = LayerMask.NameToLayer("Playerr");
                 IsRotate = false;
-                // Tăng scale của vũ khí khi trở về
-                if (GameManager.Instance.Mode!="ZombieCity")
+                if (weaponClone!=null)
                 {
-                       weapon.localScale *= 1.1f; // Tăng scale lên 10% theo cả 3 trục
+                    Destroy(weaponClone);
+
                 }
-             
-
-
+                if (GameManager.Instance.Mode != "ZombieCity")
+                {
+                    weapon.localScale *= 1.1f; // Tăng scale lên 10% theo cả 3 trục
+                }
 
                 if (weaponRb != null)
                 {
-                    weaponRb.isKinematic = true; // Đặt isKinematic của Rigidbody thành true
+                    weaponRb.isKinematic = true;
                 }
+
                 numOfAttacks = 1;
                 weapon.GetComponent<PlayerDameSender>().check = false;
-                // Lấy component Rigidbody của vũ khí
                 CanAttack = false;
-                StartCoroutine(WaitAttack());
+                StartCoroutine(WaitAttackZomie());
                 yield break;
             }
 
             elapsedTime += Time.deltaTime;
-           
             yield return null;
         }
 
-        GameObject weaponClone = Instantiate(weapon.gameObject, originalPosition, originalRotation);
-        weaponClone.transform.parent = originalWeaponParent; // Gán parent ban đầu cho bản sao vũ khí
+        // Xóa vũ khí gốc và thay thế bằng bản sao
+        Destroy(weapon.gameObject);
+        weapon = weaponClone.transform;
 
-        Rigidbody weaponCloneRb = weaponClone.GetComponent<Rigidbody>();
-        weaponClone.GetComponent<BoxCollider>().enabled = false;
-        if (weaponCloneRb != null)
+        if (weaponClone.GetComponent<Rigidbody>() != null)
         {
-            weaponCloneRb.isKinematic = false; // Đặt isKinematic của Rigidbody thành true
+            weaponClone.GetComponent<Rigidbody>().isKinematic = true;
         }
-
-        if (weaponClone != null)
-        {
-            weaponClone.transform.localPosition = originalPosition; // Đặt lại vị trí ban đầu của bản sao vũ khí
-            weaponClone.transform.localRotation = originalRotation; // Đặt lại góc quay ban đầu của bản sao vũ khí
-            IsRotate = false;
-            // Tăng scale của bản sao vũ khí khi trở về
-            //weaponClone.transform.localScale += new Vector3(1.1f, 1.1f, 1.1f);
-            //yield return new WaitForSeconds(0.001f);
-            Destroy(weapon.gameObject);
-            weapon = weaponClone.transform;
-            if (weaponCloneRb != null)
-            {
-                weaponCloneRb.isKinematic = true; // Đặt isKinematic của Rigidbody thành true
-            }
-            anim.SetFloat("attack", 0);
-        }
-        else
-        {
-            Debug.LogWarning("Vũ khí không còn tồn tại");
-        }
-
-        numOfAttacks = 1; // Đặt lại số lần tấn công
+        weaponClone = null;
+        anim.SetFloat("attack", 0);
+        numOfAttacks = 1;
         CanAttack = false;
         StartCoroutine(WaitAttack());
     }

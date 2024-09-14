@@ -1,5 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -9,17 +8,29 @@ public class PanelReadyGoZombie : MonoBehaviour
 
     private void OnEnable()
     {
-        NumberGo.GetComponent<TextMeshProUGUI>().text ="3";
-        int i = 2;
-        while (i>0)
-        {
-            if (i==1)
-            {
-                NumberGo.GetComponent<TextMeshProUGUI>().text = "Go";
-            }
-            i--;
-        }
-         
+        // Bắt đầu quá trình hiển thị số đếm ngược
+        StartCoroutine(CountdownCoroutine());
     }
 
+    // Coroutine để thực hiện đếm ngược
+    private IEnumerator CountdownCoroutine()
+    {
+        // Hiển thị số 3
+        NumberGo.GetComponent<TextMeshProUGUI>().text = "3";
+        yield return new WaitForSeconds(1f); // Chờ 1 giây
+
+        // Hiển thị số 2
+        NumberGo.GetComponent<TextMeshProUGUI>().text = "2";
+        yield return new WaitForSeconds(1f); // Chờ 1 giây
+
+        // Hiển thị số 1
+        NumberGo.GetComponent<TextMeshProUGUI>().text = "1";
+        yield return new WaitForSeconds(1f); // Chờ 1 giây
+
+        // Hiển thị "Go"
+        NumberGo.GetComponent<TextMeshProUGUI>().text = "Go";
+        yield return new WaitForSeconds(1f); // Chờ 1 giây
+        GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = true;
+        transform.gameObject.SetActive(false);
+    }
 }

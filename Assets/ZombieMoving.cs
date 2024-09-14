@@ -13,7 +13,7 @@ public class ZombieMoving : MonoBehaviour
     private void Update()
     {
         // Kiểm tra xem player có tồn tại không
-        if (player != null)
+        if (player != null&&! player.GetComponent<PlayerAttack>().isDead)
         {
             // Di chuyển zombie về phía Player với tốc độ zombieSpeed
             transform.position = Vector3.MoveTowards(transform.position, player.position, zombieSpeed * Time.deltaTime * 0.1f);

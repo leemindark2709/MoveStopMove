@@ -15,10 +15,15 @@ public class PlayButton : MonoBehaviour
 
     public void OnButtonClick()
     {
+        GameManager.Instance.Mode = "MainMode";
+        GameManager.Instance.PLayer.GetComponent<PlayerMovement>().Circle.gameObject.SetActive(true);
         GameManager.Instance.ShopWeapon.gameObject.SetActive(false);
         GameManager.Instance.UiNamePoint.gameObject.SetActive(true);
         GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.z = -1.45f;
         GameObject.Find("MainCamera").GetComponent<CameraFollow>().offset.y = 1.19f;
+        GameManager.Instance.PlayerCamera.position = new Vector3(5.587935e-08f, 0.4990517f, 2.24f);
+
+
 
         GameManager.Instance.TurnOnComponentPlayer();
         GameManager.Instance.isStart = true;

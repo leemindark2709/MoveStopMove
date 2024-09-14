@@ -35,7 +35,7 @@ public class ZombirManager : MonoBehaviour
     }
     public IEnumerator WaitForThreeSeconds()
     {
-        Debug.Log("Started waiting...");
+        //Debug.Log("Started waiting...");
 
         // Đợi trong 3 giây
         yield return new WaitForSeconds(3f);
@@ -49,6 +49,12 @@ public class ZombirManager : MonoBehaviour
     }
     public void Run() {
         anim.SetFloat("Run", 1);
+    }
+    public void SpawnZombie()
+    {
+        transform.GetComponent<ZombieMoving>().zombieSpeed = 0.5f;
+        Walk();
+        Wait();
     }
 
 }

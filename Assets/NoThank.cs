@@ -4,12 +4,15 @@ using UnityEngine;
 
 public class NoThank : MonoBehaviour
 {
+    public Transform PanelReadyGoZombie;
     // Start is called before the first frame update
     public void OnButtonClick()
     {
-        GameManager.Instance.SpawnZombie();
-        GameManager.Instance.SpawnZombie();
-        GameManager.Instance.SpawnZombie();
+        GameManager.Instance.Home.GetComponent<Home>().AbilityBottomPanel.gameObject.SetActive(false);
+        PanelReadyGoZombie.gameObject.SetActive(true);
+        //GameManager.Instance.SpawnZombie();
+        //GameManager.Instance.SpawnZombie();
+        //GameManager.Instance.SpawnZombie();
         GameManager.Instance.Mode = "ZombieCity";
         GameManager.Instance.IsStartZomBie = true;
         GameManager.Instance.Home.GetComponent<Home>().ZombieModePanel.gameObject.SetActive(false);

@@ -10,7 +10,9 @@ public class GameManager : MonoBehaviour
 {
     public
     Transform newWeapon;
+    public Transform StartPoint;
     //Map//
+    public Transform PositionZombie0;
     public Transform MainMap;
     public Transform ZomBieMap;
     public Transform PlayerCamera;
@@ -23,6 +25,8 @@ public class GameManager : MonoBehaviour
 
     public GameObject rankObject;
     public GameObject SettingObject;
+
+    public GameObject ZombieMode ;
     public int numEnemyAlive;
     public int numZombieAlive;
     public List<Transform> spawnPoints = new List<Transform>();
@@ -48,7 +52,8 @@ public class GameManager : MonoBehaviour
 
 
     public int NumZombieSpawn =100;
-    public int counyZombie = 103;
+    public int counyZombie = 100;
+    public int NumZomBieStart = 100;
 
     public bool isStart;
     public Transform button;
@@ -98,7 +103,7 @@ public class GameManager : MonoBehaviour
     public List<Transform> CorlorHammer = new List<Transform>();
     public bool IsWaitZombie ;
     public bool IsStartZomBie;
-    public string Mode;
+    public string Mode= "MainMode";
     public List<Transform> Zombies = new List<Transform>();
     private void Awake()
     {
@@ -212,7 +217,7 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
+        //Debug.Log(PlayerPrefs.GetString("IsHair", "NoneHair"));
         GoldHome = Home.GetComponent<Home>().Gold;
         HairSkin.GetComponent<HairSkinManager>().IsHair = FindChildWithName(PLayer, PlayerPrefs.GetString("IsHair", "NoneHair"));
         FindChildWithName(PLayer, PlayerPrefs.GetString("IsHair", "NoneHair")).gameObject.SetActive(true);
@@ -332,7 +337,7 @@ public class GameManager : MonoBehaviour
         {
             if (weapon.GetChild(0).GetComponent<PlayerDameSender>().NameWeapon == PlayerPrefs.GetString("Weapon", "Knife1"))
             {
-                Debug.Log(PlayerPrefs.GetString("Weapon", "Knife1"));
+                //Debug.Log(PlayerPrefs.GetString("Weapon", "Knife1"));
                 if (PlayerPrefs.GetString("TypeWeapon", "Hammer") == "Hammer")
                 {
                     MainWeaponHammer = weapon.GetComponent<ButtonPickWeapon>().MainWeapon;
@@ -375,7 +380,7 @@ public class GameManager : MonoBehaviour
 
                     if (PlayerPrefs.GetString("Weapon", "Hammer")=="Hammer")
                     {
-                        Debug.Log("Is here");
+                 
                         Debug.Log(PlayerPrefs.GetString("HammerLeftColor", "Red"));
                         Debug.Log(PlayerPrefs.GetString("HammerRightColor", "Red"));
                         foreach (Transform Corlor in CorlorHammer)
@@ -568,6 +573,8 @@ public class GameManager : MonoBehaviour
         if (EndGame&&numofSpawnDie==1)
         {
             StartCoroutine(DelayEnableDie());
+            //numofSpawnDie = 2;EndGame
+            EndGame = false;
         }
 
         // If there are fewer than 6 enemies and the cooldown has passed, spawn a new enemy
@@ -580,7 +587,7 @@ public class GameManager : MonoBehaviour
         if ( Time.time - lastSpawnTime >= spawnZombieCooldown && NumZombieSpawn > 0&&IsStartZomBie)
         {
             SpawnZombie();
-            numZombieAlive += 1;
+            //numZombieAlive += 1;
             lastSpawnTime = Time.time; // Update the last spawn time
         }
 
@@ -602,6 +609,7 @@ public class GameManager : MonoBehaviour
     {
         yield return new WaitForSeconds(2);
 
+        GameManager.Instance.MovePositionUIZombieModelmd();
         // Kiểm tra liên tục cho đến khi numofSpawnDie == 1
         while (numofSpawnDie != 1)
         {
@@ -696,8 +704,8 @@ public class GameManager : MonoBehaviour
         spawnedZombieEnemy.transform.position = newPosition; // Cập nhật lại vị trí
 
         Zombies.Add(spawnedZombieEnemy.transform);
-        spawnedZombieEnemy.GetComponent<ZombieMoving>().zombieSpeed = 2.5f;
-        spawnedZombieEnemy.GetComponent<ZombirManager>().Run();
+
+        spawnedZombieEnemy.GetComponent<ZombirManager>().SpawnZombie();
 
 
 
@@ -899,14 +907,15 @@ public class GameManager : MonoBehaviour
         rankObject.transform.position = targetPosition1;
         SettingObject.transform.position = targetPosition2;
         GameManager.Instance.SettingTouch.gameObject.SetActive(false);
-    }   public void ReturnPositionRankAndSettinglmd()
+    }  
+    public void ReturnPositionRankAndSettinglmd()
     {
         StartCoroutine(ReturnPositionRankAndSetting());
     }
 
     public IEnumerator ReturnPositionRankAndSetting()
     {
-        
+
         if (rankObject == null)
         {
             Debug.LogError("Không tìm thấy đối tượng Rank!");
@@ -916,7 +925,7 @@ public class GameManager : MonoBehaviour
         Vector3 startPosition1 = rankObject.transform.position;
         Vector3 targetPosition1 = GameObject.Find("PointEnemy0").GetComponent<RectTransform>().position;
 
-        
+
         if (SettingObject == null)
         {
             Debug.LogError("Không tìm thấy đối tượng Setting!");
@@ -946,4 +955,100 @@ public class GameManager : MonoBehaviour
         SettingObject.transform.position = targetPosition2;
         GameManager.Instance.SettingTouch.gameObject.SetActive(false);
     }
+    public void MovePositionUIZombieModelmd()
+    {
+        StartCoroutine(MovePositionUIZombieMode());
+    }
+    public IEnumerator MovePositionUIZombieMode()
+    {
+
+      
+
+        Vector3 startPosition1 = ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position;
+        Vector3 targetPosition1 = ZombieMode.GetComponent<ZombieMode>().Day1.GetComponent<RectTransform>().position;
+
+
+        Vector3 startPosition2 = ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position;
+        Vector3 targetPosition2 = ZombieMode.GetComponent<ZombieMode>().CountZomBie1.GetComponent<RectTransform>().position;
+        Vector3 startPosition3 = ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position;
+        Vector3 targetPosition3 = ZombieMode.GetComponent<ZombieMode>().Pause1.GetComponent<RectTransform>().position;
+
+
+        float duration = 0.1f; // Thời gian cho quá trình di chuyển
+        float time = 0f;
+
+        while (time < duration)
+        {
+            // Nội suy vị trí cho rankObject
+            ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position
+                = Vector3.Lerp(startPosition1, targetPosition1, time / duration);
+
+            // Nội suy vị trí cho SettingObject
+            ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position 
+                = Vector3.Lerp(startPosition2, targetPosition2, time / duration);          
+            
+            ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position 
+                = Vector3.Lerp(startPosition3, targetPosition3, time / duration);
+
+            time += Time.deltaTime;
+            yield return null; // Chờ đến khung hình tiếp theo
+        }
+
+        //// Đảm bảo vị trí cuối cùng chính xác tại vị trí đích
+        ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position = targetPosition1;
+        ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position = targetPosition2;
+        ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position = targetPosition3;
+
+    }
+    public void ReturnPositionUIZombieModelmd()
+    {
+        StartCoroutine(ReturnPositionUIZombieMode());
+    }
+
+    public IEnumerator ReturnPositionUIZombieMode()
+    {
+        // Lấy vị trí ban đầu và vị trí đích của từng đối tượng
+        Vector3 startPosition1 = ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position;
+        Vector3 targetPosition1 = ZombieMode.GetComponent<ZombieMode>().Day0.GetComponent<RectTransform>().position;
+
+        Vector3 startPosition2 = ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position;
+        Vector3 targetPosition2 = ZombieMode.GetComponent<ZombieMode>().CountZomBie0.GetComponent<RectTransform>().position;
+
+        Vector3 startPosition3 = ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position;
+        Vector3 targetPosition3 = ZombieMode.GetComponent<ZombieMode>().Pause0.GetComponent<RectTransform>().position;
+
+        float duration = 0.1f; // Thời gian cho quá trình di chuyển
+        float time = 0f;
+
+        // Nội suy vị trí của các đối tượng trong khoảng thời gian 'duration'
+        while (time < duration)
+        {
+            // Di chuyển dần Day
+            ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position
+                = Vector3.Lerp(startPosition1, targetPosition1, time / duration);
+
+            // Di chuyển dần CountZomBie
+            ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position
+                = Vector3.Lerp(startPosition2, targetPosition2, time / duration);
+
+            // Di chuyển dần Pause
+            ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position
+                = Vector3.Lerp(startPosition3, targetPosition3, time / duration);
+
+            // Cập nhật thời gian
+            time += Time.deltaTime;
+
+            // Đợi đến khung hình tiếp theo
+            yield return null;
+        }
+
+        // Đảm bảo các đối tượng đạt vị trí chính xác sau khi quá trình nội suy hoàn tất
+        ZombieMode.GetComponent<ZombieMode>().Day.GetComponent<RectTransform>().position = targetPosition1;
+        ZombieMode.GetComponent<ZombieMode>().CountZomBie.GetComponent<RectTransform>().position = targetPosition2;
+        ZombieMode.GetComponent<ZombieMode>().Pause.GetComponent<RectTransform>().position = targetPosition3;
+
+        // Bạn có thể thực hiện các thao tác khác sau khi di chuyển hoàn tất tại đây
+        // Ví dụ: Tắt một số UI hoặc tiếp tục logic khác
+    }
+
 }

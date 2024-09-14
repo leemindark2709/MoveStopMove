@@ -8,16 +8,18 @@ public class Die : MonoBehaviour
     public Transform Load;
     public Transform Timer;
     public float countdownDuration = 5f; // Thời gian bắt đầu đếm ngược
-    private TextMeshProUGUI timeText;
+    public TextMeshProUGUI timeText;
     private float rotationSpeed = 300f; // Tốc độ quay quanh trục Z
     public float interval = 1f; // Khoảng thời gian cập nhật đồng hồ
     private float elapsedTime = 0f; // Biến đếm thời gian
     [SerializeField] private bool isCounting = false; // Điều khiển trạng thái đếm ngược
     public bool isClickButtonRevive = false; // Biến kiểm tra xem nút hồi sinh có được bấm không
-
+    Transform GameManagerLMD;
+    public Transform Revive;
     private void Awake()
     {
         Instance = this;
+        GameManagerLMD = GameObject.Find("GameManager").transform;
     }
 
     private void Start()
@@ -32,7 +34,7 @@ public class Die : MonoBehaviour
             return;
         }
 
-        StartCoroutine(CountdownCoroutine());
+     
     }
 
     private void Update()
@@ -50,6 +52,7 @@ public class Die : MonoBehaviour
             {
                 StartCoroutine(CallMethodEveryInterval());
                 elapsedTime = 0f; // Reset thời gian
+         
             }
         }
     }
@@ -73,11 +76,11 @@ public class Die : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.TouchToContinue.gameObject.SetActive(true);
+
                 intTime = 5;
 
                 GameManager.Instance.EndGame = false;
-                GameManager.Instance.Dead.gameObject.SetActive(false);
+
                 isCounting = false;
             }
         }
@@ -86,14 +89,14 @@ public class Die : MonoBehaviour
         yield return null; // Thực hiện một lần
     }
 
-    private IEnumerator CountdownCoroutine()
+    public IEnumerator CountdownCoroutine()
     {
-        float elapsedTime = -2f;
+        float elapsedTime = -1f;
 
         while (elapsedTime < countdownDuration)
         {
             float remainingTime = countdownDuration - elapsedTime;
-            timeText.text = Mathf.Max(Mathf.Ceil(remainingTime)-2, 0).ToString();
+            timeText.text = Mathf.Max(Mathf.Ceil(remainingTime) - 1, 0).ToString();
             elapsedTime += Time.deltaTime;
             yield return null;
         }
@@ -104,20 +107,45 @@ public class Die : MonoBehaviour
         Debug.Log("Countdown finished. Disabling object.");
 
         // Vô hiệu hóa đối tượng mà script này đang gắn vào
-        gameObject.SetActive(false);
+        if (GameManager.Instance.Mode != "ZombieCity")
+        {
+            GameManager.Instance.TouchToContinue.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+
+        }
+        else
+        {
+            GameManager.Instance.Home.GetComponent<Home>().PanelEndGameZombie.gameObject.SetActive(true);
+            gameObject.SetActive(false);
+        }
+
+        //GameManager.Instance.Dead.gameObject.SetActive(false);
     }
 
     private void OnEnable()
     {
-        StartCoroutine(MoveRankAndSetting());
-        isCounting = true; // Kích hoạt đếm ngược
+        isClickButtonRevive = false;
+        //isClickButtonRevive = false;
+        elapsedTime = 0;
+        if (GameManagerLMD.GetComponent<GameManager>() != null && GameManagerLMD.GetComponent<GameManager>().Mode != "ZombieCity")
+        {
+            StartCoroutine(MoveRankAndSetting());
+            isCounting = true; // Kích hoạt đếm ngược
+        }
+        else
+        {
+            isCounting = true; // Kích hoạt đếm ngược
+        }
+        StartCoroutine(CountdownCoroutine());
     }
+
 
     private void OnDisable()
     {
         isCounting = false; // Ngừng đếm ngược
         elapsedTime = 0f; // Reset thời gian
         isClickButtonRevive = false;
+        timeText.text = "5";
     }
 
     public IEnumerator MoveRankAndSetting()

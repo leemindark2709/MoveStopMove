@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public Transform Circle;
     public static PlayerMovement instance;
     Vector2 movevector;
     public float moveSpeed = 1f;
@@ -12,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 startPoint;
     private Vector2 direction;
-    private bool isInteracting;
+    public bool isInteracting;
 
     private Vector3 canvasOffset; // Store the initial offset between Canvas and Armature
 
@@ -77,7 +78,7 @@ public class PlayerMovement : MonoBehaviour
         }
 
         // Move the character based on touch or mouse input
-        if (isInteracting)
+        if (isInteracting||GameManager.Instance.Dead.GetComponent<Die>().Revive.GetComponent<ReviveNow>().isReviveNow)
         {
             Vector3 move = new Vector3(direction.x, 0, direction.y).normalized * moveSpeed * 0.5f * Time.deltaTime;
 
@@ -86,7 +87,7 @@ public class PlayerMovement : MonoBehaviour
             if (armature != null)
             {
                 armature.position += move;
-                PlayerAttack.instance.CanAttack = true;
+                //PlayerAttack.instance.CanAttack = true;
 
                 // Move the Canvas to follow the Armature
                 Transform canvas = transform.Find("Canvas");

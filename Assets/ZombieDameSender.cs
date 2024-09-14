@@ -13,12 +13,13 @@ public class ZombieDameSender : MonoBehaviour
             Player = collision.transform;
             Debug.Log("Va chạm với Player");
             collision.gameObject.GetComponent<PlayerAttack>().anim.Play("Dead");
-
+            collision.gameObject.GetComponent<PlayerAttack>().isDead = true;
+            collision.gameObject.GetComponent<PlayerAttack>().End = true;
             foreach (Transform ZomBie in GameManager.Instance.Zombies)
             {
                 if (ZomBie != null)
                 {
-                    GameManager.Instance.Armature.GetComponent<PlayerAttack>().enabled = false;
+                    //GameManager.Instance.Armature.GetComponent<PlayerAttack>().enabled = false;
                     GameManager.Instance.PLayer.GetComponent<PlayerMovement>().enabled = false;
                     ZomBie.GetComponent<ZombirManager>().anim.Play("Win");
                     ZomBie.GetComponent<ZombieMoving>().zombieSpeed = 0;
@@ -28,7 +29,7 @@ public class ZombieDameSender : MonoBehaviour
         }
         else
         {
-            Debug.Log("Va chạm với đối tượng khác");
+            //Debug.Log("Va chạm với đối tượng khác");
         }
     }
 }
